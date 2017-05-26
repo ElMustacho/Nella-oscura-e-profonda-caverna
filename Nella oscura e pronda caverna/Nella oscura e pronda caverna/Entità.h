@@ -6,9 +6,9 @@
 class Entità
 {
 public:
-	Entità();
+	Entità(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
 	~Entità();
-
+	double carryWeight(); //calcolo peso trasportato
 private:
 	std::string nome;
 	Attributi attributi;
@@ -31,7 +31,8 @@ private:
 	12) anello 2
 	13) spazio munizioni
 	14) abiti
-
+	15) da qui in poi potranno esserci elementi che non si cumulano con i suddetti, come per esempio aureole,
+	maledizioni, benedizioni e simili.
 	*/
 };
 
