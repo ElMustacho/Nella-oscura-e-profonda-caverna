@@ -1,0 +1,3 @@
+https://usingcpp.wordpress.com/2016/07/23/google-test-and-visual-studio/
+
+https://github.com/google/googletest
