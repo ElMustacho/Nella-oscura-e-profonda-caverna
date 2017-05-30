@@ -6,4 +6,4 @@
 6) Audio
 7) Scrigno
 8) No SFML
-e tanto altro ancora
+e tanto altro ancora! 
