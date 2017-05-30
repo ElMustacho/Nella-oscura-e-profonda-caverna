@@ -23,6 +23,7 @@
     <ProjectGuid>{BF5D7687-1489-475F-B9B0-E650511EB90A}</ProjectGuid>
     <RootNamespace>Nellaoscuraeprondacaverna</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <ProjectName>Nella oscura e profonda caverna</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
