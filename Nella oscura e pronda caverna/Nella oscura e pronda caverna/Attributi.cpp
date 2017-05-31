@@ -1,5 +1,7 @@
 #include "Attributi.h"
 
+Attributi::Attributi(){} 
+
 Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int hp, int potereMagico, int stamina, double forzaDiCarico, int maxHp, int maxPotereMagico, int maxStamina)
 {
 	this->forza = forza;

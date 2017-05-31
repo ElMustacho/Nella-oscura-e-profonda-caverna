@@ -7,9 +7,9 @@ class Oggetto
 
 public: // CHECK Why this? Implement it in cpp file we should
 	Oggetto(double peso, std::string nome, std::string descrizione, long valore) : peso(peso), nome(nome), descrizione(descrizione), valore(valore) {}
-	~Oggetto();
+	~Oggetto(); // CHECK virtual, right?
 
-	void usa(); // CHECK Should it return something?
+	virtual void usa(); // CHECK Should it return something? 
 
 	const double getPeso() 
 	{
