@@ -2,10 +2,11 @@
 #include <string>
 #include <vector>
 #include "Oggetto.h"
+#include "Sprite.h"
 #include "Attributi.h"
 
 
-class Entità // TODO add sprite
+class Entità
 {
 
 public:
@@ -15,7 +16,7 @@ public:
 private:
 	std::string nome;
 	Attributi attributi;
-	Sprite sprite; // TODO define Sprite
+	Sprite sprite; // TODO define and manage Sprite
 	std::vector<Oggetto> inventario;
 	std::vector<Oggetto> equipaggiamento;
 	/*

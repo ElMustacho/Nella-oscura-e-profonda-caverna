@@ -114,12 +114,14 @@
     <ClInclude Include="Attributi.h" />
     <ClInclude Include="Entità.h" />
     <ClInclude Include="Oggetto.h" />
+    <ClInclude Include="Sprite.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Attributi.cpp" />
     <ClCompile Include="Entità.cpp" />
     <ClCompile Include="Oggetto.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

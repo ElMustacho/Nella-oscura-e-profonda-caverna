@@ -3,3 +3,9 @@
 Oggetto::~Oggetto()
 {
 }
+
+
+void Oggetto::usa()
+{
+	// FIXME effect!
+}
