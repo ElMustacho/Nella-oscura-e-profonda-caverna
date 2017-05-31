@@ -2,7 +2,7 @@
 
 
 
-Entità::Entità()
+Entità::Entità() // FIXME implement & add Attributi()
 {
 }
 

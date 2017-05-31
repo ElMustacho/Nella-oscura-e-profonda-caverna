@@ -3,10 +3,13 @@
 #include <vector>
 #include "Oggetto.h"
 #include "Attributi.h"
-class Entità
+
+
+class Entità // TODO add sprite
 {
+
 public:
-	Entità();
+	Entità(); // CHECK Void?
 	~Entità();
 
 private:
