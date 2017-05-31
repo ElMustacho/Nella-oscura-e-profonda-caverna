@@ -13,6 +13,16 @@ public:
 	Entità(std::string nome, Attributi attributi); // CHECK Void?
 	~Entità();
 
+	std::string getNome() const
+	{
+		return nome;
+	}
+
+	void setNome(std::string nome)
+	{
+		this->nome = nome;
+	}
+
 private:
 	std::string nome;
 	Attributi attributi;
