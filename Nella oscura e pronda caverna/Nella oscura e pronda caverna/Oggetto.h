@@ -5,11 +5,11 @@
 class Oggetto
 {
 
-public: // CHECK Why this? Implement it in cpp file we should
+public:
 	Oggetto(double peso, std::string nome, std::string descrizione, long valore) : peso(peso), nome(nome), descrizione(descrizione), valore(valore) {}
-	~Oggetto(); // CHECK virtual, right?
+	~Oggetto();
 
-	virtual void usa(); // CHECK Should it return something? 
+	virtual void usa();
 
 	const double getPeso() 
 	{

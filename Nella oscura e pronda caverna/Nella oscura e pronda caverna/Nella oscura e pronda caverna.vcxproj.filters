@@ -27,6 +27,9 @@
     <ClInclude Include="Sprite.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="Scrigno.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Oggetto.cpp">
@@ -42,6 +45,9 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Scrigno.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>

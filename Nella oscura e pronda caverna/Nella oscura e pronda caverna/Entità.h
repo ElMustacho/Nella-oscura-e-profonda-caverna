@@ -10,7 +10,7 @@ class Entità
 {
 
 public:
-	Entità(std::string nome, Attributi attributi); // CHECK Void?
+	Entità(std::string nome, Attributi attributi);
 	~Entità();
 
 	std::string getNome() const
