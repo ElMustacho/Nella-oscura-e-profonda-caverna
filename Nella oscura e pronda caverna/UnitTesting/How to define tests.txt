@@ -1,0 +1,17 @@
+1) Crea un file nuovo per ogni famiglia di test
+2) includi pch.h
+3) includi sia i file.h sia i file.cpp necessari
+4) per farlo bisogna tornare indietro di una cartella, quindi nel caso di Oggetto sarà come nelle due righe successive
+
+#include "..\Nella oscura e pronda caverna\Oggetto.h"
+#include "..\Nella oscura e pronda caverna\Oggetto.cpp"
+
+5) I due punti indicano il ritorno alla cartella precedente
+6) Dichiara un test, il primo argomento deve essere una stringa senza "" con il nome della famiglia di oggetti
+7) Il secondo deve essere una stringa come sopra, ma più specifica.
+8) Scrivere i test
+9) Quando si vuole eseguirli, lancia il main DI QUESTO PROGETTO!
+10) Annota i risultati
+11) Agisci di consegueza
+12) ???
+13) Profit

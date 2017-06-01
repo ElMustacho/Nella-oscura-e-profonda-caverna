@@ -85,12 +85,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="{3AF54C8A-10BF-4332-9147-F68ED9862033}">
-      <Project>{3af54c8a-10bf-4332-9147-f68ed9862033}</Project>
-      <IncludeIsGuid>true</IncludeIsGuid>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\test\gtest_prod_test.cc">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -110,6 +104,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\test\production.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="gtest_main-md.vcxproj">
+      <Project>{3af54c8a-10bf-4332-9147-f68ed9862033}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

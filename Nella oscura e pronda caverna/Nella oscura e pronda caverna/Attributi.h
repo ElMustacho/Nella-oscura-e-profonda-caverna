@@ -50,7 +50,11 @@ public:
 	}
 
 	void setHp(int hp) {
-		this->hp = hp;
+		if (hp > maxHp)
+			this->hp = hp;
+		else {
+			this->hp = hp;
+		}
 	}
 
 	int getIntelligenza() const {
@@ -66,7 +70,10 @@ public:
 	}
 
 	void setPotereMagico(int potereMagico) {
-		this->potereMagico = potereMagico;
+		if (potereMagico > maxPotereMagico)
+			this->potereMagico = maxPotereMagico;
+		else
+			this->potereMagico = potereMagico;
 	}
 
 	int getSpirito() const {
@@ -82,7 +89,9 @@ public:
 	}
 
 	void setStamina(int stamina) {
-		this->stamina = stamina;
+		if(stamina>maxStamina)
+		this->stamina = maxStamina;
+		
 	}
 
 	int getTempra() const {
