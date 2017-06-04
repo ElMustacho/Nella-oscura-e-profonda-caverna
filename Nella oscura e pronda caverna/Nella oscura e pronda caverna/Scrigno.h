@@ -7,7 +7,7 @@ class Scrigno :	public Oggetto
 {
 
 public:
-	Scrigno(int unlock, std::list<Oggetto> loot);
+	Scrigno(double peso, std::string nome, std::string descrizione, long valore, int unlock, std::list<Oggetto> loot);
 	~Scrigno();
 
 	void open();

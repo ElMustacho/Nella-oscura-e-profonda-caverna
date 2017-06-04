@@ -30,6 +30,15 @@
     <ClInclude Include="Scrigno.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="Arma.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Protagonista.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Attore.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Oggetto.cpp">
@@ -48,6 +57,15 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="Scrigno.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Arma.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Protagonista.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Attore.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>

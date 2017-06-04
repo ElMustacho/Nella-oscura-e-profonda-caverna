@@ -10,7 +10,7 @@ class Entità
 {
 
 public:
-	Entità(std::string nome, Attributi attributi);
+	Entità(std::string nome, Attributi attributi); // CHECK inventario & equipaggiamento valori default?
 	~Entità();
 
 	std::string getNome() const
