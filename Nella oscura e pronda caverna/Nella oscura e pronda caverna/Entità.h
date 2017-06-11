@@ -6,12 +6,12 @@
 #include "Attributi.h"
 
 
-class Entit‡
+class Entit√†
 {
 
 public:
-	Entit‡(std::string nome, Attributi attributi); // CHECK inventario & equipaggiamento valori default?
-	~Entit‡();
+	Entit√†(std::string nome, Attributi attributi); // CHECK inventario & equipaggiamento valori default?
+	~Entit√†();
 
 	std::string getNome() const
 	{
@@ -23,6 +23,9 @@ public:
 		this->nome = nome;
 	}
 
+	Entit√†(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
+	
+	double carryWeight(); //calcolo peso trasportato
 private:
 	std::string nome;
 	Attributi attributi;
@@ -30,7 +33,7 @@ private:
 	std::vector<Oggetto> inventario;
 	std::vector<Oggetto> equipaggiamento;
 	/*
-	nella posizione X di equipaggiamento ci sar‡:
+	nella posizione X di equipaggiamento ci sar√†:
 	0) mano destra (arma)
 	1) mano sinistra (arma, arma2 o scudo)
 	2) torso
@@ -46,7 +49,8 @@ private:
 	12) anello 2
 	13) spazio munizioni
 	14) abiti
-
+	15) da qui in poi potranno esserci elementi che non si cumulano con i suddetti, come per esempio aureole,
+	maledizioni, benedizioni e simili.
 	*/
 };
 

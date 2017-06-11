@@ -1,15 +1,18 @@
 #include <iostream>
 #include "Oggetto.h"
-#include "Entità.h"
+#include "Entitï¿½.h"
 
 int main() 
 {
-	Entità player1("Pippo",Attributi());
+	Entitï¿½ player1("Pippo",Attributi()); 
 	std::cout << "Giocatore: " << player1.getNome() << std::endl;
 
-	Oggetto idolo((double)15,"Hatkanda","L'oggetto di un film generico",(long) 400);
+int main() {
+	Oggetto idolo(15., "Hatkanda", "L'oggetto di un film generico", 400); 
 	std::cout << idolo.getDescrizione() << std::endl << idolo.getNome() << std::endl << idolo.getPeso() << std::endl <<
-		idolo.getValore() << std::endl;
-	int a;
+		idolo.getValore();
+	char a;
+	std::cout << std::endl;
 	std::cin >> a;
+  //Questo main dovrÃ  finire in un test.
 }
