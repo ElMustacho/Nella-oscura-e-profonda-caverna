@@ -2,7 +2,7 @@
 class Attributi
 {
 public:
-	Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int hp, int potereMagico, int stamina, double forzaDiCarico, int maxHp, int maxPotereMagico, int maxStamina); //usato quando si carica un salvataggio o dal protagonista all'inizio del gioco.
+	Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int hp, int potereMagico, int stamina, double forzaDiCarico, int maxHp, int maxPotereMagico, int maxStamina, bool silenzioso); //usato quando si carica un salvataggio o dal protagonista all'inizio del gioco.
 	Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int livello); //autogenera le caratteristiche rimanenti
 	~Attributi();
 	int getCarisma() const {
@@ -13,12 +13,12 @@ public:
 		this->carisma = carisma;
 	}
 
-	int getDestezza() const {
-		return destezza;
+	int getDestrezza() const {
+		return destrezza;
 	}
 
-	void setDestezza(int destezza) {
-		this->destezza = destezza;
+	void setDestrezza(int destrezza) {
+		this->destrezza = destrezza;
 	}
 
 	int getFortuna() const {
@@ -50,7 +50,11 @@ public:
 	}
 
 	void setHp(int hp) {
-		this->hp = hp;
+		if (hp > maxHp)
+			this->hp = hp;
+		else {
+			this->hp = hp;
+		}
 	}
 
 	int getIntelligenza() const {
@@ -66,7 +70,10 @@ public:
 	}
 
 	void setPotereMagico(int potereMagico) {
-		this->potereMagico = potereMagico;
+		if (potereMagico > maxPotereMagico)
+			this->potereMagico = maxPotereMagico;
+		else
+			this->potereMagico = potereMagico;
 	}
 
 	int getSpirito() const {
@@ -82,7 +89,9 @@ public:
 	}
 
 	void setStamina(int stamina) {
-		this->stamina = stamina;
+		if(stamina>maxStamina)
+		this->stamina = maxStamina;
+		
 	}
 
 	int getTempra() const {
@@ -105,9 +114,30 @@ public:
 		return maxStamina;
 	}
 
+	void setMaxStamina(int maxStamina) {
+		this->maxStamina = maxStamina;
+	}
+
+	void setMaxHp(int maxHp) {
+		this->maxHp = maxHp;
+	}
+
+	void setMaxPotereMagico(int maxPotereMagico) {
+		this->maxPotereMagico = maxPotereMagico;
+	}
+
+	void setSilenziosio(bool silenzioso) {
+		this->silenzioso = silenzioso;
+	}
+
+	bool isSilenzioso() const {
+		return silenzioso;
+	}
+
+
 private:
 	int forza;
-	int destezza;
+	int destrezza;
 	int tempra;
 	int intelligenza;
 	int spirito;
@@ -120,5 +150,6 @@ private:
 	int maxPotereMagico;
 	int maxStamina;
 	double forzaDiCarico;
+	bool silenzioso;
 };
 
