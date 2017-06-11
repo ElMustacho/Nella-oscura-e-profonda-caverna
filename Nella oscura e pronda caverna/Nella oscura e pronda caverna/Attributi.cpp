@@ -1,6 +1,8 @@
 #include "Attributi.h"
 
+
 Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int hp, int potereMagico, int stamina, double forzaDiCarico, int maxHp, int maxPotereMagico, int maxStamina, bool silenzioso)
+
 {
 	this->forza = forza;
 	this->destrezza = destrezza;
@@ -34,8 +36,8 @@ Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int
 	potereMagico = maxPotereMagico;
 	stamina = maxStamina;
 	forzaDiCarico = (forza * 10 + 1)*(forza / 8);
-	if (destrezza >7&&livello > 10) { //Segnala se l'entit‡ Ë percepibile aldil‡ della vista
-
+	if (destrezza >7&&livello > 10) { //Segnala se l'entit√† √® percepibile aldil√† della vista
+    silenzioso = true;
 	}
 }
 

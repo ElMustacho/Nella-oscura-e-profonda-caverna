@@ -112,15 +112,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Arma.h" />
+    <ClInclude Include="Attore.h" />
     <ClInclude Include="Attributi.h" />
+    <ClInclude Include="Casella.h" />
     <ClInclude Include="Entità.h" />
     <ClInclude Include="Oggetto.h" />
+    <ClInclude Include="Protagonista.h" />
+    <ClInclude Include="Scrigno.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Tileset.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Arma.cpp" />
+    <ClCompile Include="Attore.cpp" />
     <ClCompile Include="Attributi.cpp" />
+    <ClCompile Include="Casella.cpp" />
     <ClCompile Include="Entità.cpp" />
     <ClCompile Include="Oggetto.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Protagonista.cpp" />
+    <ClCompile Include="Scrigno.cpp" />
+    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Tileset.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

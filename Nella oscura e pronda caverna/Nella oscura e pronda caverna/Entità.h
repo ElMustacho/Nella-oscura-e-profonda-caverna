@@ -2,20 +2,38 @@
 #include <string>
 #include <vector>
 #include "Oggetto.h"
+#include "Sprite.h"
 #include "Attributi.h"
-class Entit‡
+
+
+class Entit√†
 {
+
 public:
-	Entit‡(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
-	~Entit‡();
+	Entit√†(std::string nome, Attributi attributi); // CHECK inventario & equipaggiamento valori default?
+	~Entit√†();
+
+	std::string getNome() const
+	{
+		return nome;
+	}
+
+	void setNome(std::string nome)
+	{
+		this->nome = nome;
+	}
+
+	Entit√†(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
+	
 	double carryWeight(); //calcolo peso trasportato
 private:
 	std::string nome;
 	Attributi attributi;
+	Sprite sprite; // TODO define and manage Sprite
 	std::vector<Oggetto> inventario;
 	std::vector<Oggetto> equipaggiamento;
 	/*
-	nella posizione X di equipaggiamento ci sar‡:
+	nella posizione X di equipaggiamento ci sar√†:
 	0) mano destra (arma)
 	1) mano sinistra (arma, arma2 o scudo)
 	2) torso

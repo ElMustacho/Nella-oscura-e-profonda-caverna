@@ -1,17 +1,25 @@
 #pragma once
+
 class Attributi
 {
+
 public:
+
 	Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int hp, int potereMagico, int stamina, double forzaDiCarico, int maxHp, int maxPotereMagico, int maxStamina, bool silenzioso); //usato quando si carica un salvataggio o dal protagonista all'inizio del gioco.
+
 	Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int livello); //autogenera le caratteristiche rimanenti
 	~Attributi();
-	int getCarisma() const {
+
+	int getCarisma() const 
+	{
 		return carisma;
 	}
 
-	void setCarisma(int carisma) {
+	void setCarisma(int carisma) 
+	{
 		this->carisma = carisma;
 	}
+
 
 	int getDestrezza() const {
 		return destrezza;
@@ -21,31 +29,38 @@ public:
 		this->destrezza = destrezza;
 	}
 
-	int getFortuna() const {
+	int getFortuna() const
+	{
 		return fortuna;
 	}
 
-	void setFortuna(int fortuna) {
+	void setFortuna(int fortuna) 
+	{
 		this->fortuna = fortuna;
 	}
 
-	int getForza() const {
+	int getForza() const 
+	{
 		return forza;
 	}
 
-	void setForza(int forza) {
+	void setForza(int forza) 
+	{
 		this->forza = forza;
 	}
 
-	double getForzaDiCarico() const {
+	double getForzaDiCarico() const 
+	{
 		return forzaDiCarico;
 	}
 
-	void setForzaDiCarico(double forzaDiCarico) {
+	void setForzaDiCarico(double forzaDiCarico) 
+	{
 		this->forzaDiCarico = forzaDiCarico;
 	}
 
-	int getHp() const {
+	int getHp() const 
+	{
 		return hp;
 	}
 
@@ -55,17 +70,19 @@ public:
 		else {
 			this->hp = hp;
 		}
-	}
 
-	int getIntelligenza() const {
+	int getIntelligenza() const 
+	{
 		return intelligenza;
 	}
 
-	void setIntelligenza(int intelligenza) {
+	void setIntelligenza(int intelligenza) 
+	{
 		this->intelligenza = intelligenza;
 	}
 
-	int getPotereMagico() const {
+	int getPotereMagico() const 
+	{
 		return potereMagico;
 	}
 
@@ -74,43 +91,53 @@ public:
 			this->potereMagico = maxPotereMagico;
 		else
 			this->potereMagico = potereMagico;
-	}
-
-	int getSpirito() const {
+  }
+    
+	int getSpirito() const
+	{
 		return spirito;
 	}
 
-	void setSpirito(int spirito) {
+	void setSpirito(int spirito) 
+	{
 		this->spirito = spirito;
 	}
 
-	int getStamina() const {
+	int getStamina() const
+	{
 		return stamina;
 	}
 
+
 	void setStamina(int stamina) {
 		if(stamina>maxStamina)
-		this->stamina = maxStamina;
-		
-	}
+		  this->stamina = maxStamina;
+		else
+      this->stamina = stamina;
+  }
 
-	int getTempra() const {
+	int getTempra() const 
+	{
 		return tempra;
 	}
 
-	void setTempra(int tempra) {
+	void setTempra(int tempra) 
+	{
 		this->tempra = tempra;
 	}
 
-	int getMaxHp() const {
+	int getMaxHp() const
+	{
 		return maxHp;
 	}
 
-	int getMaxPotereMagico() const {
+	int getMaxPotereMagico() const
+	{
 		return maxPotereMagico;
 	}
 
-	int getMaxStamina() const {
+	int getMaxStamina() const 
+	{
 		return maxStamina;
 	}
 
