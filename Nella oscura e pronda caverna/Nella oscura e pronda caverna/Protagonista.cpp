@@ -2,7 +2,7 @@
 
 
 
-Protagonista::Protagonista(std::string nome, Attributi attributi, unsigned int livello, double esperienza, long int fondiEconomici) : Entità(nome, attributi)
+Protagonista::Protagonista(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento, unsigned int livello, double esperienza, long int fondiEconomici) : Entita(nome,inventario, attributi,equipaggiamento)
 {
 	this->livello = livello;
 	this->esperienza = esperienza;

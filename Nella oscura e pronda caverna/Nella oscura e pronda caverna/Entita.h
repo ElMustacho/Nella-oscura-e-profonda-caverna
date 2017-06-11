@@ -6,12 +6,12 @@
 #include "Attributi.h"
 
 
-class Entità
+class Entita
 {
 
 public:
-	Entità(std::string nome, Attributi attributi); // CHECK inventario & equipaggiamento valori default?
-	~Entità();
+	
+	~Entita();
 
 	std::string getNome() const
 	{
@@ -23,7 +23,9 @@ public:
 		this->nome = nome;
 	}
 
-	Entità(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
+	Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
+
+	Entita(); //TODO vorrei evitare di mettere costruttori vuoti solo perché se non il compilatore si lamenta.
 	
 	double carryWeight(); //calcolo peso trasportato
 private:
@@ -53,4 +55,3 @@ private:
 	maledizioni, benedizioni e simili.
 	*/
 };
-

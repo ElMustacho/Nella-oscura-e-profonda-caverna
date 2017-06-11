@@ -1,29 +1,32 @@
 #include <vector>
-#include "Entità.h"
+#include "Entita.h"
 
 
-Entità::Entità(std::string nome, Attributi attributi) // CHECK manage Attributi
-{
-	this->nome = nome;
-	this->attributi = attributi;
 
 
-Entità::Entità(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento): attributi(attributi) {
+Entita::Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento): attributi(attributi) {
 	
 		this->nome = nome;
 		this->equipaggiamento = equipaggiamento;
 		this->inventario = inventario;
-    this->attributi = attributi;
+		this->attributi = attributi;
+}
+
+Entita::Entita()
+{
+
 }
 
 
 
-Entità::~Entità()
+
+
+Entita::~Entita()
 {
 	//TODO
 }
 
-double Entità::carryWeight()
+double Entita::carryWeight()
 { //Calcola il carico trasportato
 	double total = 0;
 	for (auto i : inventario) {

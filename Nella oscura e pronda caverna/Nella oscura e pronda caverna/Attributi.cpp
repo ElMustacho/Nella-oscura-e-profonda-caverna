@@ -21,6 +21,10 @@ Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int
 	this->silenzioso = silenzioso;
 }
 
+Attributi::Attributi()
+{
+}
+
 Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int livello) {
 	this->forza = forza;
 	this->destrezza = destrezza;

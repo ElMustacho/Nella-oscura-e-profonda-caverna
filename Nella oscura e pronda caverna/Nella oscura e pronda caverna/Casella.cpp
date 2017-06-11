@@ -2,8 +2,14 @@
 
 
 // CHECK Entità & Oggetto
-Casella::Casella(Tileset tileset, Oggetto* oggetto = nullptr, Entità entità = NULL, bool trasparenza = false, bool attraversabile = false, int evento = 0)
+Casella::Casella(Tileset tileset, Oggetto* oggetto, Entita* entità, bool trasparenza, bool attraversabile, int evento)
 {
+	this->tileset = tileset;
+	this->oggetto = oggetto;
+	this->entità = entità;
+	this->trasparenza = trasparenza;
+	this->attraversabile = attraversabile;
+	this->evento = evento;
 }
 
 
