@@ -1,6 +1,6 @@
 #pragma once
-#include "Entità.h"
-class Attore : public Entità
+#include "Entita.h"
+class Attore : public Entita
 {
 
 public:

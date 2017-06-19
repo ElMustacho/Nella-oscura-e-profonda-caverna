@@ -1,19 +1,19 @@
 #pragma once
 
 #include "Oggetto.h"
-#include "Entità.h"
+#include "Entita.h"
 #include "Tileset.h"
 
 class Casella
 {
 
 public: // CHECK Entità default constructor error
-	Casella(Tileset tileset, Oggetto* oggetto = nullptr, Entità* entità = nullptr, bool trasparenza = false, bool attraversabile = false, int evento = 0);
+	Casella(Tileset tileset, Oggetto* oggetto = nullptr, Entita* entità = nullptr, bool trasparenza = false, bool attraversabile = false, int evento = 0);
 	~Casella();
 
 private:
 	Oggetto* oggetto;
-	Entità entità;
+	Entita* entità;
 	bool trasparenza;
 	bool attraversabile;
 	Tileset tileset;

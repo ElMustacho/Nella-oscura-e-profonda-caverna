@@ -116,7 +116,7 @@
     <ClInclude Include="Attore.h" />
     <ClInclude Include="Attributi.h" />
     <ClInclude Include="Casella.h" />
-    <ClInclude Include="Entità.h" />
+    <ClInclude Include="Entita.h" />
     <ClInclude Include="Oggetto.h" />
     <ClInclude Include="Protagonista.h" />
     <ClInclude Include="Scrigno.h" />
@@ -128,7 +128,7 @@
     <ClCompile Include="Attore.cpp" />
     <ClCompile Include="Attributi.cpp" />
     <ClCompile Include="Casella.cpp" />
-    <ClCompile Include="Entità.cpp" />
+    <ClCompile Include="Entita.cpp" />
     <ClCompile Include="Oggetto.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Protagonista.cpp" />

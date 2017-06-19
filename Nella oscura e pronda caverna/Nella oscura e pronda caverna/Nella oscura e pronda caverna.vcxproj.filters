@@ -18,9 +18,6 @@
     <ClInclude Include="Oggetto.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="Entità.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
     <ClInclude Include="Attributi.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
@@ -45,15 +42,15 @@
     <ClInclude Include="Tileset.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="Entita.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Oggetto.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
-    <ClCompile Include="Entità.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="Attributi.cpp">
@@ -78,6 +75,9 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="Tileset.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Entita.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>
