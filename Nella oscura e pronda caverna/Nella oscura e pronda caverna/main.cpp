@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Oggetto.h"
 #include "Entita.h"
+#include "Piano.h"
 
 int main() 
 {
@@ -11,6 +12,13 @@ int main()
 	std::cout << idolo.getDescrizione() << std::endl << idolo.getNome() << std::endl << idolo.getPeso() << std::endl <<
 		idolo.getValore();
 	char a;
+	std::cout << std::endl;
+	std::cin >> a;
+	std::vector<Oggetto> tabellaLoot; //VUOTA
+	std::vector<Entita> tabellaEntita; //VUOTA
+	Piano primoLivello(10,8,1,tabellaLoot,tabellaEntita);
+	auto s = primoLivello.creaStanzaRettangolare(4, 4, 3, 2);
+	primoLivello.StampaChar();
 	std::cout << std::endl;
 	std::cin >> a;
   //Questo main dovrà finire in un test.

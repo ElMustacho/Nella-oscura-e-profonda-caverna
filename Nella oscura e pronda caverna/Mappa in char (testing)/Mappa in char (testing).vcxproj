@@ -20,10 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{BF5D7687-1489-475F-B9B0-E650511EB90A}</ProjectGuid>
-    <RootNamespace>Nellaoscuraeprondacaverna</RootNamespace>
+    <ProjectGuid>{3F027636-2BBF-447C-942F-AC15CDBF5B8E}</ProjectGuid>
+    <RootNamespace>Mappainchartesting</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
-    <ProjectName>Nella oscura e profonda caverna</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -112,31 +111,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Arma.h" />
-    <ClInclude Include="Attore.h" />
-    <ClInclude Include="Attributi.h" />
-    <ClInclude Include="Casella.h" />
-    <ClInclude Include="Entita.h" />
-    <ClInclude Include="Oggetto.h" />
-    <ClInclude Include="Piano.h" />
-    <ClInclude Include="Protagonista.h" />
-    <ClInclude Include="Scrigno.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="Tileset.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Arma.cpp" />
-    <ClCompile Include="Attore.cpp" />
-    <ClCompile Include="Attributi.cpp" />
-    <ClCompile Include="Casella.cpp" />
-    <ClCompile Include="Entita.cpp" />
-    <ClCompile Include="Oggetto.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Piano.cpp" />
-    <ClCompile Include="Protagonista.cpp" />
-    <ClCompile Include="Scrigno.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="Tileset.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
