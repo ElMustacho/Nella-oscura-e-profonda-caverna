@@ -14,12 +14,5 @@ int main()
 	char a;
 	std::cout << std::endl;
 	std::cin >> a;
-	std::vector<Oggetto> tabellaLoot; //VUOTA
-	std::vector<Entita> tabellaEntita; //VUOTA
-	Piano primoLivello(10,8,1,tabellaLoot,tabellaEntita);
-	auto s = primoLivello.creaStanzaRettangolare(4, 4, 3, 2);
-	primoLivello.StampaChar();
-	std::cout << std::endl;
-	std::cin >> a;
   //Questo main dovrà finire in un test.
 }
