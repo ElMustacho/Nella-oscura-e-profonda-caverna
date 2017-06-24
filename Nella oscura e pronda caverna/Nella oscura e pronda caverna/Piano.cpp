@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 #include "Piano.h"
 
@@ -19,6 +20,7 @@ bool Piano::spargiLoot()
 {
 	return false;
 }
+
 
 Piano::Piano(int larghezza, int lunghezza, int sceltaGeneratore, std::vector<Oggetto> lootPossibile, std::vector<Entita> entit‡Possibili)
 {
@@ -64,8 +66,14 @@ bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY) {
 void Piano::StampaChar() {
 	for (int i = 0; i < lunghezza*larghezza; i++)
 	{
+		auto casella = pavimento.at(i);
+		auto entity = casella.getEntita();
 		if (pavimento.at(i).isMuro())
-			std::cout << '#';
+			std::cout << '#'; 
+		else if (dynamic_cast<Protagonista*>(entity) != NULL) 
+			std::cout << '@';
+		else if (dynamic_cast<Attore*>(entity) != NULL) 
+				std::cout << '*';
 		else
 			std::cout << '.';
 		if ((i+1)%lunghezza == 0)
@@ -73,4 +81,22 @@ void Piano::StampaChar() {
 	}
 }
 
-
+void Piano::StampaFileChar() {
+	std::ofstream file ("mappa.map");
+	for (int i = 0; i < lunghezza*larghezza; i++)
+	{
+		auto casella = pavimento.at(i);
+		auto entity = casella.getEntita();
+		//Per ora l'ordine va bene cosÏ, ma non Ë detto che in un muro non ci possano essere nemici (tipo fantasmi)
+		if (casella.isMuro()) 
+			file << '#';
+		else if (dynamic_cast<Protagonista*>(entity) != NULL) //se entity Ë NULL il dynamic cast risponde NULL
+			file << '@';
+		else if (dynamic_cast<Attore*>(entity) != NULL) //Same
+			file << '*';
+		else
+			file << '.';
+		if ((i + 1) % lunghezza == 0)
+			file << std::endl;
+	}
+}

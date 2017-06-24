@@ -11,7 +11,7 @@ class Entita
 
 public:
 	
-	~Entita();
+	virtual ~Entita();
 
 	std::string getNome() const
 	{

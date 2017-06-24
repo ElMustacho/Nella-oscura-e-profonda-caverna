@@ -3,6 +3,8 @@
 #include "Casella.h"
 #include "Entita.h"
 #include "Oggetto.h"
+#include "Protagonista.h"
+#include "Attore.h"
 class Piano
 {
 public:
@@ -13,6 +15,7 @@ public:
 	bool GeneratoreV1();
 	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY);
 	void StampaChar();
+	void StampaFileChar();
 	bool popolaPiano();
 	bool spargiLoot();
 	Piano(int larghezza, int lunghezza, int sceltaGeneratore, std::vector<Oggetto> lootPossibile, std::vector<Entita> entit‡Possibili);

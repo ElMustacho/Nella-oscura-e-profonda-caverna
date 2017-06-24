@@ -17,10 +17,14 @@ public: // CHECK Entità default constructor error
 	bool isTrasparente() { return this->trasparenza; }
 	void setAttraversabile(bool attraversabile) { this->attraversabile = attraversabile; }
 	bool isAttraversabile() { return this->attraversabile; }
+	Oggetto* getOggetto() { return this->oggetto; }
+	Entita* getEntita() { return this->entita; }
+	void setOggetto(Oggetto* obj);
+	bool setEntita(Entita* entity);
 
 private:
 	Oggetto* oggetto;
-	Entita* entità;
+	Entita* entita;
 	bool trasparenza;
 	bool attraversabile;
 	Tileset tileset;

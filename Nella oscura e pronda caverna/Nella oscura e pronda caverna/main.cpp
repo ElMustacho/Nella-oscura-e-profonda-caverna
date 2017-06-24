@@ -14,5 +14,18 @@ int main()
 	char a;
 	std::cout << std::endl;
 	std::cin >> a;
+	std::vector<Oggetto> tabellaLoot; //VUOTA
+	std::vector<Entita> tabellaEntita; //VUOTA
+	Protagonista Saitama("Saitama",tabellaLoot,Attributi(),tabellaLoot,1,0.,0); //Sto usando tabella loot giusto perchè è vuota
+	Piano primoLivello(10,8,1,tabellaLoot,tabellaEntita);
+	auto s = primoLivello.creaStanzaRettangolare(4, 4, 3, 2);
+	
+	if (!primoLivello.at(5, 5).setEntita(&Saitama)) {
+		std::cout << "Fallito" << std::endl;
+	}
+
+	primoLivello.StampaChar();
+	std::cout << std::endl;
+	std::cin >> a;
   //Questo main dovrà finire in un test.
 }
