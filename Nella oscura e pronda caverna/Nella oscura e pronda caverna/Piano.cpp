@@ -45,7 +45,7 @@ bool Piano::GeneratoreV1() {
 }
 
 bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY) {
-	if (posX + dimX - 1 > lunghezza || posY + dimY - 1 > larghezza)
+	if (posX + dimX  > lunghezza || posY + dimY > larghezza)
 		return false; //Stanza prodotta fuori dal piano
 	
 	for (int i = posX; i < dimX + posX; i++) {
@@ -60,6 +60,11 @@ bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY) {
 				pavimento.at(posizione(i, j)).Scava(); //Crea stanza
 			}
 	}
+	return true;
+}
+
+bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //Presa una stanza, prova a costruirci intorno delle porte
+{
 	return true;
 }
 
