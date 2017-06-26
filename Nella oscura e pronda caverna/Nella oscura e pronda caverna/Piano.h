@@ -15,6 +15,7 @@ public:
 	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY);
 	bool creaPorte(int posX, int posY, int dimX, int dimY);
 	void StampaChar();
+	bool muoviEntita(int posX, int posY, int targetX, int targetY);
 	void StampaFileChar();
 	bool popolaPiano();
 	bool spargiLoot();

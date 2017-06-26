@@ -1,5 +1,5 @@
 #pragma once
-
+#include <memory>
 #include "Oggetto.h"
 #include "Entita.h"
 #include "Tileset.h"
@@ -21,6 +21,8 @@ public: // CHECK Entità default constructor error
 	Entita* getEntita() { return this->entita; }
 	void setOggetto(Oggetto* obj);
 	bool setEntita(Entita* entity);
+
+	void doEvento();
 
 private:
 	Oggetto* oggetto;

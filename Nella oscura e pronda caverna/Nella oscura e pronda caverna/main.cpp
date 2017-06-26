@@ -15,28 +15,85 @@ int main()
 	std::vector<Oggetto> tabellaLoot; //VUOTA
 	std::vector<Entita> tabellaEntita; //VUOTA
 	Protagonista Saitama("Saitama",tabellaLoot,Attributi(),tabellaLoot,1,0.,0); //Sto usando tabella loot giusto perchè è vuota
-	Piano primoLivello(50,50,1,tabellaLoot,tabellaEntita);
-	int stanzeCostruite = 0;
-	srand(time(NULL));
-	for (int i = 0; i < 15; i++)
-	{
-		int a[4];
-		for (int j = 0; j < 4; j++)
+	Attore JimBob("JimBob",tabellaLoot,Attributi(),tabellaLoot,4.);
+	Piano primoLivello(10, 8, 1, tabellaLoot, tabellaEntita);
+	primoLivello.creaStanzaRettangolare(2, 2, 5, 5);
+	primoLivello.at(5, 5).setEntita(&Saitama);
+	primoLivello.at(3, 3).setEntita(&JimBob);
+	int exit = 0;
+	int X = 5, Y = 5;
+	std::cout << std::endl;
+	while (exit == 0) {
+		primoLivello.StampaChar();
+		std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire: ";
+		char direzione;
+		std::cin >> direzione;
+		std::cout << std::endl;
+		system("CLS");
+		switch (direzione)
 		{
-			if(j<2)
-				a[j] = (int) rand()%50;
-			else
-				a[j] = (int) rand()%3+8;
+		case '9':
+			if (primoLivello.muoviEntita(X, Y, X + 1, Y - 1)) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				X++;
+				Y--;
+			}
+			break;
+		case '6':
+			if (primoLivello.muoviEntita(X, Y, X + 1, Y)) {
+			std::cout << "Ho provato a muovermi con successo." << std::endl;;
+			X++;
 		}
-		if (primoLivello.creaStanzaRettangolare(a[0], a[1], a[2], a[3]))
-			stanzeCostruite++;
+			break;
+		case '3':
+			if (primoLivello.muoviEntita(X, Y, X + 1, Y + 1)) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				X++;
+				Y++;
+			}
+			break;
+		case '8':
+			if (primoLivello.muoviEntita(X, Y, X, Y - 1)) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				Y--;
+			}
+			break;
+		case '5':
+			exit++;
+			break;
+		case '2':
+			if (primoLivello.muoviEntita(X, Y, X, Y + 1)) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				Y++;
+			}
+			break;
+		case '7':
+			if (primoLivello.muoviEntita(X, Y, X - 1, Y - 1)) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				X--;
+				Y--;
+			}
+			break;
+		case '4':
+			if (primoLivello.muoviEntita(X, Y, X - 1, Y)) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;;
+				X--;
+				}
+			break;
+		case '1': 
+			if (primoLivello.muoviEntita(X, Y, X - 1, Y + 1)) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				X--;
+				Y++;
+			}
+			break;
+		default:
+			std::cout << "Input non valido" << std::endl;
+			
+		}
 	}
-	std::cout <<std::endl << stanzeCostruite << std::endl;
-	//Finirò in un test!!!
-	while (!primoLivello.at((int)rand() % 50, (int)rand() % 50).setEntita(&Saitama)){}
-
 	primoLivello.StampaChar();
-	primoLivello.StampaFileChar();
+	//primoLivello.StampaFileChar();
 	std::cout << std::endl;
 	std::cin >> a;
   //Questo main dovrà finire in un test.

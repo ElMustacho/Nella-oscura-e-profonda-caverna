@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <cmath>
 #include "Piano.h"
 
 
@@ -84,6 +85,64 @@ void Piano::StampaChar() {
 		if ((i+1)%lunghezza == 0)
 			std::cout << std::endl;
 	}
+}
+
+bool Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi due sono quelli da dove parto, gli altri dove arrivo
+{
+	if (pavimento.at(posizione(posX, posY)).getEntita() == NULL) {
+		std::cout << "Qui non c'e' nessuno da spostare" << std::endl;
+		return false;//Qui non c'è nessuno
+	}
+	if (posX == targetX&&posY == targetY) //Questo significa non spostarsi per davvero
+		return false;
+	if (!(posX > -1 && posX<lunghezza && posY>-1 && posY<larghezza && targetX>-1 && targetX<lunghezza && targetY>-1 && targetY < larghezza))
+		return false; //Posizione non valida per almeno una delle coordinate
+	int distanza, metodo;
+	pavimento.at(posizione(posX, posY)).getEntita()->muovi(distanza,metodo);
+	if (distanza == 0)
+		return true; //Ho provato a muovermi ma sono immobile, ci ho provato ma conta come tentativo
+
+	//TODO Dijkstra per determinare la direzione da percorrere (qualora sia necessario usarlo).
+	//Qui sotto il sistema di spostamento è stupido, ma potrebbe funzionare per gestire entità prive di intelligenza
+	//tipo qualche golem, melma, zombie o goblin ubriaco fradicio. In pratica non verifico la validità finale del percorso,
+	//ma solo quella della casella in cui mi voglio spostare, una per volta.
+	//P.S. questo sistema funziona bene anche quando c'è solo una casella da percorrere.
+	//FIXME da qui assumo che il movimento sia in linea retta
+	while (distanza != 0 && !(posX == targetX&&posY == targetY)) { //Esco quando ho terminato i movimenti o quando sono arrivato.
+		int moveX=0, moveY=0;
+		if (posX < targetX)
+			moveX = 1;
+		else if (posX > targetX)
+			moveX = -1;
+		else {}
+		if (posY < targetY)
+			moveY = 1;
+		else if (posY > targetY)
+			moveY = -1;
+		else {}
+		
+		if (pavimento.at(posizione(posX + moveX, posY + moveY)).isMuro()) 
+		//Qui l'unico controllo presente è che la casella non sia un muro e che nella casella non ci sia nessuno.
+		{  
+			std::cout << "Non posso camminare attraverso i muri. Mi fermo qui." << std::endl;
+			return false;
+		}
+		else if (pavimento.at(posizione(posX + moveX, posY + moveY)).getEntita() != NULL) //Qui c'è qualcun'altro
+		{
+			std::cout << "Tamponare le altre entità non e' carino. Mi fermo qui." << std::endl;
+			return false;
+		}
+		else { //Date le premesse, spostarsi è sicuro e valido
+			Entita * temp = pavimento.at(posizione(posX, posY)).getEntita();
+			pavimento.at(posizione(posX, posY)).setEntita(NULL);
+			pavimento.at(posizione(posX + moveX, posY + moveY)).setEntita(temp);
+			posX += moveX;
+			posY += moveY;
+			pavimento.at(posizione(posX, posY)).doEvento();
+			distanza--;
+		}
+	}
+	return true; //Ho fatto
 }
 
 void Piano::StampaFileChar() {

@@ -42,8 +42,16 @@ bool Casella::setEntita(Entita * entity) //TODO gestire la sovrapposizione delle
 	return true;
 }
 
-Casella::~Casella()
+void Casella::doEvento()//FIXME sono un segnaposto
 {
+
+}
+
+Casella::~Casella() //Se non libero questi puntatori non lo farà nessuno, PERÒ nessuno mi garantisce che io non preservi
+					//cose importanti
+{
+	//delete (oggetto);
+	//delete (entita);
 }
 
 void Casella::Scava() { //per scavare un muro in modo rapido
