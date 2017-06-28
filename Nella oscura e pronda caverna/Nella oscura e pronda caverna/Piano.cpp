@@ -8,7 +8,7 @@ Piano::~Piano()
 {
 }
 
-int Piano::posizione(int x, int y) {
+int Piano::posizione(int x, int y) { //FIXME inserire valori massimi e minimi
 	return x + y*lunghezza;
 }
 
@@ -87,20 +87,19 @@ void Piano::StampaChar() {
 	}
 }
 
-bool Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi due sono quelli da dove parto, gli altri dove arrivo
+int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi due sono quelli da dove parto, gli altri dove arrivo
 {
 	if (pavimento.at(posizione(posX, posY)).getEntita() == NULL) {
-		std::cout << "Qui non c'e' nessuno da spostare" << std::endl;
-		return false;//Qui non c'è nessuno
+		return -1;//Qui non c'è nessuno
 	}
 	if (posX == targetX&&posY == targetY) //Questo significa non spostarsi per davvero
-		return false;
-	if (!(posX > -1 && posX<lunghezza && posY>-1 && posY<larghezza && targetX>-1 && targetX<lunghezza && targetY>-1 && targetY < larghezza))
-		return false; //Posizione non valida per almeno una delle coordinate
+		return -2;
+	if (!(targetX>-1 && targetX<lunghezza && targetY>-1 && targetY < larghezza))
+		return -3; //Posizione non valida per almeno una delle coordinate
 	int distanza, metodo;
 	pavimento.at(posizione(posX, posY)).getEntita()->muovi(distanza,metodo);
 	if (distanza == 0)
-		return true; //Ho provato a muovermi ma sono immobile, ci ho provato ma conta come tentativo
+		return -4; //Ho provato a muovermi ma sono immobile
 
 	//TODO Dijkstra per determinare la direzione da percorrere (qualora sia necessario usarlo).
 	//Qui sotto il sistema di spostamento è stupido, ma potrebbe funzionare per gestire entità prive di intelligenza
@@ -124,13 +123,11 @@ bool Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi 
 		if (pavimento.at(posizione(posX + moveX, posY + moveY)).isMuro()) 
 		//Qui l'unico controllo presente è che la casella non sia un muro e che nella casella non ci sia nessuno.
 		{  
-			std::cout << "Non posso camminare attraverso i muri. Mi fermo qui." << std::endl;
-			return false;
+			return 1;
 		}
 		else if (pavimento.at(posizione(posX + moveX, posY + moveY)).getEntita() != NULL) //Qui c'è qualcun'altro
 		{
-			std::cout << "Tamponare le altre entità non e' carino. Mi fermo qui." << std::endl;
-			return false;
+			return 2;
 		}
 		else { //Date le premesse, spostarsi è sicuro e valido
 			Entita * temp = pavimento.at(posizione(posX, posY)).getEntita();
@@ -142,7 +139,11 @@ bool Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi 
 			distanza--;
 		}
 	}
-	return true; //Ho fatto
+	if (distanza == 0 && (posX == targetX&&posY == targetY))
+		return 0; //sono arrivato precisamente a destinazione
+	else if (distanza != 0 && (posX == targetX&&posY == targetY))
+		return 3; //sono arrivato a destinazione ma avevo movimento avanzato
+	else return 4; //non sono arrivato a destinazione perché ho finito il movimento
 }
 
 void Piano::StampaFileChar() {
@@ -152,10 +153,10 @@ void Piano::StampaFileChar() {
 		auto casella = pavimento.at(i);
 		auto entity = casella.getEntita();
 		//Per ora l'ordine va bene così, ma non è detto che in un muro non ci possano essere nemici (tipo fantasmi)
-		if (casella.isMuro()) 
-			file << '#';
-		else if (dynamic_cast<Protagonista*>(entity) != NULL) //se entity è NULL il dynamic cast risponde NULL
+		if (dynamic_cast<Protagonista*>(entity) != NULL) //se entity è NULL il dynamic cast risponde NULL
 			file << '@';
+		else if (casella.isMuro()) //se entity è NULL il dynamic cast risponde NULL
+			file << '#';
 		else if (dynamic_cast<Attore*>(entity) != NULL) //Same
 			file << '*';
 		else

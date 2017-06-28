@@ -10,12 +10,12 @@ class Piano
 public:
 	~Piano();
 	int posizione(int x, int y);
-	Casella& at(int x, int y) { return pavimento.at(y + x * lunghezza); }
+	Casella& at(int x, int y) { return pavimento.at(y + x * lunghezza); } //FIXME posso restituire valori non accettabili
 	bool GeneratoreV1();
 	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY);
 	bool creaPorte(int posX, int posY, int dimX, int dimY);
 	void StampaChar();
-	bool muoviEntita(int posX, int posY, int targetX, int targetY);
+	int muoviEntita(int posX, int posY, int targetX, int targetY);
 	void StampaFileChar();
 	bool popolaPiano();
 	bool spargiLoot();
