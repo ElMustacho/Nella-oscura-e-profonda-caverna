@@ -59,7 +59,7 @@ bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY)
 				return false; //Spazio per stanza non trovato
 			}
 	}
-	for (int i = posX; i < dimX + posX; i++) 
+	for (int i = posX; i < dimX + posX; i++) //CHECK Possibile con un ELSE evitare il 2nd ciclo?
 	{
 		for (int j = posY; j < dimY + posY; j++)
 		{
@@ -74,7 +74,8 @@ bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //Presa una stanza
 	return true;
 }
 
-void Piano::StampaChar() {
+void Piano::StampaChar() 
+{
 	for (int i = 0; i < lunghezza*larghezza; i++)
 	{
 		auto casella = pavimento.at(i);
@@ -94,17 +95,26 @@ void Piano::StampaChar() {
 
 int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi due sono quelli da dove parto, gli altri dove arrivo
 {
-	if (pavimento.at(posizione(posX, posY)).getEntita() == NULL) {
-		return -1;//Qui non c'è nessuno
+	if (pavimento.at(posizione(posX, posY)).getEntita() == NULL) 
+	{
+		return -1; //Qui non c'è nessuno
 	}
 	if (posX == targetX && posY == targetY) //Questo significa non spostarsi per davvero
+	{
 		return -2;
-	if (!(targetX>-1 && targetX<lunghezza && targetY>-1 && targetY < larghezza))
+	}
+	if (!(targetX > -1 && targetX<lunghezza && targetY>-1 && targetY < larghezza))
+	{
 		return -3; //Posizione non valida per almeno una delle coordinate
+	}
+
 	int distanza, metodo;
 	pavimento.at(posizione(posX, posY)).getEntita()->muovi(distanza,metodo);
+
 	if (distanza == 0)
+	{
 		return -4; //Ho provato a muovermi ma sono immobile
+	}
 
 	//TODO Dijkstra per determinare la direzione da percorrere (qualora sia necessario usarlo).
 	//Qui sotto il sistema di spostamento è stupido, ma potrebbe funzionare per gestire entità prive di intelligenza
@@ -116,18 +126,27 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	{ 
 		int moveX=0, moveY=0;
 		if (posX < targetX)
+		{
 			moveX = 1;
+		}
 		else if (posX > targetX)
+		{
 			moveX = -1;
+		}
 		else {}
+
 		if (posY < targetY)
+		{
 			moveY = 1;
+		}
 		else if (posY > targetY)
+		{
 			moveY = -1;
+		}
 		else {}
 		
-		if (pavimento.at(posizione(posX + moveX, posY + moveY)).isMuro()) 
 		//Qui l'unico controllo presente è che la casella non sia un muro e che nella casella non ci sia nessuno.
+		if (pavimento.at(posizione(posX + moveX, posY + moveY)).isMuro()) //Qui c'è un muro
 		{  
 			return 1;
 		}
@@ -137,7 +156,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 		}
 		else //Date le premesse, spostarsi è sicuro e valido
 		{ 
-			Entita * temp = pavimento.at(posizione(posX, posY)).getEntita();
+			Entita* temp = pavimento.at(posizione(posX, posY)).getEntita();
 			pavimento.at(posizione(posX, posY)).setEntita(NULL);
 			pavimento.at(posizione(posX + moveX, posY + moveY)).setEntita(temp);
 			posX += moveX;
@@ -146,11 +165,18 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 			distanza--;
 		}
 	}
-	if (distanza == 0 && (posX == targetX&&posY == targetY))
+	if (distanza == 0 && (posX == targetX && posY == targetY))
+	{
 		return 0; //sono arrivato precisamente a destinazione
-	else if (distanza != 0 && (posX == targetX&&posY == targetY))
+	}
+	else if (distanza != 0 && (posX == targetX && posY == targetY))
+	{
 		return 3; //sono arrivato a destinazione ma avevo movimento avanzato
-	else return 4; //non sono arrivato a destinazione perché ho finito il movimento
+	}
+	else
+	{
+		return 4; //non sono arrivato a destinazione perché ho finito il movimento
+	}
 }
 
 void Piano::StampaFileChar() 
@@ -162,14 +188,24 @@ void Piano::StampaFileChar()
 		auto entity = casella.getEntita();
 		//Per ora l'ordine va bene così, ma non è detto che in un muro non ci possano essere nemici (tipo fantasmi)
 		if (dynamic_cast<Protagonista*>(entity) != NULL) //se entity è NULL il dynamic cast risponde NULL
+		{
 			file << '@';
+		}
 		else if (casella.isMuro()) //se entity è NULL il dynamic cast risponde NULL
+		{
 			file << '#';
+		}
 		else if (dynamic_cast<Attore*>(entity) != NULL) //Same
+		{
 			file << '*';
+		}
 		else
+		{
 			file << '.';
+		}
 		if ((i + 1) % lunghezza == 0)
+		{
 			file << std::endl;
+		}
 	}
 }
