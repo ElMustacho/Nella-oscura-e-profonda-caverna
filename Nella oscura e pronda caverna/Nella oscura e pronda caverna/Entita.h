@@ -26,6 +26,11 @@ public:
 	Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
 	
 	double carryWeight(); //calcolo peso trasportato
+
+	void onDeath(); //cosa succede se muore
+
+	//TODO move it!
+
 private:
 	std::string nome;
 	Attributi attributi;
