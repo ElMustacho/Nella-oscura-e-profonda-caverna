@@ -39,61 +39,62 @@ int main()
 
 		switch (direzione)
 		{
-		case '9':
-			if (primoLivello.muoviEntita(X, Y, X + 1, Y - 1)) {
+		case '1':
+			if (primoLivello.muoviEntita(X, Y, X - 1, Y + 1) == 0) {
 				std::cout << "Ho provato a muovermi con successo." << std::endl;
-				X++;
-				Y--;
+				X--;
+				Y++;
 			}
 			break;
-		case '6':
-			if (primoLivello.muoviEntita(X, Y, X + 1, Y)) {
-			std::cout << "Ho provato a muovermi con successo." << std::endl;;
-			X++;
-		}
+		case '2':
+			if (primoLivello.muoviEntita(X, Y, X, Y + 1) == 0) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				Y++;
+			}
 			break;
 		case '3':
-			if (primoLivello.muoviEntita(X, Y, X + 1, Y + 1)) {
+			if (primoLivello.muoviEntita(X, Y, X + 1, Y + 1) == 0) {
 				std::cout << "Ho provato a muovermi con successo." << std::endl;
 				X++;
 				Y++;
 			}
 			break;
-		case '8':
-			if (primoLivello.muoviEntita(X, Y, X, Y - 1)) {
-				std::cout << "Ho provato a muovermi con successo." << std::endl;
-				Y--;
+		case '4':
+			if (primoLivello.muoviEntita(X, Y, X - 1, Y) == 0) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;;
+				X--;
 			}
 			break;
 		case '5':
 			exit++;
 			break;
-		case '2':
-			if (primoLivello.muoviEntita(X, Y, X, Y + 1)) {
-				std::cout << "Ho provato a muovermi con successo." << std::endl;
-				Y++;
+		case '6':
+			if (primoLivello.muoviEntita(X, Y, X + 1, Y) == 0) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;;
+				X++;
 			}
 			break;
 		case '7':
-			if (primoLivello.muoviEntita(X, Y, X - 1, Y - 1)) {
+			if (primoLivello.muoviEntita(X, Y, X - 1, Y - 1) == 0) {
 				std::cout << "Ho provato a muovermi con successo." << std::endl;
 				X--;
 				Y--;
 			}
 			break;
-		case '4':
-			if (primoLivello.muoviEntita(X, Y, X - 1, Y)) {
-				std::cout << "Ho provato a muovermi con successo." << std::endl;;
-				X--;
-				}
-			break;
-		case '1': 
-			if (primoLivello.muoviEntita(X, Y, X - 1, Y + 1)) {
+		case '8':
+			if (primoLivello.muoviEntita(X, Y, X, Y - 1) == 0) {
 				std::cout << "Ho provato a muovermi con successo." << std::endl;
-				X--;
-				Y++;
+				Y--;
 			}
 			break;
+		case '9':
+			if (primoLivello.muoviEntita(X, Y, X + 1, Y - 1) == 0) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				X++;
+				Y--;
+			}
+			break;
+		
 		default:
 			std::cout << "Input non valido" << std::endl;
 			
