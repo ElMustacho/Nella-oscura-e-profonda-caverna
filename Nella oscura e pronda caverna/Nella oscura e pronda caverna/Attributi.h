@@ -87,7 +87,8 @@ public:
 			return potereMagico;
 		}
 
-		void setPotereMagico(int potereMagico) {
+		void setPotereMagico(int potereMagico) 
+		{
 			if (potereMagico > maxPotereMagico)
 				this->potereMagico = maxPotereMagico;
 			else
@@ -110,7 +111,8 @@ public:
 		}
 
 
-		void setStamina(int stamina) {
+		void setStamina(int stamina) 
+		{
 			if (stamina > maxStamina)
 				this->stamina = maxStamina;
 			else
@@ -142,23 +144,28 @@ public:
 			return maxStamina;
 		}
 
-		void setMaxStamina(int maxStamina) {
+		void setMaxStamina(int maxStamina) 
+		{
 			this->maxStamina = maxStamina;
 		}
 
-		void setMaxHp(int maxHp) {
+		void setMaxHp(int maxHp)
+		{
 			this->maxHp = maxHp;
 		}
 
-		void setMaxPotereMagico(int maxPotereMagico) {
+		void setMaxPotereMagico(int maxPotereMagico) 
+		{
 			this->maxPotereMagico = maxPotereMagico;
 		}
 
-		void setSilenziosio(bool silenzioso) {
+		void setSilenziosio(bool silenzioso) 
+		{
 			this->silenzioso = silenzioso;
 		}
 
-		bool isSilenzioso() const {
+		bool isSilenzioso() const
+		{
 			return silenzioso;
 		}
 
