@@ -20,6 +20,7 @@ public:
 	void StampaFileChar();
 	bool popolaPiano();
 	bool spargiLoot();
+	//TODO insert Djikstra
 	Piano(int larghezza, int lunghezza, int sceltaGeneratore, std::vector<Oggetto> lootPossibile, std::vector<Entita> entit‡Possibili);
 private:
 	std::vector<Casella> pavimento;
@@ -27,4 +28,3 @@ private:
 	std::vector<Entita> entitaGenerabili;
 	std::vector<Oggetto> oggettiGenerabili;
 };
-

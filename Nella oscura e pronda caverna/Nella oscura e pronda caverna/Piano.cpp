@@ -41,25 +41,30 @@ Piano::Piano(int larghezza, int lunghezza, int sceltaGeneratore, std::vector<Ogg
 	}
 }
 
-bool Piano::GeneratoreV1() {
+bool Piano::GeneratoreV1() 
+{
 	return false;
 }
 
-bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY) {
+bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY) 
+{
 	if (posX + dimX  > lunghezza || posY + dimY > larghezza)
 		return false; //Stanza prodotta fuori dal piano
 	
-	for (int i = posX; i < dimX + posX; i++) {
+	for (int i = posX; i < dimX + posX; i++) 
+	{
 		for (int j = posY; j < dimY + posY; j++)
-			if (!pavimento.at(posizione(i,j)).isMuro()) {
+			if (!pavimento.at(posizione(i,j)).isMuro()) 
+			{
 				return false; //Spazio per stanza non trovato
 			}
 	}
-	for (int i = posX; i < dimX + posX; i++) {
+	for (int i = posX; i < dimX + posX; i++) 
+	{
 		for (int j = posY; j < dimY + posY; j++)
-			{
-				pavimento.at(posizione(i, j)).Scava(); //Crea stanza
-			}
+		{
+			pavimento.at(posizione(i, j)).Scava(); //Crea stanza
+		}
 	}
 	return true;
 }
@@ -92,7 +97,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	if (pavimento.at(posizione(posX, posY)).getEntita() == NULL) {
 		return -1;//Qui non c'è nessuno
 	}
-	if (posX == targetX&&posY == targetY) //Questo significa non spostarsi per davvero
+	if (posX == targetX && posY == targetY) //Questo significa non spostarsi per davvero
 		return -2;
 	if (!(targetX>-1 && targetX<lunghezza && targetY>-1 && targetY < larghezza))
 		return -3; //Posizione non valida per almeno una delle coordinate
@@ -107,7 +112,8 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	//ma solo quella della casella in cui mi voglio spostare, una per volta.
 	//P.S. questo sistema funziona bene anche quando c'è solo una casella da percorrere.
 	//FIXME da qui assumo che il movimento sia in linea retta
-	while (distanza != 0 && !(posX == targetX&&posY == targetY)) { //Esco quando ho terminato i movimenti o quando sono arrivato.
+	while (distanza != 0 && !(posX == targetX && posY == targetY)) //Esco quando ho terminato i movimenti o quando sono arrivato.
+	{ 
 		int moveX=0, moveY=0;
 		if (posX < targetX)
 			moveX = 1;
@@ -129,7 +135,8 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 		{
 			return 2;
 		}
-		else { //Date le premesse, spostarsi è sicuro e valido
+		else //Date le premesse, spostarsi è sicuro e valido
+		{ 
 			Entita * temp = pavimento.at(posizione(posX, posY)).getEntita();
 			pavimento.at(posizione(posX, posY)).setEntita(NULL);
 			pavimento.at(posizione(posX + moveX, posY + moveY)).setEntita(temp);
@@ -146,7 +153,8 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	else return 4; //non sono arrivato a destinazione perché ho finito il movimento
 }
 
-void Piano::StampaFileChar() {
+void Piano::StampaFileChar() 
+{
 	std::ofstream file ("mappa.map");
 	for (int i = 0; i < lunghezza*larghezza; i++)
 	{
