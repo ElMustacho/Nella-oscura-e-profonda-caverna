@@ -5,6 +5,7 @@
 #include "Oggetto.h"
 #include "Protagonista.h"
 #include "Attore.h"
+
 class Piano
 {
 public:

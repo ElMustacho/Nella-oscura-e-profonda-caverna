@@ -12,24 +12,31 @@ int main()
 	std::cout << idolo.getDescrizione() << std::endl << idolo.getNome() << std::endl << idolo.getPeso() << std::endl <<
 		idolo.getValore();
 	char a = 0;
+
 	std::vector<Oggetto> tabellaLoot; //VUOTA
 	std::vector<Entita> tabellaEntita; //VUOTA
+
 	Protagonista Saitama("Saitama",tabellaLoot,Attributi(),tabellaLoot,1,0.,0); //Sto usando tabella loot giusto perchè è vuota
 	Attore JimBob("JimBob",tabellaLoot,Attributi(),tabellaLoot,4.);
+
 	Piano primoLivello(10, 8, 1, tabellaLoot, tabellaEntita);
 	primoLivello.creaStanzaRettangolare(2, 2, 5, 5);
 	primoLivello.at(5, 5).setEntita(&Saitama);
 	primoLivello.at(3, 3).setEntita(&JimBob);
+
 	int exit = 0;
 	int X = 5, Y = 5;
 	std::cout << std::endl;
-	while (exit == 0) {
+
+	while (exit == 0) 
+	{
 		primoLivello.StampaChar();
 		std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire: ";
 		char direzione;
 		std::cin >> direzione;
 		std::cout << std::endl;
 		system("CLS");
+
 		switch (direzione)
 		{
 		case '9':

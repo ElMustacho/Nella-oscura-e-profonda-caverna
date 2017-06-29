@@ -25,8 +25,9 @@ public:
 
 	Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
 	void muovi(int &distanza, int &metodoTrasporto);
-	Entita(); //TODO vorrei evitare di mettere costruttori vuoti solo perché se non il compilatore si lamenta.
-	
+	//Entita(); //TODO vorrei evitare di mettere costruttori vuoti solo perché se non il compilatore si lamenta.
+	//CHECK Non da più errore ora
+
 	double carryWeight(); //calcolo peso trasportato
 private:
 	std::string nome;

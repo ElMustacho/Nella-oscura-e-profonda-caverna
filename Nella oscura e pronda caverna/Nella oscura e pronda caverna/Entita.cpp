@@ -28,10 +28,10 @@ void Entita::muovi(int & distanza, int & metodoTrasporto)
 
 }
 
-Entita::Entita()
+/*Entita::Entita()
 {
 
-}
+}*/
 
 
 
