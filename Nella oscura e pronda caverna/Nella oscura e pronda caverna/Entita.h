@@ -31,7 +31,7 @@ public:
 private:
 	std::string nome;
 	Attributi attributi;
-	Sprite sprite; // TODO define and manage Sprite
+	Sprite sprite; // TODO manage Sprite
 	std::vector<Oggetto> inventario;
 	std::vector<Oggetto> equipaggiamento;
 	/*

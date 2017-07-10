@@ -1,7 +1,6 @@
 #include "Casella.h"
+#include "Scrigno.h"
 
-
-// CHECK Entità & Oggetto
 Casella::Casella(Tileset tileset, Oggetto* oggetto, Entita* entità, bool trasparenza, bool attraversabile, int evento)
 {
 	this->tileset = tileset;
@@ -31,7 +30,21 @@ bool Casella::isMuro()
 
 void Casella::setOggetto(Oggetto * obj) //TODO gestire la sovrapposizione degli oggetti
 {
-	this->oggetto = obj;
+	if (this->oggetto != NULL)
+	{
+		if ((Scrigno*)(this->oggetto))
+		{
+			((Scrigno*)(this->oggetto))->inserisciOggetto(obj);
+		}
+		else
+		{
+			//TODO altro tipo di oggetto, mucchio?
+		}
+	}
+	else
+	{
+		this->oggetto = obj;
+	}
 }
 
 bool Casella::setEntita(Entita * entity) //TODO gestire la sovrapposizione delle entità, avremo memory leak se cancelliamo la precedente!
