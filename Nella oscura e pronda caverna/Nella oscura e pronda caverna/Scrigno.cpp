@@ -22,7 +22,7 @@ std::list<Oggetto> Scrigno::prendiOggetto(Oggetto* scelta) // TODO finish this
 	}
 	else
 	{
-		std::list<Oggetto> presi; // CHECK this way?
+		std::list<Oggetto> presi; // CHECK Is it ok?
 
 		std::list<Oggetto>::iterator it = loot.begin;
 		while ( (*it).getNome() != scelta->getNome() && it != loot.end)

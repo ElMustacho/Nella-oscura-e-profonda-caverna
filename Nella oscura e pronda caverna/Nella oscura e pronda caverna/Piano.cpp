@@ -59,7 +59,7 @@ bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY)
 				return false; //Spazio per stanza non trovato
 			}
 	}
-	for (int i = posX; i < dimX + posX; i++) //CHECK Possibile con un ELSE evitare il 2nd ciclo?
+	for (int i = posX; i < dimX + posX; i++) //CHECK Possibile con un ELSE evitare questo ciclo?
 	{
 		for (int j = posY; j < dimY + posY; j++)
 		{

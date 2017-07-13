@@ -11,7 +11,8 @@ Casella::Casella(Tileset tileset, Oggetto* oggetto, Entita* entità, bool traspar
 	this->evento = evento;
 }
 
-Casella::Casella() {
+Casella::Casella() 
+{
 	tileset = Tileset(); //FIX ME quando Tileset avrà senso questo dovrà essere qualcosa di concreto.
 	oggetto = NULL; //Non c'è nulla di default;
 	entita = NULL; //Non c'è nessuno di defalut;
@@ -28,7 +29,7 @@ bool Casella::isMuro()
 	return false;
 }
 
-void Casella::setOggetto(Oggetto * obj) //TODO gestire la sovrapposizione degli oggetti
+void Casella::setOggetto(Oggetto * obj) //CHECK gestire la sovrapposizione degli oggetti
 {
 	if (this->oggetto != NULL)
 	{
@@ -38,7 +39,14 @@ void Casella::setOggetto(Oggetto * obj) //TODO gestire la sovrapposizione degli 
 		}
 		else
 		{
-			//TODO altro tipo di oggetto, mucchio?
+			// crea scrigno fittizio
+			std::list<Oggetto> loot;
+			Scrigno mucchio(0, "Mucchio", "Gruppo di oggetti", 0, 0, loot);
+			// inserisce l'oggetto già esistente e quello da inserire
+			mucchio.inserisciOggetto(this->getOggetto());
+			mucchio.inserisciOggetto(obj);
+			// posiziona lo scrigno sulla casella
+			this->setOggetto(&mucchio);
 		}
 	}
 	else
