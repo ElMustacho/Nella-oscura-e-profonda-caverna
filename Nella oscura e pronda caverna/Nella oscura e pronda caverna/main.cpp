@@ -5,9 +5,104 @@
 #include "Piano.h"
 int main() 
 {
+	bool ok = true;
+	Piano pregen("testPreload.txt", ok);
+	if (!ok)
+	{
+		std::cout << "Merda";
+		return -1;
+	}
+	else
+		pregen.StampaChar();
+	ok = ok;
+	char a;
+	std::cout << std::endl;
+	std::cin >> a;
+	std::vector<Oggetto> tabellaLoot; //VUOTA
+	std::vector<Entita> tabellaEntita; //VUOTA
+	Protagonista Saitama("Saitama", tabellaLoot, Attributi(), tabellaLoot, 1, 0., 0); //Sto usando tabella loot giusto perchè è vuota
+	Attore JimBob("JimBob", tabellaLoot, Attributi(), tabellaLoot, 4.);
+	pregen.at(1, 5).setEntita(&Saitama);
+	pregen.at(2, 6).setEntita(&JimBob);
+	int exit = 0;
+	int X = 5, Y = 1;
+	std::cout << std::endl;
+	while (exit == 0) {
+		pregen.StampaChar();
+		std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire: ";
+		char direzione;
+		std::cin >> direzione;
+		std::cout << std::endl;
+		system("CLS");
+		switch (direzione)
+		{
+		case '1':
+			if (pregen.muoviEntita(X, Y, X - 1, Y + 1) == 0) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				X--;
+				Y++;
+			}
+			break;
+		case '2':
+			if (pregen.muoviEntita(X, Y, X, Y + 1) == 0) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				Y++;
+			}
+			break;
+		case '3':
+			if (pregen.muoviEntita(X, Y, X + 1, Y + 1) == 0) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				X++;
+				Y++;
+			}
+			break;
+		case '4':
+			if (pregen.muoviEntita(X, Y, X - 1, Y) == 0) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;;
+				X--;
+			}
+			break;
+		case '5':
+			exit++;
+			break;
+		case '6':
+			if (pregen.muoviEntita(X, Y, X + 1, Y) == 0) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;;
+				X++;
+			}
+			break;
+		case '7':
+			if (pregen.muoviEntita(X, Y, X - 1, Y - 1) == 0) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				X--;
+				Y--;
+			}
+			break;
+		case '8':
+			if (pregen.muoviEntita(X, Y, X, Y - 1) == 0) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				Y--;
+			}
+			break;
+		case '9':
+			if (pregen.muoviEntita(X, Y, X + 1, Y - 1) == 0) {
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				X++;
+				Y--;
+			}
+			break;
+
+		default:
+			std::cout << "Input non valido" << std::endl;
+
+		}
+	}
+	pregen.StampaChar();
+	std::cout << std::endl;
+	std::cin >> a;
 	//Entita player1("Pippo",Attributi()); // Il costruttore vuoto di Attributi non deve esistere
 	//std::cout << "Giocatore: " << player1.getNome() << std::endl;
-
+	/*
 	Oggetto idolo(15., "Hatkanda", "L'oggetto di un film generico", 400); 
 	std::cout << idolo.getDescrizione() << std::endl << idolo.getNome() << std::endl << idolo.getPeso() << std::endl <<
 		idolo.getValore();
@@ -97,5 +192,5 @@ int main()
 	//primoLivello.StampaFileChar();
 	std::cout << std::endl;
 	std::cin >> a;
-  //Questo main dovrà finire in un test.
+  //Questo main dovrà finire in un test.*/
 }

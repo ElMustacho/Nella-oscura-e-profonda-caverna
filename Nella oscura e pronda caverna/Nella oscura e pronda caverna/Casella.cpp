@@ -11,13 +11,13 @@ Casella::Casella(Tileset tileset, Oggetto* oggetto, Entita* entità, bool traspar
 	this->attraversabile = attraversabile;
 	this->evento = evento;
 }
-
-Casella::Casella() {
+//Costruttore rapido e semplice, passare false per parete, passare true per terreno attraversabile
+Casella::Casella(bool default) {
 	tileset = Tileset(); //FIX ME quando Tileset avrà senso questo dovrà essere qualcosa di concreto.
 	oggetto = NULL; //Non c'è nulla di default;
 	entita = NULL; //Non c'è nessuno di defalut;
-	trasparenza = false; //Se è una parete non è trasparente
-	attraversabile = false; //Se è una parete non è attraversabile
+	trasparenza = default; //Se è una parete non è trasparente
+	attraversabile = default; //Se è una parete non è attraversabile
 	evento = 0; //Di default non accade nulla
 }
 

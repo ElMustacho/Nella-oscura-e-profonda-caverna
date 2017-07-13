@@ -7,10 +7,32 @@
 Piano::~Piano()
 {
 }
-
-int Piano::posizione(int x, int y) { //FIXME inserire valori massimi e minimi
+//Numeri minimi e numeri massimi vengono portati a 0 e la dimensione del piano rispettiva, rispettivamente (scusate il gioco di parole)
+int Piano::posizione(int x, int y) {
+	if (x < 0)
+		x = 0;
+	if (y < 0)
+		y = 0;
+	if (x > larghezza)
+		x = larghezza;
+	if (y > lunghezza)
+		y = lunghezza;
 	return x + y*lunghezza;
 }
+//Stesso funzionamento di Piano::posizione()
+Casella & Piano::at(int x, int y) 
+{ 
+	if (x < 0)
+		x = 0;
+	if (y < 0)
+		y = 0;
+	if (x > larghezza)
+		x = larghezza;
+	if (y > lunghezza)
+		y = lunghezza;
+	return pavimento.at(y + x * lunghezza); 
+}
+
 
 bool Piano::popolaPiano()
 {
@@ -28,7 +50,7 @@ Piano::Piano(int larghezza, int lunghezza, int sceltaGeneratore, std::vector<Ogg
 	this->lunghezza = lunghezza;
 	this->larghezza = larghezza;
 	pavimento.reserve(lunghezza*larghezza); //Velocizza l'accesso futuro alla memoria.
-	pavimento = std::vector<Casella>(lunghezza*larghezza, Casella()); //Riempio tutto di muri all'inizio
+	pavimento = std::vector<Casella>(lunghezza*larghezza, Casella(false)); //Riempio tutto di muri all'inizio
 	
 	switch (sceltaGeneratore)
 	{
@@ -37,7 +59,35 @@ Piano::Piano(int larghezza, int lunghezza, int sceltaGeneratore, std::vector<Ogg
 		auto generato = GeneratoreV1();
 	default:
 		break;
-		auto generato = GeneratoreV1();//questo sarà il generatore di default.
+		auto generato = GeneratoreV1();//questo sarà anche il generatore di default.
+	}
+}
+//TODO per ora io prendo solo la struttura del piano, entità e oggetti non verranno considerati
+//in futuro, se da un piano non trovo il personaggio od ho altri probelmi, l'operazione deve fallire, e il piano deve essere scartato
+//Chiedo un persorso file, se riesco ad arrivare in fondo successo sarà true, altrimenti false.
+Piano::Piano(std::string posizione, bool &successo)
+{
+	std::ifstream inputPiano(posizione);
+	std::string lineaCaselle;
+	lunghezza = 0, larghezza = 0;
+	int temp_lunghezza = 0;
+	for (int i = 0; std::getline(inputPiano, lineaCaselle); i++)
+	{
+		for (unsigned int j = 0; j < lineaCaselle.size(); j++)
+		{
+			if (lineaCaselle.at(j) == '#')
+				pavimento.push_back(Casella(false));
+			else if (lineaCaselle.at(j) == '.')
+				pavimento.push_back(Casella(true));
+			else {
+				std::cout << "E' successo un casino.\n";
+				successo = false;
+			}
+			temp_lunghezza++;
+		}
+		if (i == 0)
+			lunghezza = temp_lunghezza;
+		larghezza++;
 	}
 }
 
@@ -64,7 +114,7 @@ bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY) {
 	return true;
 }
 
-bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //Presa una stanza, prova a costruirci intorno delle porte
+bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //TODO Presa una stanza, prova a costruirci intorno delle porte
 {
 	return true;
 }
@@ -86,7 +136,7 @@ void Piano::StampaChar() {
 			std::cout << std::endl;
 	}
 }
-
+//TODO x e y sono invertiti
 int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi due sono quelli da dove parto, gli altri dove arrivo
 {
 	if (pavimento.at(posizione(posX, posY)).getEntita() == NULL) {
@@ -164,4 +214,5 @@ void Piano::StampaFileChar() {
 		if ((i + 1) % lunghezza == 0)
 			file << std::endl;
 	}
+	file.close();
 }
