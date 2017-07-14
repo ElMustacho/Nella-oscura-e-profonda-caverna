@@ -17,7 +17,7 @@ public:
 		{
 			return pavimento.at(y + x * lunghezza);
 		}
-		return ; // CHECK che cosa deve restituire?
+		return ; // CHECK che cosa deve restituire? gestito in un altro ramo...
 		
 	} 
 	bool GeneratoreV1();

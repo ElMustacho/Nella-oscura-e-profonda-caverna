@@ -14,7 +14,7 @@ int Piano::posizione(int x, int y)
 	{
 		return y + x * lunghezza;
 	}
-	return ; // CHECK caso deve restituire?
+	return ; // CHECK caso deve restituire? Gestito in un altro ramo...
 }
 
 bool Piano::popolaPiano()
