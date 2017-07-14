@@ -11,7 +11,15 @@ class Piano
 public:
 	~Piano();
 	int posizione(int x, int y);
-	Casella& at(int x, int y) { return pavimento.at(y + x * lunghezza); } //FIXME posso restituire valori non accettabili
+	Casella& at(int x, int y) // posso restituire valori non accettabili
+	{ 
+		if ( y <= larghezza && x <= lunghezza )
+		{
+			return pavimento.at(y + x * lunghezza);
+		}
+		return ; // CHECK che cosa deve restituire?
+		
+	} 
 	bool GeneratoreV1();
 	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY);
 	bool creaPorte(int posX, int posY, int dimX, int dimY);

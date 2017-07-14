@@ -8,8 +8,13 @@ Piano::~Piano()
 {
 }
 
-int Piano::posizione(int x, int y) { //FIXME inserire valori massimi e minimi
-	return x + y*lunghezza;
+int Piano::posizione(int x, int y)
+{ 
+	if (y <= larghezza && x <= lunghezza)
+	{
+		return y + x * lunghezza;
+	}
+	return ; // CHECK caso deve restituire?
 }
 
 bool Piano::popolaPiano()
@@ -34,10 +39,11 @@ Piano::Piano(int larghezza, int lunghezza, int sceltaGeneratore, std::vector<Ogg
 	{
 	case 1:
 		if (1==1)//TODO controlli sulla validità del piano.
-		auto generato = GeneratoreV1();
-	default:
+			auto generato = GeneratoreV1();
 		break;
+	default:
 		auto generato = GeneratoreV1();//questo sarà il generatore di default.
+		
 	}
 }
 
@@ -121,6 +127,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	//tipo qualche golem, melma, zombie o goblin ubriaco fradicio. In pratica non verifico la validità finale del percorso,
 	//ma solo quella della casella in cui mi voglio spostare, una per volta.
 	//P.S. questo sistema funziona bene anche quando c'è solo una casella da percorrere.
+
 	//FIXME da qui assumo che il movimento sia in linea retta
 	while (distanza != 0 && !(posX == targetX && posY == targetY)) //Esco quando ho terminato i movimenti o quando sono arrivato.
 	{ 
