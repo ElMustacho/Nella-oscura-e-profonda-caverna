@@ -17,7 +17,7 @@ int Piano::posizione(int x, int y) {
 		x = larghezza;
 	if (y > lunghezza)
 		y = lunghezza;
-	return x + y*lunghezza;
+	return x + y*larghezza;
 }
 //Stesso funzionamento di Piano::posizione()
 Casella & Piano::at(int x, int y) 
@@ -30,7 +30,7 @@ Casella & Piano::at(int x, int y)
 		x = larghezza;
 	if (y > lunghezza)
 		y = lunghezza;
-	return pavimento.at(y + x * lunghezza); 
+	return pavimento.at(y + x * larghezza); 
 }
 
 
@@ -70,7 +70,6 @@ Piano::Piano(std::string posizione, bool &successo)
 	std::ifstream inputPiano(posizione);
 	std::string lineaCaselle;
 	lunghezza = 0, larghezza = 0;
-	int temp_lunghezza = 0;
 	for (int i = 0; std::getline(inputPiano, lineaCaselle); i++)
 	{
 		for (unsigned int j = 0; j < lineaCaselle.size(); j++)
@@ -83,12 +82,12 @@ Piano::Piano(std::string posizione, bool &successo)
 				std::cout << "E' successo un casino.\n";
 				successo = false;
 			}
-			temp_lunghezza++;
 		}
 		if (i == 0)
-			lunghezza = temp_lunghezza;
-		larghezza++;
+			larghezza=lineaCaselle.size();
+		lunghezza++;
 	}
+	pavimento.reserve(lunghezza*larghezza); //LOOKATME questa chiamata è molto importante, e deve essere fatta alla fine di ogni costruttore!
 }
 
 bool Piano::GeneratoreV1() {
@@ -120,7 +119,7 @@ bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //TODO Presa una s
 }
 
 void Piano::StampaChar() {
-	for (int i = 0; i < lunghezza*larghezza; i++)
+	for (int i = 0; i < pavimento.size(); i++)
 	{
 		auto casella = pavimento.at(i);
 		auto entity = casella.getEntita();
@@ -132,7 +131,7 @@ void Piano::StampaChar() {
 				std::cout << '*';
 		else
 			std::cout << '.';
-		if ((i+1)%lunghezza == 0)
+		if ((i+1)%larghezza == 0)
 			std::cout << std::endl;
 	}
 }
@@ -144,7 +143,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	}
 	if (posX == targetX&&posY == targetY) //Questo significa non spostarsi per davvero
 		return -2;
-	if (!(targetX>-1 && targetX<lunghezza && targetY>-1 && targetY < larghezza))
+	if (!(targetX>-1 && targetX < larghezza && targetY>-1 && targetY < lunghezza))
 		return -3; //Posizione non valida per almeno una delle coordinate
 	int distanza, metodo;
 	pavimento.at(posizione(posX, posY)).getEntita()->muovi(distanza,metodo);

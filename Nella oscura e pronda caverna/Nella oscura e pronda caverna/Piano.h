@@ -6,6 +6,7 @@
 #include "Protagonista.h"
 #include "Attore.h"
 /*
+//LOOKATME
 Che sia chiaro una volta per tutte, anche perché io mi sbaglio più o meno sempre, dannato sia il 2D
  
 	l larghezza ---> X
@@ -34,12 +35,12 @@ public:
 	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY);
 	bool creaPorte(int posX, int posY, int dimX, int dimY);
 	void StampaChar();
-	int muoviEntita(int posX, int posY, int targetX, int targetY); //CHECK faccio cose strane, ma forse è Piano (std::string posizione, bool &successo);
+	int muoviEntita(int posX, int posY, int targetX, int targetY); 
 	void StampaFileChar();
 	bool popolaPiano();
 	bool spargiLoot();
 	Piano(int larghezza, int lunghezza, int sceltaGeneratore, std::vector<Oggetto> lootPossibile, std::vector<Entita> entitàPossibili);
-	Piano(std::string posizione, bool &successo); //CHECK faccio cose strane, ma forse è int muoviEntita(int posX, int posY, int targetX, int targetY);
+	Piano(std::string posizione, bool &successo); 
 private:
 	std::vector<Casella> pavimento; 
 	int sceltaGeneratore, lunghezza, larghezza; //per ora considererò solo il caso a stanze regolari, non con perlin noise
