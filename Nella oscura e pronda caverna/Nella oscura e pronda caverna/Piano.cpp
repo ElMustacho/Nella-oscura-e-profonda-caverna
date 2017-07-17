@@ -10,7 +10,7 @@ Piano::~Piano()
 
 int Piano::posizione(int x, int y)
 { 
-	return y + x * lunghezza;
+	return x + y * lunghezza;
 }
 
 bool Piano::popolaPiano()

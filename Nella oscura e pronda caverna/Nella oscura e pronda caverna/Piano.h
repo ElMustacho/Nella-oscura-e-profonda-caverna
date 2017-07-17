@@ -13,7 +13,7 @@ public:
 	int posizione(int x, int y);
 	Casella& at(int x, int y) // CHECK posso restituire valori non accettabili / gestito in un altro ramo
 	{ 
-		return pavimento.at(y + x * lunghezza);
+		return pavimento.at(x + y * lunghezza);
 	} 
 	bool GeneratoreV1();
 	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY);
