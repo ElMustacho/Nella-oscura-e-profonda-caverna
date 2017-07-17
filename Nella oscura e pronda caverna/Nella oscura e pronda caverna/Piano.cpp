@@ -10,11 +10,7 @@ Piano::~Piano()
 
 int Piano::posizione(int x, int y)
 { 
-	if (y <= larghezza && x <= lunghezza)
-	{
-		return y + x * lunghezza;
-	}
-	return ; // CHECK caso deve restituire? Gestito in un altro ramo...
+	return y + x * lunghezza;
 }
 
 bool Piano::popolaPiano()

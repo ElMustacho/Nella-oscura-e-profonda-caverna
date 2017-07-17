@@ -24,12 +24,12 @@ std::list<Oggetto> Scrigno::prendiOggetto(Oggetto* scelta) // TODO finish this
 	{
 		std::list<Oggetto> presi; // CHECK Is it ok?
 
-		std::list<Oggetto>::iterator it = loot.begin;
-		while ( (*it).getNome() != scelta->getNome() && it != loot.end)
+		std::list<Oggetto>::iterator it = loot.begin();
+		while ( (*it).getNome() != scelta->getNome() && it != loot.end())
 		{
 			it++;
 		}
-		if (it != loot.end)
+		if (it != loot.end())
 		{
 			presi.push_back(*it);
 			loot.erase(it);
