@@ -25,7 +25,8 @@ public:
 
 	Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
 	void muovi(int &distanza, int &metodoTrasporto);
-	
+	// TODO implement method raccogli
+	// TODO implement method combatti/colpisci
 
 	double carryWeight(); //calcolo peso trasportato
 private:

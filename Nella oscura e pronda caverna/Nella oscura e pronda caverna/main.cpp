@@ -23,6 +23,7 @@ int main()
 	primoLivello.creaStanzaRettangolare(2, 2, 5, 5);
 	primoLivello.at(5, 5).setEntita(&Saitama);
 	primoLivello.at(3, 3).setEntita(&JimBob);
+	// TODO add objects on the map
 
 	int exit = 0;
 	int X = 5, Y = 5;
