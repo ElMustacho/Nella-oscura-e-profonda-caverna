@@ -10,7 +10,7 @@ Piano::~Piano()
 
 int Piano::posizione(int x, int y)
 { 
-	return x + y * lunghezza;
+	return x + y * lunghezza; // LOOKATME sbagliato, corretto in un altro ramo
 }
 
 bool Piano::popolaPiano()

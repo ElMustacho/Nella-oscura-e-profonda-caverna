@@ -11,9 +11,9 @@ class Piano
 public:
 	~Piano();
 	int posizione(int x, int y);
-	Casella& at(int x, int y) // CHECK posso restituire valori non accettabili / gestito in un altro ramo
+	Casella& at(int x, int y) 
 	{ 
-		return pavimento.at(x + y * lunghezza);
+		return pavimento.at(x + y * lunghezza);// LOOKATME sbagliato può restituire valori non accettabili --> corretto in un altro ramo
 	} 
 	bool GeneratoreV1();
 	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY);
