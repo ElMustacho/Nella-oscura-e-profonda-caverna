@@ -107,7 +107,7 @@ bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //TODO Presa una s
 
 void Piano::StampaChar() { 
 	std::string mappa="";
-	for (int i = 0; i < pavimento.size(); i++)
+	for (unsigned int i = 0; i < pavimento.size(); i++)
 	{
 		auto casella = pavimento.at(i);
 		auto entity = casella.getEntita();
