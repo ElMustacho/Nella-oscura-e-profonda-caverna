@@ -48,6 +48,15 @@
     <ClInclude Include="Piano.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="PianoGen.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="PianoFile.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Danno.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Oggetto.cpp">
@@ -84,6 +93,15 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="Piano.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="PianoGen.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="PianoFile.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Danno.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>

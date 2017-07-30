@@ -116,9 +116,12 @@
     <ClInclude Include="Attore.h" />
     <ClInclude Include="Attributi.h" />
     <ClInclude Include="Casella.h" />
+    <ClInclude Include="Danno.h" />
     <ClInclude Include="Entita.h" />
     <ClInclude Include="Oggetto.h" />
     <ClInclude Include="Piano.h" />
+    <ClInclude Include="PianoFile.h" />
+    <ClInclude Include="PianoGen.h" />
     <ClInclude Include="Protagonista.h" />
     <ClInclude Include="Scrigno.h" />
     <ClInclude Include="Sprite.h" />
@@ -129,10 +132,13 @@
     <ClCompile Include="Attore.cpp" />
     <ClCompile Include="Attributi.cpp" />
     <ClCompile Include="Casella.cpp" />
+    <ClCompile Include="Danno.cpp" />
     <ClCompile Include="Entita.cpp" />
     <ClCompile Include="Oggetto.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Piano.cpp" />
+    <ClCompile Include="PianoFile.cpp" />
+    <ClCompile Include="PianoGen.cpp" />
     <ClCompile Include="Protagonista.cpp" />
     <ClCompile Include="Scrigno.cpp" />
     <ClCompile Include="Sprite.cpp" />

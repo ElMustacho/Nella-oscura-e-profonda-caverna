@@ -31,7 +31,7 @@ TEST(TestPiano, TestCostruzioneGenericaMultiplaGeneratore1) { //Prova 50000 volt
 	std::vector<Oggetto> tabellaLoot; //VUOTA
 	std::vector<Entita> tabellaEntita; //VUOTA
 	Protagonista player("personaggio", tabellaLoot, Attributi(), tabellaLoot, 1, 0., 0);
-
+	std::cout << std::endl << "50000 volte costruire stanze in un piano, tempo stimato 12 secondi" << std::endl;
 	for (int k = 0; k < 50000; k++)
 	{
 		Piano primoLivello(50, 50, 1, tabellaLoot, tabellaEntita);

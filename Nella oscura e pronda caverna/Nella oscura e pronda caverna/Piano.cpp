@@ -44,24 +44,14 @@ bool Piano::spargiLoot()
 	return false;
 }
 
+Piano::Piano() {
 
-Piano::Piano(int larghezza, int lunghezza, int sceltaGeneratore, std::vector<Oggetto> lootPossibile, std::vector<Entita> entitàPossibili)
-{
-	this->lunghezza = lunghezza;
-	this->larghezza = larghezza;
-	pavimento.reserve(lunghezza*larghezza); //Velocizza l'accesso futuro alla memoria.
-	pavimento = std::vector<Casella>(lunghezza*larghezza, Casella(false)); //Riempio tutto di muri all'inizio
-	
-	switch (sceltaGeneratore)
-	{
-	case 1:
-		if (1==1)//TODO controlli sulla validità del piano.
-		auto generato = GeneratoreV1();
-	default:
-		break;
-		auto generato = GeneratoreV1();//questo sarà anche il generatore di default.
-	}
 }
+
+Piano::Piano(int larghezza, int lunghezza, std::vector<Oggetto> lootPossibile, std::vector<Entita> entitàPossibili)
+{
+}
+/*
 //TODO per ora io prendo solo la struttura del piano, entità e oggetti non verranno considerati
 //in futuro, se da un piano non trovo il personaggio od ho altri probelmi, l'operazione deve fallire, e il piano deve essere scartato
 //Chiedo un persorso file, se riesco ad arrivare in fondo successo sarà true, altrimenti false.
@@ -89,10 +79,7 @@ Piano::Piano(std::string posizione, bool &successo)
 	}
 	pavimento.reserve(lunghezza*larghezza); //LOOKATME questa chiamata è molto importante, e deve essere fatta alla fine di ogni costruttore!
 }
-
-bool Piano::GeneratoreV1() {
-	return false;
-}
+*/
 
 bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY) {
 	if (posX + dimX  > lunghezza || posY + dimY > larghezza)
@@ -118,22 +105,24 @@ bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //TODO Presa una s
 	return true;
 }
 
-void Piano::StampaChar() {
+void Piano::StampaChar() { 
+	std::string mappa="";
 	for (int i = 0; i < pavimento.size(); i++)
 	{
 		auto casella = pavimento.at(i);
 		auto entity = casella.getEntita();
 		if (pavimento.at(i).isMuro())
-			std::cout << '#'; 
+			mappa.push_back('#');
 		else if (dynamic_cast<Protagonista*>(entity) != NULL) 
-			std::cout << '@';
+			mappa.push_back('@');
 		else if (dynamic_cast<Attore*>(entity) != NULL) 
-				std::cout << '*';
+			mappa.push_back('*');
 		else
-			std::cout << '.';
-		if ((i+1)%larghezza == 0)
-			std::cout << std::endl;
+			mappa.push_back('.');
+		if ((i + 1) % larghezza == 0)
+			mappa.push_back('\n');
 	}
+	std::cout << mappa;
 }
 //TODO x e y sono invertiti
 int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi due sono quelli da dove parto, gli altri dove arrivo
