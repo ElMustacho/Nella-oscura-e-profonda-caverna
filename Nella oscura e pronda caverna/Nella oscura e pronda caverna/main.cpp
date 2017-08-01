@@ -10,6 +10,8 @@ int main()
 	bool ok = true;
 	for (unsigned int i = 0; i < Danno::giveCategoriaDanni().size(); i++)
 		std::cout << Danno::giveCategoriaDanni()[i] << std::endl;
+	Danno dannoVuoto();
+	
 	PianoFile pregen("testPreload.txt", ok);
 	if (!ok)
 	{
@@ -34,7 +36,7 @@ int main()
 	Oggetto oggettoDebug(10.,"Cosa", "Qualcosa di fantastico", 40);
 	Oggetto oggettoDebug2(5., "Altra cosa", "Qualcosa di altrettanti fantastico", 15);
 	Saitama.addInventario(oggettoDebug);
-	Saitama.addInventario(oggettoDebug2);
+	pregen.at(1,5).getEntita()->addInventario(oggettoDebug2);
 	std::cout << pregen.at(1, 5).getEntita()->describeInventario() << std::endl;
 	/*
 	Attributi dexAlta(4, 14, 4, 4, 4, 4, 4, 1);
@@ -122,7 +124,8 @@ int main()
 			break;
 
 		default:
-			std::cout << "Input non valido" << std::endl;
+			if (a == 'y')
+				std::cout << "Input non valido" << std::endl;
 
 		}
 	}

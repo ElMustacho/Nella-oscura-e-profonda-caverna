@@ -1,7 +1,7 @@
 #include "pch.h"
 
-#include"..\Nella oscura e pronda caverna\Piano.h"
-#include"..\Nella oscura e pronda caverna\Piano.cpp"
+#include "..\Nella oscura e pronda caverna\Piano.h"
+#include "..\Nella oscura e pronda caverna\Piano.cpp"
 #include "..\Nella oscura e pronda caverna\Casella.h"
 #include "..\Nella oscura e pronda caverna\Entita.h"
 #include "..\Nella oscura e pronda caverna\Sprite.h"
@@ -16,10 +16,36 @@
 #include "..\Nella oscura e pronda caverna\Protagonista.cpp"
 #include "..\Nella oscura e pronda caverna\Attore.h"
 #include "..\Nella oscura e pronda caverna\Attore.cpp"
+#include "..\Nella oscura e pronda caverna\PianoGen.h"
+#include "..\Nella oscura e pronda caverna\PianoGen.cpp"
+#include "..\Nella oscura e pronda caverna\Danno.h"
+#include "..\Nella oscura e pronda caverna\Danno.cpp"
+
+TEST(testDanno, testCalcoloDanni) {
+	std::vector<double> vTemp;
+	vTemp.push_back(0.25);
+	vTemp.push_back(0.25);
+	vTemp.push_back(0.375);
+	vTemp.push_back(0.125);
+	Danno testDanno(vTemp, 40);
+	std::vector<double> vectorVuoto;
+	Danno testDannoVuoto(vectorVuoto, 40);
+	ASSERT_EQ(0, testDannoVuoto.getAmmontare()) << "Mi aspetto 0 perché è un danno senza elementi";
+	ASSERT_EQ(10, testDanno.getParteDanno(0)) << "25% di 40 è 10";
+	ASSERT_EQ(0, testDanno.getParteDanno("acido")) << "0% di acido è 0";
+	ASSERT_EQ(25, testDanno.getParteDanno("tagliente") + testDanno.getParteDanno(2)) << "Mescolo i due tipi di accesso ai dati";
+	testDanno.magnifica("tagliente", 2);
+	ASSERT_EQ(50, testDanno.getAmmontare()) << "Se raddoppio la quantità di danno tagliente, ottengo un ammontare di 50 in questo danno";
+	testDanno.magnifica(0.6);
+	ASSERT_EQ(30, testDanno.getAmmontare()) << "Riduzione al 60%";
+	Oggetto trofeoProva(10., "Premio Oscar a chi non ha mai vinto l'Oscar", "Reale solo in un mondo immaginario (per non parlare del fatto che pesa 10kg)", 10040);
+	EXPECT_LT(3, trofeoProva.attacca().getAmmontare()); //Non ho una calcolatrice sottomano ma sono abbastanza sicuro che ln(11)>3
+	EXPECT_LT(1, trofeoProva.attacca().getParteDanno("contundente"));
+}
 TEST(TestPiano, CostruzioneStanzaGeneratore1) {
 	std::vector<Oggetto> tabellaLoot; //VUOTA
 	std::vector<Entita> tabellaEntita; //VUOTA
-	Piano livelloTest(10, 8, 1, tabellaLoot, tabellaEntita);
+	PianoGen livelloTest(10, 8, tabellaLoot, tabellaEntita);
 	EXPECT_FALSE(livelloTest.creaStanzaRettangolare(0, 0, 15, 15))<<"La stanza dovrebbe essere troppo grande";
 	EXPECT_TRUE(livelloTest.creaStanzaRettangolare(4, 4, 3, 2))<<"La stanza non e' stata correttamente inserita";
 	EXPECT_FALSE(livelloTest.creaStanzaRettangolare(3, 3, 4, 4))<<"La stanza non doveva essere inserita perche' sovrapposta";
@@ -27,14 +53,14 @@ TEST(TestPiano, CostruzioneStanzaGeneratore1) {
 }
 
 TEST(TestPiano, TestCostruzioneGenericaMultiplaGeneratore1) { //Prova 50000 volte a costruire un piano, se uno fallisce non arriva in fondo al test
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 	std::vector<Oggetto> tabellaLoot; //VUOTA
 	std::vector<Entita> tabellaEntita; //VUOTA
 	Protagonista player("personaggio", tabellaLoot, Attributi(), tabellaLoot, 1, 0., 0);
-	std::cout << std::endl << "50000 volte costruire stanze in un piano, tempo stimato 12 secondi" << std::endl;
+	std::cout << std::endl << "50000 volte costruire stanze in un piano, tempo stimato ~10 secondi" << std::endl;
 	for (int k = 0; k < 50000; k++)
 	{
-		Piano primoLivello(50, 50, 1, tabellaLoot, tabellaEntita);
+		PianoGen primoLivello(50, 50, tabellaLoot, tabellaEntita);
 		int stanzeCostruite = 0;
 		
 		for (int i = 0; i < 15; i++)
@@ -61,7 +87,7 @@ TEST(TestPiano, TestMovimentoECollisioni) {
 	std::vector<Entita> tabellaEntita; //VUOTA
 	Protagonista player("Personaggio", tabellaLoot, Attributi(), tabellaLoot, 1, 0., 0);
 	Attore monster("Goblin", tabellaLoot, Attributi(), tabellaLoot,1.);
-	Piano livello(15, 15, 1, tabellaLoot, tabellaEntita);
+	PianoGen livello(15, 15, tabellaLoot, tabellaEntita);
 	livello.creaStanzaRettangolare(3, 3, 6, 7);
 	ASSERT_FALSE(livello.at(1, 1).setEntita(&monster)) << "Ho inserito un'attore dentro un muro";
 	ASSERT_FALSE(livello.at(1, 1).setEntita(&player)) << "Ho inserito personaggio dentro un muro";

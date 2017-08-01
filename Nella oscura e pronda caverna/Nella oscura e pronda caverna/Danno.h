@@ -14,12 +14,17 @@ public:
 	//Riporta il danno in forma standard
 	void equalize(bool alteraAmmontare);
 	Danno(std::vector<double> partiDanno, double ammontare);
-	Danno();
+	Danno()=delete; //LOOKATME disabilitato
 	~Danno();
-	static std::vector<std::string> giveCategoriaDanni();
+	static const std::vector<std::string> giveCategoriaDanni();
 	void magnifica(int posizione, double percentuale);
 	void magnifica(std::string posizione, double percentuale);
 	void magnifica(double percentuale);
+	std::vector<double> const getTipo();
+	void setTipo(std::vector<double> vectorTipo);
+	double const getAmmontare();
+	double const getParteDanno(int posizione);
+	double const getParteDanno(std::string posizione);
 private:
 	std::vector<double> tipo;
 	double ammontare;
