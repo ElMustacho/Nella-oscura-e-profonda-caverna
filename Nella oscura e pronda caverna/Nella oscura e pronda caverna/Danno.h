@@ -25,6 +25,7 @@ public:
 	double const getAmmontare();
 	double const getParteDanno(int posizione);
 	double const getParteDanno(std::string posizione);
+	double const calcolaDannoTotale(std::vector<double> resistenze);
 private:
 	std::vector<double> tipo;
 	double ammontare;

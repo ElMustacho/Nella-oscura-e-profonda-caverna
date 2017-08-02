@@ -105,3 +105,13 @@ double const Danno::getParteDanno(std::string posizione)
 	}
 	return 0; //Una parte di qualcosa che non esiste è 0
 }
+
+//Neutralità ad un tipo di danno -> 1// Doppi danni da un tipo -> 2// Immunità ad un tipo di danno -> 0 ectv
+double const Danno::calcolaDannoTotale(std::vector<double> resistenze)
+{
+	double totale = 0;
+	for (unsigned int i = 0; i < giveCategoriaDanni().size(); i++) {
+		totale += getParteDanno(i)*(resistenze[i]);
+	}
+	return totale;
+}
