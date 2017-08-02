@@ -4,7 +4,7 @@ class Attore : public Entita
 {
 
 public:
-	Attore(std::string nome, Attributi attributi, double experienceDrop);
+	Attore(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento, double experienceDrop);
 	~Attore();
 
 private:

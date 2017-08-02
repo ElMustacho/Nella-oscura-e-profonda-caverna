@@ -2,7 +2,9 @@
 
 
 
-Attore::Attore(std::string nome, Attributi attributi, double experienceDrop) : Entita(nome, attributi)
+
+Attore::Attore(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento, double experienceDrop) : Entita(nome,inventario,attributi,equipaggiamento)
+
 {
 	this->experienceDrop = experienceDrop;
 }

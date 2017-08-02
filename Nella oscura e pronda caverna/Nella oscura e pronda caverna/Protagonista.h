@@ -5,11 +5,11 @@ class Protagonista : public Entita
 {
 
 public:
-	Protagonista(std::string nome, Attributi attributi, unsigned int livello, double esperienza, long int fondiEconomici);
+	Protagonista(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento, unsigned int livello, double esperienza, long int fondiEconomici);
 	~Protagonista();
 
 private:
-	unsigned int livello;
+	unsigned int livello; //FIXME livello è gia contenuto dentro attributi, ereditati da Entita
 	double esperienza;
 	long int fondiEconomici;
 };

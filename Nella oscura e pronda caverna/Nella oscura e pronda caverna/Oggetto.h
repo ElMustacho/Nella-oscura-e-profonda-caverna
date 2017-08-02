@@ -1,14 +1,15 @@
 #pragma once
 #include <string>
 #include "Sprite.h"
-
+#include "Danno.h"
 class Oggetto
 {
 
 public:
 	Oggetto(double peso, std::string nome, std::string descrizione, long valore) : peso(peso), nome(nome), descrizione(descrizione), valore(valore) {}
 	~Oggetto();
-
+	//Tutto può essere un'arma se sei abbastanza disperato e/o creativo
+	Danno attacca();
 	virtual void usa();
 
 	double getPeso() const

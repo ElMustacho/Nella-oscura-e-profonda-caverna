@@ -10,9 +10,9 @@ class Entita
 {
 
 public:
-	Entita(std::string nome, Attributi attributi); // CHECK inventario & equipaggiamento valori default?
-	~Entita();
 
+	
+	virtual ~Entita();
 	std::string getNome() const
 	{
 		return nome;
@@ -23,24 +23,33 @@ public:
 		this->nome = nome;
 	}
 
-	Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
-	
-	double carryWeight(); //calcolo peso trasportato
-
 	void onDeath(); //cosa succede se muore
 
-	//TODO move it!
+	Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
 
+	void muovi(int &distanza, int &metodoTrasporto);
+
+	// TODO implement method raccogli
+	// TODO implement method combatti/colpisci
+
+	Entita(); //TODO vorrei evitare di mettere costruttori vuoti solo perché se no il compilatore si lamenta.
+	Attributi getAttributi() const;
+	void setAttributi(Attributi attr);
+	bool addInventario(std::vector<Oggetto> oggettiAggiunti);
+	bool addInventario(Oggetto oggettoDaAgginugere);
+
+	double carryWeight(); //calcolo peso trasportato
+	std::string describeInventario();
 private:
 	std::string nome;
 	Attributi attributi;
-	//Sprite sprite; // TODO define and manage Sprite
-	std::vector<Oggetto> inventario;
+	//FIXME Sprite sprite;   manage Sprite
+	std::vector<Oggetto> inventario; //CHECK forse è meglio che sia una lista, così posso gestire meglio i buchi nell'inventario (di fatto eliminandoli)
 	std::vector<Oggetto> equipaggiamento;
 	/*
 	nella posizione X di equipaggiamento ci sarà:
-	0) mano destra (arma)
-	1) mano sinistra (arma, arma2 o scudo)
+	0) mano primaria (arma)
+	1) mano secondaria (arma, arma2 o scudo)
 	2) torso
 	3) gambali
 	4) guanti
@@ -54,8 +63,8 @@ private:
 	12) anello 2
 	13) spazio munizioni
 	14) abiti
-	15) da qui in poi potranno esserci elementi che non si cumulano con i suddetti, come per esempio aureole,
+	15) mantello
+	16) da qui in poi potranno esserci elementi che non si cumulano con i suddetti, come per esempio aureole,
 	maledizioni, benedizioni e simili.
 	*/
 };
-

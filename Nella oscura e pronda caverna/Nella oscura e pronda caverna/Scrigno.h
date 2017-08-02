@@ -12,6 +12,7 @@ public:
 
 	void open();
 	std::list<Oggetto> prendiOggetto(Oggetto* scelta = nullptr);
+	void inserisciOggetto(Oggetto* obj);
 
 private:
 	std::list<Oggetto> loot;

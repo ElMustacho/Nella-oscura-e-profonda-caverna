@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 	char c;
 	std::cin >> c;
 }
-
+//FIX ME devo finire in un altro file
 TEST(TestOggetti, testConsistenzaConstruttore) {
 	Oggetto idolo(15., "Hatkanda", "L'oggetto di un film generico", 400);
 	EXPECT_EQ(idolo.getPeso(),15.);

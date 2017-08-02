@@ -6,7 +6,7 @@ class Attributi
 public:
 
 	Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int hp, int potereMagico, int stamina, double forzaDiCarico, int maxHp, int maxPotereMagico, int maxStamina, bool silenzioso); //usato quando si carica un salvataggio o dal protagonista all'inizio del gioco.
-
+	Attributi();
 	Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int livello); //autogenera le caratteristiche rimanenti
 	~Attributi();
 
@@ -151,6 +151,7 @@ public:
 
 		void setMaxHp(int maxHp)
 		{
+
 			this->maxHp = maxHp;
 		}
 
@@ -162,7 +163,7 @@ public:
 		void setSilenziosio(bool silenzioso) 
 		{
 			this->silenzioso = silenzioso;
-		}
+    }
 
 		bool isSilenzioso() const
 		{
@@ -186,5 +187,4 @@ private:
 	int maxStamina;
 	double forzaDiCarico;
 	bool silenzioso;
-
 };
