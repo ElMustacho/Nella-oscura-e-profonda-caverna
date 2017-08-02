@@ -10,8 +10,6 @@ int main()
 	bool ok = true;
 	for (unsigned int i = 0; i < Danno::giveCategoriaDanni().size(); i++)
 		std::cout << Danno::giveCategoriaDanni()[i] << std::endl;
-	Danno dannoVuoto();
-	
 	PianoFile pregen("testPreload.txt", ok);
 	if (!ok)
 	{

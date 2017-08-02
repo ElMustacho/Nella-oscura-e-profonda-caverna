@@ -2,28 +2,10 @@
 #include "Entita.h"
 
 
-
-Entita::Entita(std::string nome, Attributi attributi) : attributi(attributi) // CHECK manage Attributi
-{
-	this->nome = nome;
-	this->attributi = attributi;
-}
-
-Entita::Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento) : attributi(attributi) 
-{
-	
-	this->nome = nome;
-	this->equipaggiamento = equipaggiamento;
-	this->inventario = inventario;
-	this->attributi = attributi;
-}
-
-
-
-Entita::~Entita() 
+Entita::~Entita()
 {
 	//TODO ~Entita()
-
+}
 
 Entita::Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento): attributi(attributi) {
 	
@@ -81,11 +63,6 @@ bool Entita::addInventario(Oggetto oggettoDaAgginugere)
 	//CHECK posso fallire, cosa potrebbe andare male?
 }
 
-
-Entita::~Entita()
-{
-	//TODO destructor
-}
 
 double Entita::carryWeight()
 { //Calcola il carico trasportato

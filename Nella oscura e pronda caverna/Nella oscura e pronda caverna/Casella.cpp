@@ -1,11 +1,11 @@
 #include "Casella.h"
 #include "Scrigno.h"
 
-Casella::Casella(Tileset tileset, Oggetto* oggetto, Entita* entità, bool trasparenza, bool attraversabile, int evento)
+Casella::Casella(Tileset tileset, Oggetto* oggetto, Entita* entita, bool trasparenza, bool attraversabile, int evento)
 {
 	this->tileset = tileset;
 	this->oggetto = oggetto;
-	this->entita = entità;
+	this->entita = entita;
 	this->trasparenza = trasparenza;
 	this->attraversabile = attraversabile;
 	this->evento = evento;

@@ -43,7 +43,7 @@ public:
 	bool spargiLoot();
 
 	Piano();
-	Piano(int larghezza, int lunghezza, std::vector<Oggetto> lootPossibile, std::vector<Entita> entitàPossibili);
+	Piano(int larghezza, int lunghezza, std::vector<Oggetto> lootPossibile, std::vector<Entita> entitaPossibili);
 	//Piano(std::string posizione, bool &successo); //Da file 
 protected:
 	std::vector<Casella> pavimento; 
