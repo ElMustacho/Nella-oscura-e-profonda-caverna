@@ -1,23 +1,23 @@
 #include "Casella.h"
 #include "Scrigno.h"
 
-Casella::Casella(Tileset tileset, Oggetto* oggetto, Entita* entit‡, bool trasparenza, bool attraversabile, int evento)
+Casella::Casella(Tileset tileset, Oggetto* oggetto, Entita* entit√†, bool trasparenza, bool attraversabile, int evento)
 {
 	this->tileset = tileset;
 	this->oggetto = oggetto;
-	this->entita = entit‡;
+	this->entita = entit√†;
 	this->trasparenza = trasparenza;
 	this->attraversabile = attraversabile;
 	this->evento = evento;
 }
 
-Casella::Casella() 
-{
-	tileset = Tileset(); //FIX ME quando Tileset avr‡ senso questo dovr‡ essere qualcosa di concreto.
-	oggetto = NULL; //Non c'Ë nulla di default;
-	entita = NULL; //Non c'Ë nessuno di defalut;
-	trasparenza = false; //Se Ë una parete non Ë trasparente
-	attraversabile = false; //Se Ë una parete non Ë attraversabile
+//Costruttore rapido e semplice, passare false per parete, passare true per terreno attraversabile
+Casella::Casella(bool default) {
+	tileset = Tileset(); //FIX ME quando Tileset avr√† senso questo dovr√† essere qualcosa di concreto.
+	oggetto = NULL; //Non c'√® nulla di default;
+	entita = NULL; //Non c'√® nessuno di defalut;
+	trasparenza = default; //Se √® una parete non √® trasparente
+	attraversabile = default; //Se √® una parete non √® attraversabile
 	evento = 0; //Di default non accade nulla
 }
 
@@ -42,7 +42,7 @@ void Casella::setOggetto(Oggetto * obj) //CHECK gestire la sovrapposizione degli
 			// crea scrigno fittizio
 			std::list<Oggetto> loot;
 			Scrigno mucchio(0, "Mucchio", "Gruppo di oggetti", 0, 0, loot);
-			// inserisce l'oggetto gi‡ esistente e quello da inserire
+			// inserisce l'oggetto gi√† esistente e quello da inserire
 			mucchio.inserisciOggetto(this->getOggetto());
 			mucchio.inserisciOggetto(obj);
 			// posiziona lo scrigno sulla casella
@@ -55,9 +55,9 @@ void Casella::setOggetto(Oggetto * obj) //CHECK gestire la sovrapposizione degli
 	}
 }
 
-bool Casella::setEntita(Entita * entity) //TODO gestire la sovrapposizione delle entit‡, avremo memory leak se cancelliamo la precedente!
+bool Casella::setEntita(Entita * entity) //TODO gestire la sovrapposizione delle entit√†, avremo memory leak se cancelliamo la precedente!
 {
-	if (this->isMuro()) //Quando avremo entit‡ incorporee questo if dovr‡ essere alterato
+	if (this->isMuro()) //Quando avremo entit√† incorporee questo if dovr√† essere alterato
 		return false;
 	this->entita = entity;
 	return true;
@@ -68,7 +68,7 @@ void Casella::doEvento()//FIXME sono un segnaposto
 
 }
 
-Casella::~Casella() //Se non libero questi puntatori non lo far‡ nessuno, PER“ nessuno mi garantisce che io non preservi
+Casella::~Casella() //Se non libero questi puntatori non lo far√† nessuno, PER√í nessuno mi garantisce che io non preservi
 					//cose importanti
 {
 	//delete (oggetto);

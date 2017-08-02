@@ -8,7 +8,7 @@ public:
 	~Protagonista();
 
 private:
-	unsigned int livello;
+	unsigned int livello; //FIXME livello è gia contenuto dentro attributi, ereditati da Entita
 	double esperienza;
 	long int fondiEconomici;
 };
