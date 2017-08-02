@@ -49,6 +49,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GTest\GTest.vcxproj">
+      <Project>{7b8e917e-3756-48bb-8c42-45fd54144aac}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Nella oscura e pronda caverna\Nella oscura e pronda caverna.vcxproj">
       <Project>{bf5d7687-1489-475f-b9b0-e650511eb90a}</Project>
     </ProjectReference>

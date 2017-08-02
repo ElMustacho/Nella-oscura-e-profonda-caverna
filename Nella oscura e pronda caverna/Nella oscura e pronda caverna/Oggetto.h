@@ -32,6 +32,6 @@ private:
 	double peso;
 	std::string nome, descrizione;
 	long valore;
-	Sprite sprite; // TODO define and manage Sprite
+	//Sprite sprite; // TODO define and manage Sprite
 };
 
