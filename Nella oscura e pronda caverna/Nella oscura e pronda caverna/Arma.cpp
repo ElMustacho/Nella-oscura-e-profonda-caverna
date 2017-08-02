@@ -15,5 +15,5 @@ Arma::~Arma()
 
 void Arma::usa()
 {
-	// TODO effetc!
+	// TODO effect!
 }

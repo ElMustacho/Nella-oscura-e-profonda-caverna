@@ -25,17 +25,22 @@ public:
 
 	Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
 	void muovi(int &distanza, int &metodoTrasporto);
+
+	// TODO implement method raccogli
+	// TODO implement method combatti/colpisci
+
 	Entita(); //TODO vorrei evitare di mettere costruttori vuoti solo perché se no il compilatore si lamenta.
 	Attributi getAttributi() const;
 	void setAttributi(Attributi attr);
 	bool addInventario(std::vector<Oggetto> oggettiAggiunti);
 	bool addInventario(Oggetto oggettoDaAgginugere);
+
 	double carryWeight(); //calcolo peso trasportato
 	std::string describeInventario();
 private:
 	std::string nome;
 	Attributi attributi;
-	Sprite sprite; // TODO define and manage Sprite
+	//FIXME Sprite sprite;   manage Sprite
 	std::vector<Oggetto> inventario; //CHECK forse è meglio che sia una lista, così posso gestire meglio i buchi nell'inventario (di fatto eliminandoli)
 	std::vector<Oggetto> equipaggiamento;
 	/*

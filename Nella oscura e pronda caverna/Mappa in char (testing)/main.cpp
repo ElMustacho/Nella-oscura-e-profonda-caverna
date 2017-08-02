@@ -343,13 +343,16 @@ private:
 			return false;
 
 		for (int y = rect.y; y < rect.y + rect.height; ++y)
+		{
 			for (int x = rect.x; x < rect.x + rect.width; ++x)
 			{
 				if (getTile(x, y) != Unused)
 					return false; // the area already used
 			}
+		}
 
 		for (int y = rect.y - 1; y < rect.y + rect.height + 1; ++y)
+		{
 			for (int x = rect.x - 1; x < rect.x + rect.width + 1; ++x)
 			{
 				if (x == rect.x - 1 || y == rect.y - 1 || x == rect.x + rect.width || y == rect.y + rect.height)
@@ -357,7 +360,7 @@ private:
 				else
 					setTile(x, y, tile);
 			}
-
+		}
 		return true;
 	}
 

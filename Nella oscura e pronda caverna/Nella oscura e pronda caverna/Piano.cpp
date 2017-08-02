@@ -7,6 +7,7 @@
 Piano::~Piano()
 {
 }
+
 //Numeri minimi e numeri massimi vengono portati a 0 e la dimensione del piano rispettiva, rispettivamente (scusate il gioco di parole)
 int Piano::posizione(int x, int y) {
 	if (x < 0)
@@ -48,13 +49,13 @@ Piano::Piano() {
 
 }
 
-Piano::Piano(int larghezza, int lunghezza, std::vector<Oggetto> lootPossibile, std::vector<Entita> entit‡Possibili)
+Piano::Piano(int larghezza, int lunghezza, std::vector<Oggetto> lootPossibile, std::vector<Entita> entit√†Possibili)
 {
 }
 /*
-//TODO per ora io prendo solo la struttura del piano, entit‡ e oggetti non verranno considerati
+//TODO per ora io prendo solo la struttura del piano, entit√† e oggetti non verranno considerati
 //in futuro, se da un piano non trovo il personaggio od ho altri probelmi, l'operazione deve fallire, e il piano deve essere scartato
-//Chiedo un persorso file, se riesco ad arrivare in fondo successo sar‡ true, altrimenti false.
+//Chiedo un persorso file, se riesco ad arrivare in fondo successo sar√† true, altrimenti false.
 Piano::Piano(std::string posizione, bool &successo)
 {
 	std::ifstream inputPiano(posizione);
@@ -62,6 +63,13 @@ Piano::Piano(std::string posizione, bool &successo)
 	lunghezza = 0, larghezza = 0;
 	for (int i = 0; std::getline(inputPiano, lineaCaselle); i++)
 	{
+	case 1:
+		if (1==1)//TODO controlli sulla validit√† del piano.
+			auto generato = GeneratoreV1();
+		break;
+	default:
+		auto generato = GeneratoreV1();//questo sar√† il generatore di default.
+		
 		for (unsigned int j = 0; j < lineaCaselle.size(); j++)
 		{
 			if (lineaCaselle.at(j) == '#')
@@ -77,25 +85,33 @@ Piano::Piano(std::string posizione, bool &successo)
 			larghezza=lineaCaselle.size();
 		lunghezza++;
 	}
-	pavimento.reserve(lunghezza*larghezza); //LOOKATME questa chiamata Ë molto importante, e deve essere fatta alla fine di ogni costruttore!
+	pavimento.reserve(lunghezza*larghezza); //LOOKATME questa chiamata √® molto importante, e deve essere fatta alla fine di ogni costruttore!
+}
+bool Piano::GeneratoreV1() 
+{
+	return false;
 }
 */
 
-bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY) {
+bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY) 
+{
 	if (posX + dimX  > lunghezza || posY + dimY > larghezza)
 		return false; //Stanza prodotta fuori dal piano
 	
-	for (int i = posX; i < dimX + posX; i++) {
+	for (int i = posX; i < dimX + posX; i++) 
+	{
 		for (int j = posY; j < dimY + posY; j++)
-			if (!pavimento.at(posizione(i,j)).isMuro()) {
+			if (!pavimento.at(posizione(i,j)).isMuro()) 
+			{
 				return false; //Spazio per stanza non trovato
 			}
 	}
-	for (int i = posX; i < dimX + posX; i++) {
+	for (int i = posX; i < dimX + posX; i++) //CHECK Possibile con un ELSE evitare questo ciclo?
+	{
 		for (int j = posY; j < dimY + posY; j++)
-			{
-				pavimento.at(posizione(i, j)).Scava(); //Crea stanza
-			}
+		{
+			pavimento.at(posizione(i, j)).Scava(); //Crea stanza
+		}
 	}
 	return true;
 }
@@ -105,9 +121,13 @@ bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //TODO Presa una s
 	return true;
 }
 
-void Piano::StampaChar() { 
+
+
+void Piano::StampaChar() 
+{ 
 	std::string mappa="";
 	for (unsigned int i = 0; i < pavimento.size(); i++)
+
 	{
 		auto casella = pavimento.at(i);
 		auto entity = casella.getEntita();
@@ -127,48 +147,69 @@ void Piano::StampaChar() {
 //TODO x e y sono invertiti
 int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi due sono quelli da dove parto, gli altri dove arrivo
 {
-	if (pavimento.at(posizione(posX, posY)).getEntita() == NULL) {
-		return -1;//Qui non c'Ë nessuno
+	if (pavimento.at(posizione(posX, posY)).getEntita() == NULL) 
+	{
+		return -1; //Qui non c'√® nessuno
 	}
-	if (posX == targetX&&posY == targetY) //Questo significa non spostarsi per davvero
+	if (posX == targetX && posY == targetY) //Questo significa non spostarsi per davvero
+	{
 		return -2;
-	if (!(targetX>-1 && targetX < larghezza && targetY>-1 && targetY < lunghezza))
+	}
+	if (!(targetX > -1 && targetX<lunghezza && targetY>-1 && targetY < larghezza))
+	{
 		return -3; //Posizione non valida per almeno una delle coordinate
+	}
+
 	int distanza, metodo;
 	pavimento.at(posizione(posX, posY)).getEntita()->muovi(distanza,metodo);
+
 	if (distanza == 0)
+	{
 		return -4; //Ho provato a muovermi ma sono immobile
+	}
 
 	//TODO Dijkstra per determinare la direzione da percorrere (qualora sia necessario usarlo).
-	//Qui sotto il sistema di spostamento Ë stupido, ma potrebbe funzionare per gestire entit‡ prive di intelligenza
-	//tipo qualche golem, melma, zombie o goblin ubriaco fradicio. In pratica non verifico la validit‡ finale del percorso,
+	//Qui sotto il sistema di spostamento √® stupido, ma potrebbe funzionare per gestire entit√† prive di intelligenza
+	//tipo qualche golem, melma, zombie o goblin ubriaco fradicio. In pratica non verifico la validit√† finale del percorso,
 	//ma solo quella della casella in cui mi voglio spostare, una per volta.
-	//P.S. questo sistema funziona bene anche quando c'Ë solo una casella da percorrere.
+	//P.S. questo sistema funziona bene anche quando c'√® solo una casella da percorrere.
+
 	//FIXME da qui assumo che il movimento sia in linea retta
-	while (distanza != 0 && !(posX == targetX&&posY == targetY)) { //Esco quando ho terminato i movimenti o quando sono arrivato.
+	while (distanza != 0 && !(posX == targetX && posY == targetY)) //Esco quando ho terminato i movimenti o quando sono arrivato.
+	{ 
 		int moveX=0, moveY=0;
 		if (posX < targetX)
+		{
 			moveX = 1;
+		}
 		else if (posX > targetX)
+		{
 			moveX = -1;
+		}
 		else {}
+
 		if (posY < targetY)
+		{
 			moveY = 1;
+		}
 		else if (posY > targetY)
+		{
 			moveY = -1;
+		}
 		else {}
 		
-		if (pavimento.at(posizione(posX + moveX, posY + moveY)).isMuro()) 
-		//Qui l'unico controllo presente Ë che la casella non sia un muro e che nella casella non ci sia nessuno.
+		//Qui l'unico controllo presente √® che la casella non sia un muro e che nella casella non ci sia nessuno.
+		if (pavimento.at(posizione(posX + moveX, posY + moveY)).isMuro()) //Qui c'√® un muro
 		{  
 			return 1;
 		}
-		else if (pavimento.at(posizione(posX + moveX, posY + moveY)).getEntita() != NULL) //Qui c'Ë qualcun'altro
+		else if (pavimento.at(posizione(posX + moveX, posY + moveY)).getEntita() != NULL) //Qui c'√® qualcun'altro
 		{
 			return 2;
 		}
-		else { //Date le premesse, spostarsi Ë sicuro e valido
-			Entita * temp = pavimento.at(posizione(posX, posY)).getEntita();
+		else //Date le premesse, spostarsi √® sicuro e valido
+		{ 
+			Entita* temp = pavimento.at(posizione(posX, posY)).getEntita();
 			pavimento.at(posizione(posX, posY)).setEntita(NULL);
 			pavimento.at(posizione(posX + moveX, posY + moveY)).setEntita(temp);
 			posX += moveX;
@@ -177,30 +218,48 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 			distanza--;
 		}
 	}
-	if (distanza == 0 && (posX == targetX&&posY == targetY))
+	if (distanza == 0 && (posX == targetX && posY == targetY))
+	{
 		return 0; //sono arrivato precisamente a destinazione
-	else if (distanza != 0 && (posX == targetX&&posY == targetY))
+	}
+	else if (distanza != 0 && (posX == targetX && posY == targetY))
+	{
 		return 3; //sono arrivato a destinazione ma avevo movimento avanzato
-	else return 4; //non sono arrivato a destinazione perchÈ ho finito il movimento
+	}
+	else
+	{
+		return 4; //non sono arrivato a destinazione perch√© ho finito il movimento
+	}
 }
 
-void Piano::StampaFileChar() {
+void Piano::StampaFileChar() 
+{
 	std::ofstream file ("mappa.map");
 	for (int i = 0; i < lunghezza*larghezza; i++)
 	{
 		auto casella = pavimento.at(i);
 		auto entity = casella.getEntita();
-		//Per ora l'ordine va bene cosÏ, ma non Ë detto che in un muro non ci possano essere nemici (tipo fantasmi)
-		if (dynamic_cast<Protagonista*>(entity) != NULL) //se entity Ë NULL il dynamic cast risponde NULL
+		//Per ora l'ordine va bene cos√¨, ma non √® detto che in un muro non ci possano essere nemici (tipo fantasmi)
+		if (dynamic_cast<Protagonista*>(entity) != NULL) //se entity √® NULL il dynamic cast risponde NULL
+		{
 			file << '@';
-		else if (casella.isMuro()) //se entity Ë NULL il dynamic cast risponde NULL
+		}
+		else if (casella.isMuro()) //se entity √® NULL il dynamic cast risponde NULL
+		{
 			file << '#';
+		}
 		else if (dynamic_cast<Attore*>(entity) != NULL) //Same
+		{
 			file << '*';
+		}
 		else
+		{
 			file << '.';
+		}
 		if ((i + 1) % lunghezza == 0)
+		{
 			file << std::endl;
+		}
 	}
 	file.close();
 }

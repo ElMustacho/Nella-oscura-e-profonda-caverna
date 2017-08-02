@@ -5,9 +5,10 @@
 #include "Oggetto.h"
 #include "Protagonista.h"
 #include "Attore.h"
+
 /*
 //LOOKATME
-Che sia chiaro una volta per tutte, anche perchÈ io mi sbaglio pi˘ o meno sempre, dannato sia il 2D
+Che sia chiaro una volta per tutte, anche perch√© io mi sbaglio pi√π o meno sempre, dannato sia il 2D
  
 	l larghezza ---> X
 	u ##################
@@ -31,6 +32,7 @@ public:
 	virtual ~Piano();
 	
 	int posizione(int x, int y);
+
 	Casella& at(int x, int y);
 	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY); 
 	bool creaPorte(int posX, int posY, int dimX, int dimY);
@@ -39,13 +41,13 @@ public:
 	void StampaFileChar();
 	bool popolaPiano();
 	bool spargiLoot();
+
 	Piano();
-	Piano(int larghezza, int lunghezza, std::vector<Oggetto> lootPossibile, std::vector<Entita> entit‡Possibili);
+	Piano(int larghezza, int lunghezza, std::vector<Oggetto> lootPossibile, std::vector<Entita> entit√†Possibili);
 	//Piano(std::string posizione, bool &successo); //Da file 
 protected:
 	std::vector<Casella> pavimento; 
-	int sceltaGeneratore, lunghezza, larghezza; //per ora considererÚ solo il caso a stanze regolari, non con perlin noise
+	int lunghezza, larghezza; 
 	std::vector<Entita> entitaGenerabili;
 	std::vector<Oggetto> oggettiGenerabili;
 };
-

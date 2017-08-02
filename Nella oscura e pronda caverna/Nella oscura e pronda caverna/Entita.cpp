@@ -29,6 +29,7 @@ void Entita::muovi(int & distanza, int & metodoTrasporto)
 
 }
 
+
 Entita::Entita()
 {
 
@@ -62,16 +63,18 @@ bool Entita::addInventario(Oggetto oggettoDaAgginugere)
 
 Entita::~Entita()
 {
-	//TODO
+	//TODO destructor
 }
 
 double Entita::carryWeight()
 { //Calcola il carico trasportato
 	double total = 0;
-	for (auto i : inventario) {
+	for (auto i : inventario) 
+	{
 		total += i.getPeso();
 	}
-	for (auto i : equipaggiamento) {
+	for (auto i : equipaggiamento) 
+	{
 		total += i.getPeso() / 2;	// Gli oggetti equipaggiati vengono calcolati con un peso minore perché in quanto
 	}								// più vicini al centro di massa (l'entità che li solleva) serve meno sforzo per
 	return total;					// sollevarli.
