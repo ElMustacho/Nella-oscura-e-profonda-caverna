@@ -10,9 +10,9 @@ class Entita
 {
 
 public:
+
 	
 	virtual ~Entita();
-
 	std::string getNome() const
 	{
 		return nome;
@@ -23,7 +23,10 @@ public:
 		this->nome = nome;
 	}
 
+	void onDeath(); //cosa succede se muore
+
 	Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
+
 	void muovi(int &distanza, int &metodoTrasporto);
 
 	// TODO implement method raccogli

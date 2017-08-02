@@ -3,7 +3,9 @@
 #include "..\Nella oscura e pronda caverna\Oggetto.cpp"
 #include <string>
 #include <iostream>
-int main(int argc, char* argv[]) {
+
+int main(int argc, char* argv[]) 
+{
 	testing::InitGoogleTest(&argc, argv);
 	auto garbage = RUN_ALL_TESTS();
 	char c;

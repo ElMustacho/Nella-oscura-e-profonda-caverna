@@ -149,7 +149,9 @@ public:
 			this->maxStamina = maxStamina;
 		}
 
-		void setMaxHp(int maxHp) {
+		void setMaxHp(int maxHp)
+		{
+
 			this->maxHp = maxHp;
 		}
 
@@ -161,9 +163,9 @@ public:
 		void setSilenziosio(bool silenzioso) 
 		{
 			this->silenzioso = silenzioso;
-		}
+    }
 
-		bool isSilenzioso() const 
+		bool isSilenzioso() const
 		{
 			return silenzioso;
 		}
@@ -185,4 +187,4 @@ private:
 	int maxStamina;
 	double forzaDiCarico;
 	bool silenzioso;
-	};
+};

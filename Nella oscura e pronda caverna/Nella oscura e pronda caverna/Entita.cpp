@@ -3,6 +3,27 @@
 
 
 
+Entita::Entita(std::string nome, Attributi attributi) : attributi(attributi) // CHECK manage Attributi
+{
+	this->nome = nome;
+	this->attributi = attributi;
+}
+
+Entita::Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento) : attributi(attributi) 
+{
+	
+	this->nome = nome;
+	this->equipaggiamento = equipaggiamento;
+	this->inventario = inventario;
+	this->attributi = attributi;
+}
+
+
+
+Entita::~Entita() 
+{
+	//TODO ~Entita()
+
 
 Entita::Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento): attributi(attributi) {
 	
@@ -80,6 +101,11 @@ double Entita::carryWeight()
 	return total;					// sollevarli.
 }
 
+
+void Entita::onDeath()
+{
+
+}
 std::string Entita::describeInventario() {
 	std::string returnStringa;
 	for (auto i = inventario.begin(); i != inventario.end(); i++)

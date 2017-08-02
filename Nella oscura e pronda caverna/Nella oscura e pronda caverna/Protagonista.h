@@ -1,5 +1,6 @@
 #pragma once
 #include "Entita.h"
+
 class Protagonista : public Entita
 {
 
@@ -8,7 +9,7 @@ public:
 	~Protagonista();
 
 private:
-	unsigned int livello; //FIXME livello è gia contenuto dentro attributi, ereditati da Entita
+	unsigned int livello; //FIXME livello Ã¨ gia contenuto dentro attributi, ereditati da Entita
 	double esperienza;
 	long int fondiEconomici;
 };

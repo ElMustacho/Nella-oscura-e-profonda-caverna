@@ -12,19 +12,19 @@ public:
 	Danno attacca();
 	virtual void usa();
 
-	const double getPeso() 
+	double getPeso() const
 	{
 		return peso;
 	}
-	const std::string getNome() 
+	std::string getNome() const
 	{
 		return nome;
 	}
-	const std::string getDescrizione() 
+	std::string getDescrizione() const
 	{
 		return descrizione;
 	}
-	const long getValore()
+	long getValore() const
 	{
 		return valore;
 	}

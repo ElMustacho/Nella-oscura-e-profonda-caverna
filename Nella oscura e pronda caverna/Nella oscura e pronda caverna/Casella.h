@@ -7,8 +7,9 @@
 class Casella
 {
 
+
 public:
-	Casella(Tileset tileset, Oggetto* oggetto, Entita* entit‡, bool trasparenza, bool attraversabile, int evento); //CHECK quando vuoi dare valori di default, devono essere messi nel .cpp, non nel .h, altrimenti Ë un casino!
+	Casella(Tileset tileset, Oggetto* oggetto, Entita* entit√†, bool trasparenza, bool attraversabile, int evento); //CHECK quando vuoi dare valori di default, devono essere messi nel .cpp, non nel .h, altrimenti √® un casino!
 	~Casella();
 	void Scava();
 	Casella(bool default); //Default
@@ -26,6 +27,7 @@ public:
 
 private:
 	Oggetto* oggetto;
+
 	Entita* entita;
 	bool trasparenza;
 	bool attraversabile;
