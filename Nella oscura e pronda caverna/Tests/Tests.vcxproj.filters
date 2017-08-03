@@ -29,10 +29,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="OggettoTests.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
-    <ClCompile Include="EntitaTests.cpp">
+    <ClCompile Include="Tests.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>
