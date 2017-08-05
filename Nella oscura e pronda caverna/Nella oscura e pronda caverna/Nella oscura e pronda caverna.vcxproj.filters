@@ -57,6 +57,12 @@
     <ClInclude Include="Danno.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="noiseutils.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="pianoCavernaIsola.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Oggetto.cpp">
@@ -104,5 +110,14 @@
     <ClCompile Include="Danno.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
+    <ClCompile Include="noiseutils.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="pianoCavernaIsola.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="libnoise.dll" />
   </ItemGroup>
 </Project>
