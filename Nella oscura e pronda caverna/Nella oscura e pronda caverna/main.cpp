@@ -5,19 +5,20 @@
 #include "Piano.h"
 #include "PianoFile.h"
 #include "Danno.h"
+#include "pianoCavernaIsola.h"
 int main() 
 {
+	pianoCavernaIsola please(20, 20);
+	please.StampaChar();
 	bool ok = true;
-	for (unsigned int i = 0; i < Danno::giveCategoriaDanni().size(); i++)
-		std::cout << Danno::giveCategoriaDanni()[i] << std::endl;
 	PianoFile pregen("testPreload.txt", ok);
 	if (!ok)
 	{
 		std::cout << "Merda";
 		return -1;
 	}
-	else
-		pregen.StampaChar();
+	//else
+		//pregen.StampaChar();
 	char a ='0', b = '0'; //TODO così sono brutto e gestito male
 	std::cout << "Bloat text? y/n: ";
 	while(a!='y'&&a!='n')
