@@ -5,7 +5,7 @@
 #include "Oggetto.h"
 #include "Protagonista.h"
 #include "Attore.h"
-
+typedef std::pair<int, int> cood;
 /*
 //LOOKATME
 Che sia chiaro una volta per tutte, anche perché io mi sbaglio più o meno sempre, dannato sia il 2D
@@ -34,20 +34,28 @@ public:
 	int posizione(int x, int y);
 
 	Casella& at(int x, int y);
+	Casella& at(cood coord);
+	int posizione(cood coord);
 	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY); 
 	bool creaPorte(int posX, int posY, int dimX, int dimY);
+	std::vector<Entita> getVectorEntita();
+	std::vector<cood> getVectorPosizioni();
 	void StampaChar();
 	int muoviEntita(int posX, int posY, int targetX, int targetY); 
 	void StampaFileChar();
 	bool popolaPiano();
 	bool spargiLoot();
-
+	bool placeEntita(Entita &placeMe, cood coord);
 	Piano();
 	Piano(int larghezza, int lunghezza, std::vector<Oggetto> lootPossibile, std::vector<Entita> entitaPossibili);
+	Protagonista const getPlayer() { return protagonista; };
+	void setProtagonista(Protagonista prot) { protagonista = prot; };
 	//Piano(std::string posizione, bool &successo); //Da file 
 protected:
 	std::vector<Casella> pavimento; 
 	int lunghezza, larghezza; 
 	std::vector<Entita> entitaGenerabili;
 	std::vector<Oggetto> oggettiGenerabili;
+	std::vector<std::pair<Entita, cood>> entitaPresenti;
+	static Protagonista protagonista;
 };

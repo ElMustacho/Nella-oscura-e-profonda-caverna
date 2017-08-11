@@ -8,7 +8,7 @@ pianoCavernaIsola::pianoCavernaIsola(int lunghezza, int larghezza)
 	this->larghezza = larghezza;
 	this->lunghezza = lunghezza;
 	noise::module::Perlin perlin;
-	std::srand(time(nullptr));
+	std::srand((unsigned int)time(nullptr));
 	double random = (double)(rand() % 50) / 2;
 	pavimento.reserve(lunghezza*larghezza);
 	for (int i = 0; i < lunghezza; i++) {

@@ -45,7 +45,26 @@ Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int
 	}
 }
 
-
+bool Attributi::operator==(const Attributi & rAttr) const
+{
+	if (this->forza == rAttr.forza)
+		if (this->destrezza == rAttr.destrezza)
+			if (this->tempra == rAttr.tempra)
+				if (this->intelligenza == rAttr.intelligenza)
+					if (this->spirito == rAttr.spirito)
+						if (this->carisma == rAttr.carisma)
+							if (this->fortuna == rAttr.fortuna)
+								if (this->hp == rAttr.hp)
+									if (this->potereMagico == rAttr.potereMagico)
+										if (this->stamina == rAttr.stamina)
+											if (this->forzaDiCarico == rAttr.forzaDiCarico)
+												if (this->maxHp == rAttr.maxHp)
+													if (this->maxPotereMagico == rAttr.maxPotereMagico)
+														if (this->maxStamina == rAttr.maxStamina)
+															if (this->silenzioso == rAttr.silenzioso)
+																return true;
+	return false;
+}
 
 Attributi::~Attributi()
 {

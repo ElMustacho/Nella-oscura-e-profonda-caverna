@@ -26,24 +26,27 @@ int main()
 	std::cout << "Autopickup? y/n: ";
 	while (b != 'y'&&b != 'n')
 		std::cin >> b;
-	std::vector<Oggetto> tabellaLoot; //VUOTA
+	std::list<Oggetto> tabellaLoot; //VUOTA
+	std::vector<Oggetto> Equipaggiamento;
 	std::vector<Entita> tabellaEntita; //VUOTA
-	Protagonista Saitama("Saitama", tabellaLoot, Attributi(), tabellaLoot, 1, 0., 0); //Sto usando tabella loot giusto perchè è vuota
-	Attore JimBob("JimBob", tabellaLoot, Attributi(), tabellaLoot, 4.);
-	pregen.at(1, 5).setEntita(&Saitama);
+	cood coord(5,5);
+	Protagonista Saitama("Saitama", tabellaLoot, Attributi(), Equipaggiamento, 1, 1094.6099, 400); //Sto usando tabella loot giusto perchè è vuota
+	Attore JimBob("JimBob", tabellaLoot, Attributi(), Equipaggiamento, 4.);
+	pregen.placeEntita(Saitama,coord);
 	pregen.at(2, 6).setEntita(&JimBob);
 	Oggetto oggettoDebug(10.,"Cosa", "Qualcosa di fantastico", 40);
 	Oggetto oggettoDebug2(5., "Altra cosa", "Qualcosa di altrettanti fantastico", 15);
 	Saitama.addInventario(oggettoDebug);
-	pregen.at(1,5).getEntita()->addInventario(oggettoDebug2);
-	std::cout << pregen.at(1, 5).getEntita()->describeInventario() << std::endl;
+	pregen.at(5,5).getEntita()->addInventario(oggettoDebug2);
+	std::cout << pregen.at(5, 5).getEntita()->describeInventario() << std::endl;
+	pregen.at(4, 9).setEvento(1);
 	/*
 	Attributi dexAlta(4, 14, 4, 4, 4, 4, 4, 1);
 	Saitama.setAttributi(dexAlta);
 	std::cout << Saitama.getAttributi().getDestrezza() << std::endl;
 	*/
 	int exit = 0;
-	int X = 5, Y = 1;
+	int X = 5, Y = 5;
 	std::cout << std::endl;
 	while (exit == 0) {
 		pregen.StampaChar();

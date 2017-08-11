@@ -7,14 +7,23 @@ Entita::~Entita()
 	//TODO ~Entita()
 }
 
-Entita::Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento): attributi(attributi) {
+Entita::Entita(std::string nome, std::list<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento): attributi(attributi) {
 	
 		this->nome = nome;
 		this->equipaggiamento = equipaggiamento;
 		this->inventario = inventario;
 		this->attributi = attributi;
 }
-
+bool Entita::operator==(const Entita & rEntita) const
+{
+	if (typeid(this) == typeid(rEntita))
+		if (this->nome == rEntita.nome)
+			if (this->inventario == rEntita.inventario)
+				if (this->equipaggiamento == rEntita.equipaggiamento)
+					if (this->attributi == rEntita.attributi)
+						return true;
+	return false;
+}
 void Entita::muovi(int & distanza, int & metodoTrasporto)
 {
 	distanza = 1;
@@ -49,9 +58,8 @@ void Entita::setAttributi(Attributi attr)
 	attributi = attr;
 }
 //FIXME per ora non gestisco tutti i casi.
-bool Entita::addInventario(std::vector<Oggetto> oggettiAggiunti)
+bool Entita::addInventario(std::list<Oggetto> oggettiAggiunti)
 {
-	inventario.reserve(oggettiAggiunti.size() + inventario.size());
 	inventario.insert(inventario.end(), oggettiAggiunti.begin(), oggettiAggiunti.end());
 	return true;
 }

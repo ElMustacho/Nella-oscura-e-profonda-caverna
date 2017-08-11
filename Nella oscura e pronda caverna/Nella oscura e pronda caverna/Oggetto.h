@@ -10,6 +10,8 @@ public:
 	~Oggetto();
 	//Tutto può essere un'arma se sei abbastanza disperato e/o creativo
 	Danno attacca();
+	bool operator==(const Oggetto rOggetto) const;
+	bool operator!=(const Oggetto rOggetto) const { return !operator==(rOggetto); };
 	virtual void usa();
 
 	double getPeso() const

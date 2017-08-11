@@ -3,7 +3,7 @@
 #include "Oggetto.h"
 #include "Entita.h"
 #include "Tileset.h"
-
+#include "Protagonista.h"
 class Casella
 {
 
@@ -22,7 +22,8 @@ public:
 	Entita* getEntita() { return this->entita; }
 	void setOggetto(Oggetto* obj);
 	bool setEntita(Entita* entity);
-
+	void setEvento(int evento) { this->evento = evento; };
+	int getEvento() const { return evento; };
 	void doEvento();
 
 private:

@@ -1,6 +1,7 @@
 #include "Casella.h"
 #include "Scrigno.h"
-
+#include <iostream>
+#include <cstdlib>
 Casella::Casella(Tileset tileset, Oggetto* oggetto, Entita* entita, bool trasparenza, bool attraversabile, int evento)
 {
 	this->tileset = tileset;
@@ -65,7 +66,12 @@ bool Casella::setEntita(Entita * entity) //TODO gestire la sovrapposizione delle
 
 void Casella::doEvento()//FIXME sono un segnaposto
 {
-
+	if (evento == 1 && dynamic_cast<Protagonista*>(entita)!=nullptr) {
+		std::cout << "Hai vinto!";
+		char a;
+		std::cin >> a;
+		exit(EXIT_SUCCESS);
+	}
 }
 
 Casella::~Casella() //Se non libero questi puntatori non lo farà nessuno, PERÒ nessuno mi garantisce che io non preservi

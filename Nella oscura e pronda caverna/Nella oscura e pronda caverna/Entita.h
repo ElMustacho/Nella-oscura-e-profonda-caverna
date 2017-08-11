@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <list>
 #include "Oggetto.h"
 #include "Sprite.h"
 #include "Attributi.h"
@@ -25,7 +26,9 @@ public:
 
 	void onDeath(); //cosa succede se muore
 
-	Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
+	Entita(std::string nome, std::list<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
+
+	bool operator==(const Entita & rEntita)const;
 
 	void muovi(int &distanza, int &metodoTrasporto);
 
@@ -35,7 +38,7 @@ public:
 	Entita(); //TODO vorrei evitare di mettere costruttori vuoti solo perché se no il compilatore si lamenta.
 	Attributi getAttributi() const;
 	void setAttributi(Attributi attr);
-	bool addInventario(std::vector<Oggetto> oggettiAggiunti);
+	bool addInventario(std::list<Oggetto> oggettiAggiunti);
 	bool addInventario(Oggetto oggettoDaAgginugere);
 
 	double carryWeight(); //calcolo peso trasportato
@@ -44,7 +47,7 @@ private:
 	std::string nome;
 	Attributi attributi;
 	//FIXME Sprite sprite;   manage Sprite
-	std::vector<Oggetto> inventario; //CHECK forse è meglio che sia una lista, così posso gestire meglio i buchi nell'inventario (di fatto eliminandoli)
+	std::list<Oggetto> inventario; //CHECK forse è meglio che sia una lista, così posso gestire meglio i buchi nell'inventario (di fatto eliminandoli)
 	std::vector<Oggetto> equipaggiamento;
 	/*
 	nella posizione X di equipaggiamento ci sarà:

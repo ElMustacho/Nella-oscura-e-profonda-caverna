@@ -15,9 +15,9 @@ int Piano::posizione(int x, int y) {
 	if (y < 0)
 		y = 0;
 	if (x > larghezza)
-		x = larghezza;
+		x = larghezza-1;
 	if (y > lunghezza)
-		y = lunghezza;
+		y = lunghezza-1;
 	return x + y*larghezza;
 }
 //Stesso funzionamento di Piano::posizione()
@@ -28,10 +28,18 @@ Casella & Piano::at(int x, int y)
 	if (y < 0)
 		y = 0;
 	if (x > larghezza)
-		x = larghezza;
+		x = larghezza-1;
 	if (y > lunghezza)
-		y = lunghezza;
+		y = lunghezza-1;
 	return pavimento.at(y + x * larghezza); 
+}
+
+Casella & Piano::at(cood coord) {
+	return at(coord.first, coord.second);
+}
+
+int Piano::posizione(cood coord) {
+	return posizione(coord.first,coord.second);
 }
 
 
@@ -45,6 +53,20 @@ bool Piano::spargiLoot()
 	return false;
 }
 
+bool Piano::placeEntita(Entita & placeMe, cood coord)
+{
+	if (pavimento.at(posizione(coord)).getEntita() == nullptr) {
+		pavimento.at(posizione(coord)).setEntita(&placeMe);
+		std::pair<Entita, cood> entitaTabella(placeMe, coord);
+		entitaPresenti.push_back(entitaTabella);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 Piano::Piano() {
 
 }
@@ -52,46 +74,6 @@ Piano::Piano() {
 Piano::Piano(int larghezza, int lunghezza, std::vector<Oggetto> lootPossibile, std::vector<Entita> entitaPossibili)
 {
 }
-/*
-//TODO per ora io prendo solo la struttura del piano, entità e oggetti non verranno considerati
-//in futuro, se da un piano non trovo il personaggio od ho altri probelmi, l'operazione deve fallire, e il piano deve essere scartato
-//Chiedo un persorso file, se riesco ad arrivare in fondo successo sarà true, altrimenti false.
-Piano::Piano(std::string posizione, bool &successo)
-{
-	std::ifstream inputPiano(posizione);
-	std::string lineaCaselle;
-	lunghezza = 0, larghezza = 0;
-	for (int i = 0; std::getline(inputPiano, lineaCaselle); i++)
-	{
-	case 1:
-		if (1==1)//TODO controlli sulla validità del piano.
-			auto generato = GeneratoreV1();
-		break;
-	default:
-		auto generato = GeneratoreV1();//questo sarà il generatore di default.
-		
-		for (unsigned int j = 0; j < lineaCaselle.size(); j++)
-		{
-			if (lineaCaselle.at(j) == '#')
-				pavimento.push_back(Casella(false));
-			else if (lineaCaselle.at(j) == '.')
-				pavimento.push_back(Casella(true));
-			else {
-				std::cout << "E' successo un casino.\n";
-				successo = false;
-			}
-		}
-		if (i == 0)
-			larghezza=lineaCaselle.size();
-		lunghezza++;
-	}
-	pavimento.reserve(lunghezza*larghezza); //LOOKATME questa chiamata è molto importante, e deve essere fatta alla fine di ogni costruttore!
-}
-bool Piano::GeneratoreV1() 
-{
-	return false;
-}
-*/
 
 bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY) 
 {
@@ -121,7 +103,23 @@ bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //TODO Presa una s
 	return true;
 }
 
+std::vector<Entita> Piano::getVectorEntita() {
+	std::vector<Entita> returned;
+	for each (std::pair<Entita,cood> entity in entitaPresenti)
+	{
+		returned.push_back(entity.first);
+	}
+	return returned;
+}
 
+std::vector<cood> Piano::getVectorPosizioni() {
+	std::vector<cood> returned;
+	for each (std::pair<Entita, cood> entity in entitaPresenti)
+	{
+		returned.push_back(entity.second);
+	}
+	return returned;
+}
 
 void Piano::StampaChar() 
 { 
@@ -133,10 +131,12 @@ void Piano::StampaChar()
 		auto entity = casella.getEntita();
 		if (pavimento.at(i).isMuro())
 			mappa.push_back('#');
-		else if (dynamic_cast<Protagonista*>(entity) != NULL) 
+		else if (dynamic_cast<Protagonista*>(entity) != NULL)
 			mappa.push_back('@');
-		else if (dynamic_cast<Attore*>(entity) != NULL) 
+		else if (dynamic_cast<Attore*>(entity) != NULL)
 			mappa.push_back('*');
+		else if (casella.getEvento() == 1)
+			mappa.push_back('>');
 		else
 			mappa.push_back('.');
 		if ((i + 1) % larghezza == 0)
@@ -144,7 +144,7 @@ void Piano::StampaChar()
 	}
 	std::cout << mappa;
 }
-//TODO x e y sono invertiti
+
 int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi due sono quelli da dove parto, gli altri dove arrivo
 {
 	if (pavimento.at(posizione(posX, posY)).getEntita() == NULL) 
@@ -155,7 +155,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	{
 		return -2;
 	}
-	if (!(targetX > -1 && targetX<lunghezza && targetY>-1 && targetY < larghezza))
+	if (!(targetX > -1 && targetX<larghezza && targetY>-1 && targetY < lunghezza))
 	{
 		return -3; //Posizione non valida per almeno una delle coordinate
 	}
@@ -210,12 +210,20 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 		else //Date le premesse, spostarsi è sicuro e valido
 		{ 
 			Entita* temp = pavimento.at(posizione(posX, posY)).getEntita();
-			pavimento.at(posizione(posX, posY)).setEntita(NULL);
+			pavimento.at(posizione(posX, posY)).setEntita(nullptr);
 			pavimento.at(posizione(posX + moveX, posY + moveY)).setEntita(temp);
+			cood coordinatePrima(posX, posY);
 			posX += moveX;
 			posY += moveY;
-			pavimento.at(posizione(posX, posY)).doEvento();
 			distanza--;
+			cood coordinateDopo(posX, posY);
+			auto vPosizioni = getVectorPosizioni();
+			auto it = std::find(vPosizioni.begin(), vPosizioni.end(), coordinatePrima);
+			if (it != vPosizioni.end()) {
+				auto distanza = std::distance(vPosizioni.begin(), it);
+				entitaPresenti[distanza].second = coordinateDopo;
+			}
+			pavimento.at(posizione(posX, posY)).doEvento();
 		}
 	}
 	if (distanza == 0 && (posX == targetX && posY == targetY))
