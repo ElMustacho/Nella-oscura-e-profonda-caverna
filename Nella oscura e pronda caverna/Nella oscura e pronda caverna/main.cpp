@@ -44,6 +44,10 @@ int main()
 	int exit = 0;
 	int X = 5, Y = 1;
 	std::cout << std::endl;
+
+	pregen.muoviEntita(X, Y, X + 4, Y + 4);
+
+	/*
 	while (exit == 0) {
 		pregen.StampaChar();
 		if (a=='y')
@@ -228,7 +232,7 @@ int main()
 		}
 	}
 	primoLivello.StampaChar();
-	//primoLivello.StampaFileChar();
+	//primoLivello.StampaFileChar();*/
 	std::cout << std::endl;
 	std::cin >> a;
   //Questo main dovrà finire in un test.*/
