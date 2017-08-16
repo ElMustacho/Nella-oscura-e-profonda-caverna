@@ -42,10 +42,8 @@ Danno::~Danno()
 //quando e se aggiungeremo altre categorie di danni questa sarà la cosa da modificare.
 const std::vector<std::string> Danno::giveCategoriaDanni()
 {
-	//LOOKATME lo possiamo fare in una sola riga?
-	std::vector<std::string> tmp = { "tagliente", "perforante", "contundente", "magico", "fuoco", "freddo", "elettrico", "acido",
+	return std::vector<std::string>  { "tagliente", "perforante", "contundente", "magico", "fuoco", "freddo", "elettrico", "acido",
 		"sonico", "sacro", "sacrilego", "esplosivo", "positivo", "negativo", "mentale", "forza" };
-	return tmp;
 }
 // percentuale = 0.5 -> categoria dimezzata, percentuale = 1.5 -> categoria aumentata della metà
 void Danno::magnifica(int posizione, double percentuale)

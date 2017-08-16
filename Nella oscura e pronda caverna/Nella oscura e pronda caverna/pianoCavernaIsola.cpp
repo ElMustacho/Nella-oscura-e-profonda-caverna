@@ -2,7 +2,7 @@
 #include "noise\noise.h"
 #include <cstdlib>
 #include <ctime>
-
+#include <iostream>
 pianoCavernaIsola::pianoCavernaIsola(int lunghezza, int larghezza)
 {
 	this->larghezza = larghezza;
@@ -28,9 +28,27 @@ pianoCavernaIsola::pianoCavernaIsola(int lunghezza, int larghezza)
 		}
 		
 	}
+	cood placeProtagonista(0,0);
+	int counter=0;
+	Entita* prot = entityFactory();
+do {
+		placeProtagonista.first = rand() % larghezza;
+		placeProtagonista.second = rand() % lunghezza;
+		counter++;
+	} while ((floodFill(placeProtagonista).empty() ^ counter == 1000)); //OPTIMIZE
+	if (counter == 1000)
+		std::cout << "D'oh" << std::endl;
+	else
+		placeEntita(prot, placeProtagonista);
+	StampaChar();
 }
 
 
 pianoCavernaIsola::~pianoCavernaIsola()
 {
+	for each (std::pair<Entita*,cood> var in entitaPresenti)
+	{
+		delete(var.first);
+	}
+
 }

@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <cmath>
+#include <deque>
 #include "Piano.h"
 
 
@@ -14,9 +15,9 @@ int Piano::posizione(int x, int y) {
 		x = 0;
 	if (y < 0)
 		y = 0;
-	if (x > larghezza)
+	if (x >= larghezza)
 		x = larghezza-1;
-	if (y > lunghezza)
+	if (y >= lunghezza)
 		y = lunghezza-1;
 	return x + y*larghezza;
 }
@@ -27,9 +28,9 @@ Casella & Piano::at(int x, int y)
 		x = 0;
 	if (y < 0)
 		y = 0;
-	if (x > larghezza)
+	if (x >= larghezza)
 		x = larghezza-1;
-	if (y > lunghezza)
+	if (y >= lunghezza)
 		y = lunghezza-1;
 	return pavimento.at(y + x * larghezza); 
 }
@@ -38,10 +39,19 @@ Casella & Piano::at(cood coord) {
 	return at(coord.first, coord.second);
 }
 
+bool Piano::isCoodLegal(cood coord) {
+	if (coord.first < 0 || coord.first >= larghezza || coord.second < 0 || coord.second >= lunghezza)
+		return false;
+	return true;
+}
+
 int Piano::posizione(cood coord) {
 	return posizione(coord.first,coord.second);
 }
 
+cood Piano::fromPosizioneToInt(int x) {
+	return cood(x % larghezza, x / larghezza);
+}
 
 bool Piano::popolaPiano()
 {
@@ -53,11 +63,12 @@ bool Piano::spargiLoot()
 	return false;
 }
 
-bool Piano::placeEntita(Entita & placeMe, cood coord)
+bool Piano::placeEntita(Entita* placeMe, cood coord) //FIXME inserisco gente nelle pareti
 {
 	if (pavimento.at(posizione(coord)).getEntita() == nullptr) {
-		pavimento.at(posizione(coord)).setEntita(&placeMe);
-		std::pair<Entita, cood> entitaTabella(placeMe, coord);
+		pavimento.at(posizione(coord)).setEntita(placeMe);
+		Entita* copyTemp = placeMe;
+		std::pair<Entita*, cood> entitaTabella(copyTemp, coord);
 		entitaPresenti.push_back(entitaTabella);
 		return true;
 	}
@@ -103,9 +114,9 @@ bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //TODO Presa una s
 	return true;
 }
 
-std::vector<Entita> Piano::getVectorEntita() {
-	std::vector<Entita> returned;
-	for each (std::pair<Entita,cood> entity in entitaPresenti)
+std::vector<Entita*> Piano::getVectorEntita() {
+	std::vector<Entita*> returned;
+	for each (std::pair<Entita*,cood> entity in entitaPresenti)
 	{
 		returned.push_back(entity.first);
 	}
@@ -114,11 +125,57 @@ std::vector<Entita> Piano::getVectorEntita() {
 
 std::vector<cood> Piano::getVectorPosizioni() {
 	std::vector<cood> returned;
-	for each (std::pair<Entita, cood> entity in entitaPresenti)
+	for each (std::pair<Entita*, cood> entity in entitaPresenti)
 	{
 		returned.push_back(entity.second);
 	}
 	return returned;
+}
+
+std::vector<cood> Piano::floodFill(cood posizionePartenza)
+{
+	std::vector<cood> caselleOk{};
+	caselleOk.reserve(lunghezza*larghezza);
+	std::deque<cood> codaCaselle;
+	auto casella = pavimento.at(posizione(posizionePartenza));
+	if (casella.isMuro()) {
+		return caselleOk;
+	}
+	codaCaselle.push_back(posizionePartenza);
+	while (!codaCaselle.empty()) {
+		auto casellaControllata = codaCaselle.front();
+		codaCaselle.pop_front();
+		if (!pavimento.at(posizione(casellaControllata)).isMuro()) {
+			if (std::find(caselleOk.begin(), caselleOk.end(), casellaControllata) == caselleOk.end()) {
+				caselleOk.push_back(casellaControllata);
+				cood coordFF(casellaControllata.first+1, casellaControllata.second);
+				if(isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+				coordFF.second++;
+				if (isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+				coordFF.first--;
+				if (isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+				coordFF.first--;
+				if (isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+				coordFF.second--;
+				if (isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+				coordFF.second--;
+				if (isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+				coordFF.first++;
+				if (isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+				coordFF.first++;
+				if (isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+			}
+		}
+	}
+	return caselleOk;
 }
 
 void Piano::StampaChar() 
@@ -135,7 +192,7 @@ void Piano::StampaChar()
 			mappa.push_back('@');
 		else if (dynamic_cast<Attore*>(entity) != NULL)
 			mappa.push_back('*');
-		else if (casella.getEvento() == 1)
+		else if (casella.getEvento() == 1) //Scale
 			mappa.push_back('>');
 		else
 			mappa.push_back('.');
@@ -270,4 +327,41 @@ void Piano::StampaFileChar()
 		}
 	}
 	file.close();
+}
+//LOOKATME
+//Oggetti instanziati qui non producono memory leak SE E SOLO SE ARRIVANO NELLA TABELLA entitaPresenti
+//OPTIMIZE perciò un giorno passeremo ai smartpointer e avremo altri sistemi di sicurezaz contingenti
+//idealmente questa converte i valori da stringa da passare all'altra funzione overloaded
+Entita * Piano::entityFactory(std::string)
+{
+	return nullptr;
+}
+//Lasciare vuoto per avere un personaggio principale, oppure mandare 0. Di default non rende nulla
+Entita * Piano::entityFactory(int codiceID)
+{
+	Entita* appoggio;
+	switch (codiceID) {
+	case 0: {
+		//TODO qui ovviamente dovrà esserci il modo di caricare un personaggio preesistente o di invocare il creatore di personaggi, per ora lo tratto come un qualunque idiota
+		std::list<Oggetto> inventario{ Oggetto(0.5,"Sfera di metallo","Direi piuttosto che si tratta di un oggetto a forma d'uovo",2) };
+		Attributi nellaMedia(4, 4, 4, 4, 4, 4, 4, 4);
+		std::vector<Oggetto> equipaggiamento; //Picche, non hai nulla scemo
+		appoggio = new Protagonista("Medioman", inventario, nellaMedia, equipaggiamento, 1, 0, 0);
+		break;
+	}
+	case 1:
+	{// Goblin scrauso, puzzone e nudo
+		std::list<Oggetto> inventario;
+		Attributi scarso(3, 4, 2, 2, 2, 1, 3, 1);
+		std::vector<Oggetto> equipaggiamento; //Picche, non hai nulla scemo puzzone
+		appoggio = new Entita("Goblin puzzone", inventario, scarso, equipaggiamento);
+		break;
+	}
+	default:
+	{
+		appoggio = nullptr;
+	}
+	
+	}
+	return appoggio;
 }

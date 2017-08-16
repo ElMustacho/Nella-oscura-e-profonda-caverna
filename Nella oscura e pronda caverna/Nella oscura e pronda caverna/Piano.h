@@ -7,7 +7,7 @@
 #include "Attore.h"
 typedef std::pair<int, int> cood;
 /*
-//LOOKATME
+LOOKATME
 Che sia chiaro una volta per tutte, anche perché io mi sbaglio più o meno sempre, dannato sia il 2D
  
 	l larghezza ---> X
@@ -35,27 +35,29 @@ public:
 
 	Casella& at(int x, int y);
 	Casella& at(cood coord);
+	bool isCoodLegal(cood coord);
 	int posizione(cood coord);
+	cood fromPosizioneToInt(int x);
 	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY); 
 	bool creaPorte(int posX, int posY, int dimX, int dimY);
-	std::vector<Entita> getVectorEntita();
+	std::vector<Entita*> getVectorEntita();
 	std::vector<cood> getVectorPosizioni();
+	std::vector<cood> floodFill (cood posizionePartenza);
 	void StampaChar();
 	int muoviEntita(int posX, int posY, int targetX, int targetY); 
 	void StampaFileChar();
 	bool popolaPiano();
 	bool spargiLoot();
-	bool placeEntita(Entita &placeMe, cood coord);
+	bool placeEntita(Entita* placeMe, cood coord);
 	Piano();
 	Piano(int larghezza, int lunghezza, std::vector<Oggetto> lootPossibile, std::vector<Entita> entitaPossibili);
-	Protagonista const getPlayer() { return protagonista; };
-	void setProtagonista(Protagonista prot) { protagonista = prot; };
+	Entita* entityFactory(std::string nome);
+	Entita* entityFactory(int codiceID=0);
 	//Piano(std::string posizione, bool &successo); //Da file 
 protected:
 	std::vector<Casella> pavimento; 
 	int lunghezza, larghezza; 
 	std::vector<Entita> entitaGenerabili;
 	std::vector<Oggetto> oggettiGenerabili;
-	std::vector<std::pair<Entita, cood>> entitaPresenti;
-	static Protagonista protagonista;
+	std::vector<std::pair<Entita*, cood>> entitaPresenti;
 };
