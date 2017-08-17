@@ -2,16 +2,23 @@
 
 #include <vector>
 #include "Oggetto.h"
-
+#include "Danno.h"
 class Arma : public Oggetto
 {
 
 public:
-	Arma(double peso, std::string nome, std::string descrizione, long valore, int danno, std::vector<bool> tipo);
+	Arma(double peso, std::string nome, std::string descrizione, long valore, Danno danno);
 	~Arma();
-	virtual void usa();
+
+	Danno getDannoBase()const;
+
+	void setDannoBase(Danno danno);
+	Danno attacca() override;
+	void Incanta();
+
+	void Deincanta();
+
 private:
-	int danno;
-	std::vector<bool> tipo;
+	Danno dannoBase;
 };
 

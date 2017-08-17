@@ -9,7 +9,7 @@ public:
 	Oggetto(double peso, std::string nome, std::string descrizione, long valore) : peso(peso), nome(nome), descrizione(descrizione), valore(valore) {}
 	~Oggetto();
 	//Tutto può essere un'arma se sei abbastanza disperato e/o creativo
-	Danno attacca();
+	virtual Danno attacca();
 	bool operator==(const Oggetto rOggetto) const;
 	bool operator!=(const Oggetto rOggetto) const { return !operator==(rOggetto); };
 	virtual void usa();

@@ -82,7 +82,7 @@ Piano::Piano() {
 
 }
 
-Piano::Piano(int larghezza, int lunghezza, std::vector<Oggetto> lootPossibile, std::vector<Entita> entitaPossibili)
+Piano::Piano(int larghezza, int lunghezza, std::vector<Oggetto*> lootPossibile, std::vector<Entita> entitaPossibili)
 {
 }
 

@@ -40,7 +40,7 @@ do {
 		std::cout << "D'oh" << std::endl;
 	else
 		placeEntita(prot, placeProtagonista);
-	StampaChar();
+	spargiLoot();
 }
 
 

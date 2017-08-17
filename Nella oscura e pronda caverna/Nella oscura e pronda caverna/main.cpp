@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctime>
+#include <memory>
 #include "Oggetto.h"
 #include "Entita.h"
 #include "Piano.h"
@@ -8,6 +9,7 @@
 #include "pianoCavernaIsola.h"
 int main() 
 {
+	std::shared_ptr<Oggetto> test(new Oggetto(0.02, "Laser", "Puntatore Laser", 400));
 	std::list<Oggetto> tabellaLoot; //VUOTA
 	std::vector<Oggetto> Equipaggiamento;
 	std::vector<Entita> tabellaEntita; //VUOTA

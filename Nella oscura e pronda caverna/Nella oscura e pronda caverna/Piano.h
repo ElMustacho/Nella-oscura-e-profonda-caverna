@@ -50,7 +50,7 @@ public:
 	bool spargiLoot();
 	bool placeEntita(Entita* placeMe, cood coord);
 	Piano();
-	Piano(int larghezza, int lunghezza, std::vector<Oggetto> lootPossibile, std::vector<Entita> entitaPossibili);
+	Piano(int larghezza, int lunghezza, std::vector<Oggetto*> lootPossibile, std::vector<Entita> entitaPossibili);
 	Entita* entityFactory(std::string nome);
 	Entita* entityFactory(int codiceID=0);
 	//Piano(std::string posizione, bool &successo); //Da file 
@@ -58,6 +58,6 @@ protected:
 	std::vector<Casella> pavimento; 
 	int lunghezza, larghezza; 
 	std::vector<Entita> entitaGenerabili;
-	std::vector<Oggetto> oggettiGenerabili;
+	std::vector<Oggetto*> oggettiGenerabili;
 	std::vector<std::pair<Entita*, cood>> entitaPresenti;
 };
