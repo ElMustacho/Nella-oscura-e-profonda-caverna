@@ -9,9 +9,8 @@
 #include "pianoCavernaIsola.h"
 int main() 
 {
-	std::shared_ptr<Oggetto> test(new Oggetto(0.02, "Laser", "Puntatore Laser", 400));
-	std::list<Oggetto> tabellaLoot; //VUOTA
-	std::vector<Oggetto> Equipaggiamento;
+	std::list<std::shared_ptr<Oggetto>> tabellaLoot; //VUOTA
+	std::vector<std::shared_ptr<Oggetto>> Equipaggiamento;
 	std::vector<Entita> tabellaEntita; //VUOTA
 	cood coord(5, 5);
 	Attributi dexAlta(4, 14, 4, 4, 4, 4, 4, 1);
@@ -35,15 +34,15 @@ int main()
 	while (b != 'y'&&b != 'n')
 		std::cin >> b;
 	Attore JimBob("JimBob", tabellaLoot, Attributi(), Equipaggiamento, 4.);
-	pregen.at(5, 5).setEntita(&Saitama);
-	pregen.at(2, 6).setEntita(&JimBob);
+	pregen.at(5, 5).setEntita(std::make_shared<Protagonista>(Saitama));
+	pregen.at(6, 2).setEntita(std::make_shared<Attore>(JimBob));
 	auto controllo = pregen.floodFill(coord);
 	Oggetto oggettoDebug(10.,"Cosa", "Qualcosa di fantastico", 40);
 	Oggetto oggettoDebug2(5., "Altra cosa", "Qualcosa di altrettanti fantastico", 15);
-	Saitama.addInventario(oggettoDebug);
-	pregen.at(5,5).getEntita()->addInventario(oggettoDebug2);
-	std::cout << pregen.at(5, 5).getEntita()->describeInventario() << std::endl;
-	pregen.at(4, 9).setEvento(1);
+	Saitama.addInventario(std::make_shared<Oggetto>(oggettoDebug));
+	pregen.at(5, 5).getEntita()->addInventario(std::make_shared<Oggetto>(oggettoDebug2)); //FIXME sballo se non ho valori validi
+	std::cout << pregen.at(5, 5).getEntita()->describeInventario() << std::endl; //FIXME same
+	pregen.at(23, 10).setEvento(1);
 	/*
 	Attributi dexAlta(4, 14, 4, 4, 4, 4, 4, 1);
 	Saitama.setAttributi(dexAlta);

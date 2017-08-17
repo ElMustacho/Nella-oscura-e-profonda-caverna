@@ -2,7 +2,7 @@
 
 
 
-PianoGen::PianoGen(int larghezza, int lunghezza, std::vector<Oggetto*> lootPossibile, std::vector<Entita> entit‡Possibili) : Piano(larghezza,lunghezza,lootPossibile,entit‡Possibili)
+PianoGen::PianoGen(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> lootPossibile, std::vector<std::shared_ptr<Entita>> entit‡Possibili) : Piano(larghezza,lunghezza,lootPossibile,entit‡Possibili)
 {
 	this->lunghezza = lunghezza;
 	this->larghezza = larghezza;

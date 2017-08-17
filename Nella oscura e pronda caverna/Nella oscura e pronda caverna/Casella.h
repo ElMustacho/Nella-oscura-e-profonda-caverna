@@ -7,9 +7,8 @@
 class Casella
 {
 
-
 public:
-	Casella(Tileset tileset, Oggetto* oggetto, Entita* entita, bool trasparenza, bool attraversabile, int evento); //CHECK quando vuoi dare valori di default, devono essere messi nel .cpp, non nel .h, altrimenti è un casino!
+	Casella(Tileset tileset, std::list<std::shared_ptr<Oggetto>> oggetti, std::shared_ptr<Entita> entita, bool trasparenza, bool attraversabile, int evento); //CHECK quando vuoi dare valori di default, devono essere messi nel .cpp, non nel .h, altrimenti è un casino!
 	~Casella();
 	void Scava();
 	Casella(bool default); //Default
@@ -18,18 +17,17 @@ public:
 	bool isTrasparente() { return this->trasparenza; }
 	void setAttraversabile(bool attraversabile) { this->attraversabile = attraversabile; }
 	bool isAttraversabile() { return this->attraversabile; }
-	Oggetto* getOggetto() { return this->oggetto; }
-	Entita* getEntita() { return this->entita; }
-	void setOggetto(Oggetto* obj);
-	bool setEntita(Entita* entity);
+	std::list<std::shared_ptr<Oggetto>> getOggetti() { return this->oggetti; }
+	std::shared_ptr<Entita> getEntita() { return this->entita; }
+	void setOggetti(std::list<std::shared_ptr<Oggetto>> oggetti);
+	bool setEntita(std::shared_ptr<Entita> entita);
 	void setEvento(int evento) { this->evento = evento; };
 	int getEvento() const { return evento; };
-	void doEvento();
+	int doEvento();
 
 private:
-	Oggetto* oggetto;
-
-	Entita* entita;
+	std::list<std::shared_ptr<Oggetto>> oggetti;
+	std::shared_ptr<Entita> entita;
 	bool trasparenza;
 	bool attraversabile;
 	Tileset tileset;

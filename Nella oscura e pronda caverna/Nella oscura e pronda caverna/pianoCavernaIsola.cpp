@@ -30,12 +30,12 @@ pianoCavernaIsola::pianoCavernaIsola(int lunghezza, int larghezza)
 	}
 	cood placeProtagonista(0,0);
 	int counter=0;
-	Entita* prot = entityFactory();
+	std::shared_ptr<Entita> prot = entityFactory();
 do {
 		placeProtagonista.first = rand() % larghezza;
 		placeProtagonista.second = rand() % lunghezza;
 		counter++;
-	} while ((floodFill(placeProtagonista).empty() ^ counter == 1000)); //OPTIMIZE
+	} while (((floodFill(placeProtagonista).empty()) ^ counter == 1000)); //OPTIMIZE
 	if (counter == 1000)
 		std::cout << "D'oh" << std::endl;
 	else
@@ -46,9 +46,5 @@ do {
 
 pianoCavernaIsola::~pianoCavernaIsola()
 {
-	for each (std::pair<Entita*,cood> var in entitaPresenti)
-	{
-		delete(var.first);
-	}
-
+	
 }

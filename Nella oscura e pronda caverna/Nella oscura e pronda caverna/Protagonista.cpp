@@ -1,9 +1,6 @@
 #include "Protagonista.h"
-
-
-
-
-Protagonista::Protagonista(std::string nome, std::list<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento, unsigned int livello, double esperienza, long int fondiEconomici) : Entita(nome,inventario, attributi,equipaggiamento)
+#include <memory>
+Protagonista::Protagonista(std::string nome, std::list<std::shared_ptr<Oggetto>> inventario, Attributi attributi, std::vector<std::shared_ptr<Oggetto>> equipaggiamento, unsigned int livello, double esperienza, long int fondiEconomici) : Entita(nome,inventario, attributi,equipaggiamento)
 
 {
 	this->livello = livello;

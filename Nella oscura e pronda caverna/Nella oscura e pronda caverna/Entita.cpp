@@ -1,13 +1,13 @@
 #include <vector>
 #include "Entita.h"
-
+#include <memory>
 
 Entita::~Entita()
 {
 	//TODO ~Entita()
 }
 
-Entita::Entita(std::string nome, std::list<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento): attributi(attributi) {
+Entita::Entita(std::string nome, std::list<std::shared_ptr<Oggetto>> inventario, Attributi attributi, std::vector<std::shared_ptr<Oggetto>> equipaggiamento): attributi(attributi) {
 	
 		this->nome = nome;
 		this->equipaggiamento = equipaggiamento;
@@ -58,13 +58,13 @@ void Entita::setAttributi(Attributi attr)
 	attributi = attr;
 }
 //FIXME per ora non gestisco tutti i casi.
-bool Entita::addInventario(std::list<Oggetto> oggettiAggiunti)
+bool Entita::addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti)
 {
 	inventario.insert(inventario.end(), oggettiAggiunti.begin(), oggettiAggiunti.end());
 	return true;
 }
 
-bool Entita::addInventario(Oggetto oggettoDaAgginugere)
+bool Entita::addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere)
 {
 	inventario.push_back(oggettoDaAgginugere);
 	return true;
@@ -77,11 +77,11 @@ double Entita::carryWeight()
 	double total = 0;
 	for (auto i : inventario) 
 	{
-		total += i.getPeso();
+		total += i->getPeso();
 	}
 	for (auto i : equipaggiamento) 
 	{
-		total += i.getPeso() / 2;	// Gli oggetti equipaggiati vengono calcolati con un peso minore perché in quanto
+		total += i->getPeso() / 2;	// Gli oggetti equipaggiati vengono calcolati con un peso minore perché in quanto
 	}								// più vicini al centro di massa (l'entità che li solleva) serve meno sforzo per
 	return total;					// sollevarli.
 }
@@ -94,6 +94,6 @@ void Entita::onDeath()
 std::string Entita::describeInventario() {
 	std::string returnStringa;
 	for (auto i = inventario.begin(); i != inventario.end(); i++)
-		returnStringa.append(i->getDescrizione()+"\n");
+		returnStringa.append(i->get()->getDescrizione());
 	return returnStringa;
 }

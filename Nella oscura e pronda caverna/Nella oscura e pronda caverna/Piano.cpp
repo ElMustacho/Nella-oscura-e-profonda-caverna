@@ -32,7 +32,7 @@ Casella & Piano::at(int x, int y)
 		x = larghezza-1;
 	if (y >= lunghezza)
 		y = lunghezza-1;
-	return pavimento.at(y + x * larghezza); 
+	return pavimento.at(x + y * larghezza); 
 }
 
 Casella & Piano::at(cood coord) {
@@ -63,12 +63,12 @@ bool Piano::spargiLoot()
 	return false;
 }
 
-bool Piano::placeEntita(Entita* placeMe, cood coord) //FIXME inserisco gente nelle pareti
+bool Piano::placeEntita(std::shared_ptr<Entita> placeMe, cood coord) //FIXME inserisco gente nelle pareti
 {
 	if (pavimento.at(posizione(coord)).getEntita() == nullptr) {
 		pavimento.at(posizione(coord)).setEntita(placeMe);
-		Entita* copyTemp = placeMe;
-		std::pair<Entita*, cood> entitaTabella(copyTemp, coord);
+		std::shared_ptr<Entita> copyTemp = placeMe;
+		std::pair<std::shared_ptr<Entita>, cood> entitaTabella(copyTemp, coord);
 		entitaPresenti.push_back(entitaTabella);
 		return true;
 	}
@@ -82,7 +82,7 @@ Piano::Piano() {
 
 }
 
-Piano::Piano(int larghezza, int lunghezza, std::vector<Oggetto*> lootPossibile, std::vector<Entita> entitaPossibili)
+Piano::Piano(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> lootPossibile, std::vector<std::shared_ptr<Entita>> entitaPossibili)
 {
 }
 
@@ -114,9 +114,9 @@ bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //TODO Presa una s
 	return true;
 }
 
-std::vector<Entita*> Piano::getVectorEntita() {
-	std::vector<Entita*> returned;
-	for each (std::pair<Entita*,cood> entity in entitaPresenti)
+std::vector<std::shared_ptr<Entita>> Piano::getVectorEntita() {
+	std::vector<std::shared_ptr<Entita>> returned;
+	for each (std::pair<std::shared_ptr<Entita>,cood> entity in entitaPresenti)
 	{
 		returned.push_back(entity.first);
 	}
@@ -125,7 +125,7 @@ std::vector<Entita*> Piano::getVectorEntita() {
 
 std::vector<cood> Piano::getVectorPosizioni() {
 	std::vector<cood> returned;
-	for each (std::pair<Entita*, cood> entity in entitaPresenti)
+	for each (std::pair<std::shared_ptr<Entita>, cood> entity in entitaPresenti)
 	{
 		returned.push_back(entity.second);
 	}
@@ -186,14 +186,18 @@ void Piano::StampaChar()
 	{
 		auto casella = pavimento.at(i);
 		auto entity = casella.getEntita();
-		if (pavimento.at(i).isMuro())
+		if (casella.isMuro())
 			mappa.push_back('#');
-		else if (dynamic_cast<Protagonista*>(entity) != NULL)
+		//else if (dynamic_cast<Protagonista*>(entity.get()) != NULL) //LOOKATME così si prende il tipo di puntatore shared ptr
+		//	mappa.push_back('@');
+		else if (std::dynamic_pointer_cast<Protagonista>(entity) != nullptr)
 			mappa.push_back('@');
-		else if (dynamic_cast<Attore*>(entity) != NULL)
+		else if (dynamic_cast<Attore*>(entity.get()) != NULL)
 			mappa.push_back('*');
-		else if (casella.getEvento() == 1) //Scale
-			mappa.push_back('>');
+		else if (!casella.getOggetti().empty())
+			mappa.push_back(casella.getOggetti().front()->getNome().front()); //Il primo carattere del nome dell'oggetto in cima alla lista
+		else if (casella.getEvento() == 1) 
+			mappa.push_back('>');//Scale
 		else
 			mappa.push_back('.');
 		if ((i + 1) % larghezza == 0)
@@ -266,9 +270,11 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 		}
 		else //Date le premesse, spostarsi è sicuro e valido
 		{ 
-			Entita* temp = pavimento.at(posizione(posX, posY)).getEntita();
+			std::shared_ptr<Entita> temp = pavimento.at(posizione(posX, posY)).getEntita();
 			pavimento.at(posizione(posX, posY)).setEntita(nullptr);
 			pavimento.at(posizione(posX + moveX, posY + moveY)).setEntita(temp);
+			//LOOKATME dovrei funzionare pure io
+			//pavimento.at(posizione(posX, posY)).getEntita().swap(pavimento.at(posizione(posX + moveX, posY + moveY)).getEntita());
 			cood coordinatePrima(posX, posY);
 			posX += moveX;
 			posY += moveY;
@@ -305,7 +311,7 @@ void Piano::StampaFileChar()
 		auto casella = pavimento.at(i);
 		auto entity = casella.getEntita();
 		//Per ora l'ordine va bene così, ma non è detto che in un muro non ci possano essere nemici (tipo fantasmi)
-		if (dynamic_cast<Protagonista*>(entity) != NULL) //se entity è NULL il dynamic cast risponde NULL
+		if (dynamic_cast<Protagonista*>((&entity)->get()) != NULL) //se entity è NULL il dynamic cast risponde NULL
 		{
 			file << '@';
 		}
@@ -313,7 +319,7 @@ void Piano::StampaFileChar()
 		{
 			file << '#';
 		}
-		else if (dynamic_cast<Attore*>(entity) != NULL) //Same
+		else if (dynamic_cast<Attore*>((&entity)->get()) != NULL) //Same
 		{
 			file << '*';
 		}
@@ -332,29 +338,29 @@ void Piano::StampaFileChar()
 //Oggetti instanziati qui non producono memory leak SE E SOLO SE ARRIVANO NELLA TABELLA entitaPresenti
 //OPTIMIZE perciò un giorno passeremo ai smartpointer e avremo altri sistemi di sicurezaz contingenti
 //idealmente questa converte i valori da stringa da passare all'altra funzione overloaded
-Entita * Piano::entityFactory(std::string)
+std::shared_ptr<Entita> Piano::entityFactory(std::string)
 {
 	return nullptr;
 }
 //Lasciare vuoto per avere un personaggio principale, oppure mandare 0. Di default non rende nulla
-Entita * Piano::entityFactory(int codiceID)
+std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
 {
-	Entita* appoggio;
+	std::shared_ptr<Entita> appoggio;
 	switch (codiceID) {
 	case 0: {
 		//TODO qui ovviamente dovrà esserci il modo di caricare un personaggio preesistente o di invocare il creatore di personaggi, per ora lo tratto come un qualunque idiota
-		std::list<Oggetto> inventario{ Oggetto(0.5,"Sfera di metallo","Direi piuttosto che si tratta di un oggetto a forma d'uovo",2) };
+		std::list<std::shared_ptr<Oggetto>> inventario{ std::shared_ptr<Oggetto> (new Oggetto(0.5, "Sfera di metallo", "Direi piuttosto che si tratta di un oggetto a forma d'uovo", 2)) };
 		Attributi nellaMedia(4, 4, 4, 4, 4, 4, 4, 4);
-		std::vector<Oggetto> equipaggiamento; //Picche, non hai nulla scemo
-		appoggio = new Protagonista("Medioman", inventario, nellaMedia, equipaggiamento, 1, 0, 0);
+		std::vector<std::shared_ptr<Oggetto>> equipaggiamento; //Picche, non hai nulla scemo
+		appoggio = std::make_shared<Protagonista>(Protagonista("Medioman", inventario, nellaMedia, equipaggiamento, 1, 0, 0));
 		break;
 	}
 	case 1:
 	{// Goblin scrauso, puzzone e nudo
-		std::list<Oggetto> inventario;
+		std::list<std::shared_ptr<Oggetto>> inventario;
 		Attributi scarso(3, 4, 2, 2, 2, 1, 3, 1);
-		std::vector<Oggetto> equipaggiamento; //Picche, non hai nulla scemo puzzone
-		appoggio = new Entita("Goblin puzzone", inventario, scarso, equipaggiamento);
+		std::vector<std::shared_ptr<Oggetto>> equipaggiamento; //Picche, non hai nulla scemo puzzone
+		appoggio = std::make_shared<Attore>("Goblin puzzone", inventario, scarso, equipaggiamento,1.1);
 		break;
 	}
 	default:

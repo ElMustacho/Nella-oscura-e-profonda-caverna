@@ -40,7 +40,7 @@ public:
 	cood fromPosizioneToInt(int x);
 	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY); 
 	bool creaPorte(int posX, int posY, int dimX, int dimY);
-	std::vector<Entita*> getVectorEntita();
+	std::vector<std::shared_ptr<Entita>> getVectorEntita();
 	std::vector<cood> getVectorPosizioni();
 	std::vector<cood> floodFill (cood posizionePartenza);
 	void StampaChar();
@@ -48,16 +48,16 @@ public:
 	void StampaFileChar();
 	bool popolaPiano();
 	bool spargiLoot();
-	bool placeEntita(Entita* placeMe, cood coord);
+	bool placeEntita(std::shared_ptr<Entita> placeMe, cood coord);
 	Piano();
-	Piano(int larghezza, int lunghezza, std::vector<Oggetto*> lootPossibile, std::vector<Entita> entitaPossibili);
-	Entita* entityFactory(std::string nome);
-	Entita* entityFactory(int codiceID=0);
+	Piano(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> lootPossibile, std::vector<std::shared_ptr<Entita>> entitaPossibili);
+	std::shared_ptr<Entita> entityFactory(std::string nome);
+	std::shared_ptr<Entita> entityFactory(int codiceID=0);
 	//Piano(std::string posizione, bool &successo); //Da file 
 protected:
 	std::vector<Casella> pavimento; 
 	int lunghezza, larghezza; 
-	std::vector<Entita> entitaGenerabili;
-	std::vector<Oggetto*> oggettiGenerabili;
-	std::vector<std::pair<Entita*, cood>> entitaPresenti;
+	std::vector<std::shared_ptr<Entita>> entitaGenerabili;
+	std::vector<std::shared_ptr<Oggetto>> oggettiGenerabili;
+	std::vector<std::pair<std::shared_ptr<Entita>, cood>> entitaPresenti;
 };
