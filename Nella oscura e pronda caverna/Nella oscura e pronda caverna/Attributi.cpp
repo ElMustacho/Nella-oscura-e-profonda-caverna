@@ -1,7 +1,7 @@
 #include "Attributi.h"
+#include <vector>
 
-
-Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int hp, int potereMagico, int stamina, double forzaDiCarico, int maxHp, int maxPotereMagico, int maxStamina, bool silenzioso)
+Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int hp, int potereMagico, int stamina, double forzaDiCarico, int maxHp, int maxPotereMagico, int maxStamina, bool silenzioso, std::vector<double> resistenze)
 
 {
 	this->forza = forza;
@@ -19,13 +19,14 @@ Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int
 	this->maxPotereMagico = potereMagico;
 	this->maxStamina = stamina;
 	this->silenzioso = silenzioso;
+	this->resistenze = resistenze;
 }
 
 Attributi::Attributi()
 {
 }
 
-Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int livello) {
+Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int livello, std::vector<double> resistenze) {
 	this->forza = forza;
 	this->destrezza = destrezza;
 	this->tempra = tempra;
@@ -40,9 +41,11 @@ Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int
 	potereMagico = maxPotereMagico;
 	stamina = maxStamina;
 	forzaDiCarico = (forza * 10 + 1)*(forza / 8);
-	if (destrezza >7&&livello > 10) { //Segnala se l'entità è percepibile aldilà della vista
-    silenzioso = true;
+	if (destrezza > 7 && livello > 10) { //Segnala se l'entità è percepibile aldilà della vista
+		silenzioso = true;
 	}
+	this->resistenze = resistenze;
+	
 }
 
 bool Attributi::operator==(const Attributi & rAttr) const
@@ -62,7 +65,8 @@ bool Attributi::operator==(const Attributi & rAttr) const
 													if (this->maxPotereMagico == rAttr.maxPotereMagico)
 														if (this->maxStamina == rAttr.maxStamina)
 															if (this->silenzioso == rAttr.silenzioso)
-																return true;
+																if (this->resistenze == rAttr.resistenze)
+																	return true;
 	return false;
 }
 

@@ -1,13 +1,13 @@
 #pragma once
-
+#include <vector>
 class Attributi
 {
 
 public:
 
-	Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int hp, int potereMagico, int stamina, double forzaDiCarico, int maxHp, int maxPotereMagico, int maxStamina, bool silenzioso); //usato quando si carica un salvataggio o dal protagonista all'inizio del gioco.
+	Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int hp, int potereMagico, int stamina, double forzaDiCarico, int maxHp, int maxPotereMagico, int maxStamina, bool silenzioso, std::vector<double> resistenze); //usato quando si carica un salvataggio o dal protagonista all'inizio del gioco.
 	Attributi();
-	Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int livello); //autogenera le caratteristiche rimanenti
+	Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int livello, std::vector<double> resistenze = { 1,1,1,1,1,1,1,1,1,-1,1,1,1,1,1,1 }); //autogenera le caratteristiche rimanenti
 	bool operator==(const Attributi & rAttr) const;
 	~Attributi();
 
@@ -67,28 +67,28 @@ public:
 
 	void setHp(int hp) {
 		if (hp > maxHp)
-			this->hp = hp;
+			this->hp = maxHp;
 		else {
 			this->hp = hp;
 		}
 	}
 
-		int getIntelligenza() const
+	int getIntelligenza() const
 		{
-			return intelligenza;
+		return intelligenza;
 		}
 
-		void setIntelligenza(int intelligenza)
-		{
-			this->intelligenza = intelligenza;
-		}
+	void setIntelligenza(int intelligenza)
+	{
+		this->intelligenza = intelligenza;
+	}
 
-		int getPotereMagico() const
-		{
-			return potereMagico;
-		}
+	int getPotereMagico() const
+	{
+		return potereMagico;
+	}
 
-		void setPotereMagico(int potereMagico) 
+	void setPotereMagico(int potereMagico) 
 		{
 			if (potereMagico > maxPotereMagico)
 				this->potereMagico = maxPotereMagico;
@@ -164,7 +164,15 @@ public:
 		void setSilenziosio(bool silenzioso) 
 		{
 			this->silenzioso = silenzioso;
-    }
+		}
+
+		std::vector<double> getResistenze() const {
+			return resistenze;
+		}
+
+		void setResistenze(std::vector<double> resistenze) {
+			this->resistenze;
+		}
 
 		bool isSilenzioso() const
 		{
@@ -173,6 +181,7 @@ public:
 
 
 private:
+	std::vector<double> resistenze;
 	int forza;
 	int destrezza;
 	int tempra;
@@ -188,4 +197,15 @@ private:
 	int maxStamina;
 	double forzaDiCarico;
 	bool silenzioso;
+	/* Questa roba la aggiungeremo quando non altre cose non avranno priorità.
+	int sesso; //0 = maschio, 1 = femmina, 2 = neutro (nel senso che non ha sesso, tipo un golem, non che devono essere usati altri articoli)
+	double peso; //per ora lo lascio come ottenibile dalle altre
+	bool scava; //ignora pareti
+	bool levita; //non tocca per terra
+	bool teleporta; //teletrasporto
+	bool incorporeo;
+	bool nuota;
+
+	blah blah blah
+	*/
 };

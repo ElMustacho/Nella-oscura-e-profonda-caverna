@@ -40,7 +40,8 @@ public:
 	void setAttributi(Attributi attr);
 	bool addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti);
 	bool addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere);
-
+	//return true se uccide, false altrimenti
+	bool subisciDanno(Danno dannoSubito);
 	double carryWeight(); //calcolo peso trasportato
 	std::string describeInventario();
 private:

@@ -1,7 +1,8 @@
 #include <vector>
+#include <iostream>
 #include "Entita.h"
 #include <memory>
-
+#include "Danno.h"
 Entita::~Entita()
 {
 	//TODO ~Entita()
@@ -70,6 +71,23 @@ bool Entita::addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere)
 	return true;
 	//CHECK posso fallire, cosa potrebbe andare male?
 }
+//return true se uccide, false altrimenti
+bool Entita::subisciDanno(Danno dannoSubito)
+{
+	int totalehp = 0;
+	//LOOKATME potremmo per esempio lasciare che alcuni tipi di danno abbiano altri effetti, tipo il danno mentale infligge danni alla barra delle magia
+	for (unsigned int i = 0; i < Danno::giveCategoriaDanni().size();i++)
+	{
+		totalehp += attributi.getResistenze()[i] * dannoSubito.getParteDanno(i);
+	}
+	attributi.setHp(attributi.getHp()-totalehp);
+	if (attributi.getHp() < 0) { //dead
+		onDeath();
+		return true;
+	}
+	std::cout << nome << " ha sofferto " << totalehp << " danni!" << std::endl;
+	return false;
+}
 
 
 double Entita::carryWeight()
@@ -89,7 +107,10 @@ double Entita::carryWeight()
 
 void Entita::onDeath()
 {
-
+	auto peso = attributi.getForza() * 10 + attributi.getTempra() * 10 + attributi.getDestrezza() * 2 + attributi.getIntelligenza()*0.25; //L'intelligenza significa la dimensione del cervello. L'intelligenza non dipende dalla quantità di cervello nel mondo reale (dipende dalle sinapsi), ma questo è un gioco.
+	auto object = std::make_shared<Oggetto>(Oggetto(peso, "Cadavere di" + nome, "La carcassa di " + nome + " oramai esanime.", 0));
+	addInventario(object);
+	std::cout << nome << " e' morto!" << std::endl; //TODOFAR implementa sesso
 }
 std::string Entita::describeInventario() {
 	std::string returnStringa;

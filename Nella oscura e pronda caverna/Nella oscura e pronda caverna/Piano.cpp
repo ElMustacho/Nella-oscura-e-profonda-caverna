@@ -21,6 +21,29 @@ int Piano::posizione(int x, int y) {
 		y = lunghezza-1;
 	return x + y*larghezza;
 }
+//TODO
+bool Piano::removeEntita(cood coodElimina) {
+	return false;
+}
+
+void Piano::scontro(cood posizioneVittima, cood posizioneAttaccante)
+{
+
+}
+void Piano::scontro(cood posizioneVittima, Danno dannoInflitto)
+{
+	if (pavimento.at(posizione(posizioneVittima)).getEntita().get() == nullptr)
+		return; //nessun bersaglio
+	else
+		if(pavimento.at(posizione(posizioneVittima)).getEntita()->subisciDanno(dannoInflitto)){
+			auto vPosizioni = getVectorPosizioni();
+			auto it = std::find(vPosizioni.begin(), vPosizioni.end(), posizioneVittima);
+			//HACK devo chiamare removeEntita
+			entitaPresenti.erase(entitaPresenti.begin()+std::distance(vPosizioni.begin(),it));
+			pavimento.at(posizione(posizioneVittima)).setEntita(nullptr);
+	}
+			return; //TODOFAR lascia inventario ed equipaggiamento per terra.
+}
 //Stesso funzionamento di Piano::posizione()
 Casella & Piano::at(int x, int y) 
 { 
@@ -178,6 +201,7 @@ std::vector<cood> Piano::floodFill(cood posizionePartenza)
 	return caselleOk;
 }
 
+//TODOFAR il carattere stampato deve essere restituito dalla casella tramite una sua funzione
 void Piano::StampaChar() 
 { 
 	std::string mappa="";
@@ -302,7 +326,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 		return 4; //non sono arrivato a destinazione perché ho finito il movimento
 	}
 }
-
+//TODOFAR il carattere stampato deve essere restituito dalla casella tramite una sua funzione
 void Piano::StampaFileChar() 
 {
 	std::ofstream file ("mappa.map");
@@ -311,6 +335,7 @@ void Piano::StampaFileChar()
 		auto casella = pavimento.at(i);
 		auto entity = casella.getEntita();
 		//Per ora l'ordine va bene così, ma non è detto che in un muro non ci possano essere nemici (tipo fantasmi)
+		//FIXME dev'essere come l'altra stampa
 		if (dynamic_cast<Protagonista*>((&entity)->get()) != NULL) //se entity è NULL il dynamic cast risponde NULL
 		{
 			file << '@';
@@ -334,10 +359,7 @@ void Piano::StampaFileChar()
 	}
 	file.close();
 }
-//LOOKATME
-//Oggetti instanziati qui non producono memory leak SE E SOLO SE ARRIVANO NELLA TABELLA entitaPresenti
-//OPTIMIZE perciò un giorno passeremo ai smartpointer e avremo altri sistemi di sicurezaz contingenti
-//idealmente questa converte i valori da stringa da passare all'altra funzione overloaded
+//TODO
 std::shared_ptr<Entita> Piano::entityFactory(std::string)
 {
 	return nullptr;

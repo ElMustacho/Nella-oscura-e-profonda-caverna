@@ -33,16 +33,20 @@ int main()
 	std::cout << "Autopickup? y/n: ";
 	while (b != 'y'&&b != 'n')
 		std::cin >> b;
-	Attore JimBob("JimBob", tabellaLoot, Attributi(), Equipaggiamento, 4.);
+	Attore JimBob("JimBob", tabellaLoot, dexAlta, Equipaggiamento, 4.);/*
 	pregen.at(5, 5).setEntita(std::make_shared<Protagonista>(Saitama));
 	pregen.at(6, 2).setEntita(std::make_shared<Attore>(JimBob));
+	*/
 	auto controllo = pregen.floodFill(coord);
+	pregen.placeEntita(std::make_shared<Protagonista>(Saitama), cood(5, 5));
+	pregen.placeEntita(std::make_shared<Attore>(JimBob), cood(6, 2));
 	Oggetto oggettoDebug(10.,"Cosa", "Qualcosa di fantastico", 40);
 	Oggetto oggettoDebug2(5., "Altra cosa", "Qualcosa di altrettanti fantastico", 15);
 	Saitama.addInventario(std::make_shared<Oggetto>(oggettoDebug));
 	pregen.at(5, 5).getEntita()->addInventario(std::make_shared<Oggetto>(oggettoDebug2)); //FIXME sballo se non ho valori validi
 	std::cout << pregen.at(5, 5).getEntita()->describeInventario() << std::endl; //FIXME same
 	pregen.at(23, 10).setEvento(1);
+	std::cout << "Premi k per ammazzare l'asterisco" << std::endl;
 	/*
 	Attributi dexAlta(4, 14, 4, 4, 4, 4, 4, 1);
 	Saitama.setAttributi(dexAlta);
@@ -127,7 +131,9 @@ int main()
 				Y--;
 			}
 			break;
-
+		case 'k':
+			pregen.scontro(cood(6, 2), Danno(std::vector<double>{1}, 4000));
+			break;
 		default:
 			if (a == 'y')
 				std::cout << "Input non valido" << std::endl;

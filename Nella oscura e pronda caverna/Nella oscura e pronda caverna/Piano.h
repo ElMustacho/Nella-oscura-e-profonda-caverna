@@ -32,7 +32,9 @@ public:
 	virtual ~Piano();
 	
 	int posizione(int x, int y);
-
+	bool removeEntita(cood coodElimina);
+	void scontro(cood posizioneVittima, cood posizioneAttaccante);
+	void scontro(cood posizioneVittima, Danno dannoInflitto); //gestisce danno ad area e fulmini da divinità furiose
 	Casella& at(int x, int y);
 	Casella& at(cood coord);
 	bool isCoodLegal(cood coord);
