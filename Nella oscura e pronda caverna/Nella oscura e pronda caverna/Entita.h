@@ -32,13 +32,13 @@ public:
 
 	void muovi(int &distanza, int &metodoTrasporto);
 
-	// TODO implement method raccogli
-	// TODO implement method combatti/colpisci
-
+	Danno attacca();
 	Entita(); //TODO vorrei evitare di mettere costruttori vuoti solo perché se no il compilatore si lamenta.
 	Attributi getAttributi() const;
 	void setAttributi(Attributi attr);
 	bool addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti);
+	void equip(int posizioneFrom, int posizioneTo);
+	void unequip(int posisioneFrom);
 	bool addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere);
 	//return true se uccide, false altrimenti
 	bool subisciDanno(Danno dannoSubito);
@@ -48,7 +48,8 @@ private:
 	std::string nome;
 	Attributi attributi;
 	//FIXME Sprite sprite;   manage Sprite
-	std::list<std::shared_ptr<Oggetto>> inventario; //CHECK forse è meglio che sia una lista, così posso gestire meglio i buchi nell'inventario (di fatto eliminandoli)
+	std::list<std::shared_ptr<Oggetto>> inventario;
+	//LOOKATME i vector si shrinkano automaticamente quindi direi che in futuro equipaggiamento sarà una classe a sé stante
 	std::vector<std::shared_ptr<Oggetto>> equipaggiamento;
 	/*
 	nella posizione X di equipaggiamento ci sarà:

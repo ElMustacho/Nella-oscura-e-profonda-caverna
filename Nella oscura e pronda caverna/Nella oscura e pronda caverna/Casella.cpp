@@ -32,6 +32,36 @@ void Casella::setOggetti(std::list<std::shared_ptr<Oggetto>> oggetti)
 {
 	this->oggetti = oggetti;
 }
+//Raccoglie tutto quanto
+void Casella::pickup() {
+	if (entita != nullptr) {
+		std::list<std::shared_ptr<Oggetto>> moving;
+		moving.splice(moving.end(), oggetti);
+		entita->addInventario(moving);
+	}
+}
+//TODO raccoglie solo qualche oggetto
+void Casella::pickup(std::vector<unsigned int> posizioni) {
+
+}
+
+std::string Casella::descriviOggettiTerra()
+{
+	std::string output="";
+	for each (auto oggetto in oggetti)
+	{
+		output.append(oggetto->getNome() + "\n");
+	}
+	return output;
+}
+
+void Casella::addOggetto(std::shared_ptr<Oggetto> oggetto) {
+	oggetti.push_back(oggetto);
+}
+//TODO
+void Casella::addOggetti(std::vector<std::shared_ptr<Oggetto>> oggetti)
+{
+}
 
 bool Casella::setEntita(std::shared_ptr<Entita> entity) //TODO gestire la sovrapposizione delle entità, avremo memory leak se cancelliamo la precedente!
 {

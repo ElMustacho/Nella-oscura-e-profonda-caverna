@@ -5,6 +5,7 @@
 #include "Oggetto.h"
 #include "Protagonista.h"
 #include "Attore.h"
+#include "Arma.h"
 typedef std::pair<int, int> cood;
 /*
 LOOKATME
@@ -53,8 +54,12 @@ public:
 	bool placeEntita(std::shared_ptr<Entita> placeMe, cood coord);
 	Piano();
 	Piano(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> lootPossibile, std::vector<std::shared_ptr<Entita>> entitaPossibili);
-	std::shared_ptr<Entita> entityFactory(std::string nome);
+	//TODOFAR far funzionare con entita generabili
+	std::shared_ptr<Entita> entityFactory(std::string nome); 
 	std::shared_ptr<Entita> entityFactory(int codiceID=0);
+	std::shared_ptr<Oggetto> objectFactory(std::string nome);
+	std::shared_ptr<Oggetto> objectFactory(int codiceID = 0);
+
 	//Piano(std::string posizione, bool &successo); //Da file 
 protected:
 	std::vector<Casella> pavimento; 

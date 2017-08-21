@@ -1,7 +1,9 @@
 #include <vector>
 #include <iostream>
-#include "Entita.h"
 #include <memory>
+#include <cstdlib>
+#include <ctime>
+#include "Entita.h"
 #include "Danno.h"
 Entita::~Entita()
 {
@@ -14,6 +16,7 @@ Entita::Entita(std::string nome, std::list<std::shared_ptr<Oggetto>> inventario,
 		this->equipaggiamento = equipaggiamento;
 		this->inventario = inventario;
 		this->attributi = attributi;
+		this->equipaggiamento.reserve(20);
 }
 bool Entita::operator==(const Entita & rEntita) const
 {
@@ -43,6 +46,28 @@ void Entita::muovi(int & distanza, int & metodoTrasporto)
 }
 
 
+Danno Entita::attacca()
+{
+	if (equipaggiamento.size()==0)
+		return Danno(std::vector<double>{1}, -1); //nulla in mano
+	if (equipaggiamento.at(0).get()==nullptr)
+		return Danno(std::vector<double>{1}, -1); //nulla in mano
+	auto danno = equipaggiamento.at(0)->attacca();
+	if (danno.getAmmontare() > 0) //is this even impossible
+	{
+		if (equipaggiamento.at(0)->getPeso() < 0.5) //arma piccola usa la destrezza
+			danno.magnifica(attributi.getDestrezza() / 4);
+		else										//arma grande no
+			danno.magnifica(attributi.getForza() / 4);
+		srand(time(nullptr));
+		//FIXMe return sempre = 1
+		double random = 1 - (((rand() % 6) / 12) - 1 / 6);
+		danno.magnifica(random);
+		return danno;
+	}
+	return Danno(std::vector<double>{1}, -1);
+}
+
 Entita::Entita()
 {
 
@@ -65,6 +90,32 @@ bool Entita::addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti)
 	return true;
 }
 
+void Entita::equip(int posizioneFrom, int posiozioneTo) {
+	if (posiozioneTo > 40) //troppo in là nell'inventario
+		return;
+	if (posizioneFrom<0 || posizioneFrom>inventario.size())
+		return; //non è dentro
+	else {
+		auto it = inventario.begin();
+		std::advance(it, posizioneFrom);
+		auto moving = inventario;
+		//HACK funziona solo con le armi
+		equipaggiamento.push_back(*it);
+		inventario.erase(it);
+	}	//TODOFAR carico massimo
+}
+
+void Entita::unequip(int posisioneFrom) {
+	if (posisioneFrom<0 || posisioneFrom>inventario.size())
+		return; //non è dentro
+	else {
+		auto moving = equipaggiamento.at(posisioneFrom);
+		equipaggiamento.push_back(moving);
+		equipaggiamento.erase(equipaggiamento.begin() + posisioneFrom);
+		return;
+	}
+}
+
 bool Entita::addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere)
 {
 	inventario.push_back(oggettoDaAgginugere);
@@ -74,13 +125,13 @@ bool Entita::addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere)
 //return true se uccide, false altrimenti
 bool Entita::subisciDanno(Danno dannoSubito)
 {
-	int totalehp = 0;
+	double totalehp = 0;
 	//LOOKATME potremmo per esempio lasciare che alcuni tipi di danno abbiano altri effetti, tipo il danno mentale infligge danni alla barra delle magia
 	for (unsigned int i = 0; i < Danno::giveCategoriaDanni().size();i++)
 	{
 		totalehp += attributi.getResistenze()[i] * dannoSubito.getParteDanno(i);
 	}
-	attributi.setHp(attributi.getHp()-totalehp);
+	attributi.setHp((int)(attributi.getHp()-totalehp));
 	if (attributi.getHp() < 0) { //dead
 		onDeath();
 		return true;

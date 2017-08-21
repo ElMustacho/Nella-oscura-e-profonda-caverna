@@ -31,20 +31,30 @@ pianoCavernaIsola::pianoCavernaIsola(int lunghezza, int larghezza)
 	cood placeProtagonista(0,0);
 	int counter=0;
 	std::shared_ptr<Entita> prot = entityFactory();
+	std::vector<cood> caselleOk;
 do {
+		caselleOk = floodFill(placeProtagonista);
 		placeProtagonista.first = rand() % larghezza;
 		placeProtagonista.second = rand() % lunghezza;
 		counter++;
-	} while (((floodFill(placeProtagonista).empty()) ^ counter == 1000)); //OPTIMIZE
+	} while ((caselleOk.empty()) ^ counter == 1000); //OPTIMIZE
 	if (counter == 1000)
 		std::cout << "D'oh" << std::endl;
 	else
 		placeEntita(prot, placeProtagonista);
-	spargiLoot();
+	spargiLoot(caselleOk);
 }
 
 
 pianoCavernaIsola::~pianoCavernaIsola()
 {
 	
+}
+
+bool pianoCavernaIsola::spargiLoot(std::vector<cood> posizioniValide) {
+	for (int i = (lunghezza + larghezza) / 8; i >= 0; i--) {
+		auto oggettoInserito = objectFactory(rand()%5);
+		pavimento.at(rand() % posizioniValide.size()).addOggetto(oggettoInserito);
+	}
+	return true;
 }

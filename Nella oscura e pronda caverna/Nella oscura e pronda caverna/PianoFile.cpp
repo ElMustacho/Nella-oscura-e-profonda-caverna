@@ -15,6 +15,10 @@ PianoFile::PianoFile(std::string posizione, bool &successo) : Piano()
 				pavimento.push_back(Casella(false));
 			else if (lineaCaselle.at(j) == '.')
 				pavimento.push_back(Casella(true));
+			else if (lineaCaselle.at(j) == '>') {
+				pavimento.push_back(Casella(true));
+				pavimento.back().setEvento(1);
+			}
 			else {
 				std::cout << "E' successo un casino.\n";
 				successo = false;
@@ -26,6 +30,16 @@ PianoFile::PianoFile(std::string posizione, bool &successo) : Piano()
 	}
 	pavimento.reserve(lunghezza*larghezza); //LOOKATME questa chiamata è molto importante, e deve essere fatta alla fine di ogni costruttore!
 	//TODO addobjects
+}
+
+bool PianoFile::spargiLoot(std::vector<cood> posizioniValide) {
+	for (int i = (lunghezza + larghezza) / 10; i >= 0; i--) {
+		auto oggettoInserito = objectFactory(rand() % 5);
+		auto coordinate = posizioniValide[rand() % posizioniValide.size()];
+		pavimento.at(posizione(coordinate)).addOggetto(oggettoInserito);
+
+	}
+	return true;
 }
 
 

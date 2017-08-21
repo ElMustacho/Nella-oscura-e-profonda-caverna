@@ -20,6 +20,11 @@ public:
 	std::list<std::shared_ptr<Oggetto>> getOggetti() { return this->oggetti; }
 	std::shared_ptr<Entita> getEntita() { return this->entita; }
 	void setOggetti(std::list<std::shared_ptr<Oggetto>> oggetti);
+	void pickup();
+	void pickup(std::vector<unsigned int> posizioni);
+	std::string descriviOggettiTerra();
+	void addOggetto(std::shared_ptr<Oggetto> oggetto);
+	void addOggetti(std::vector<std::shared_ptr<Oggetto>> oggetti);
 	bool setEntita(std::shared_ptr<Entita> entita);
 	void setEvento(int evento) { this->evento = evento; };
 	int getEvento() const { return evento; };

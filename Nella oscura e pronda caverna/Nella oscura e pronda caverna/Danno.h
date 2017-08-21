@@ -7,6 +7,7 @@ che tale freccia ha dipende esclusivamente da chi se la busca e da chi la lancia
 decisamente meno. D'altra parte, un bambino sopravvive ad una freccia scoccata da un tetraplegico e un elefante esplode se
 la freccia è scoccata da un obice ferroviario.
 */
+
 class Danno
 {
 	//La forma standard di un danno è che la sommatoria del vector "tipo" sia 1, se è x!=0 
@@ -34,4 +35,5 @@ public:
 private:
 	std::vector<double> tipo;
 	double ammontare;
+	//TODOFAR inserire probabilità critico e probabilità fallimento
 };

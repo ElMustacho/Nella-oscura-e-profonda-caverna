@@ -45,32 +45,37 @@ int main()
 	Saitama.addInventario(std::make_shared<Oggetto>(oggettoDebug));
 	pregen.at(5, 5).getEntita()->addInventario(std::make_shared<Oggetto>(oggettoDebug2)); //FIXME sballo se non ho valori validi
 	std::cout << pregen.at(5, 5).getEntita()->describeInventario() << std::endl; //FIXME same
-	pregen.at(23, 10).setEvento(1);
 	std::cout << "Premi k per ammazzare l'asterisco" << std::endl;
 	/*
 	Attributi dexAlta(4, 14, 4, 4, 4, 4, 4, 1);
 	Saitama.setAttributi(dexAlta);
 	std::cout << Saitama.getAttributi().getDestrezza() << std::endl;
 	*/
+	pregen.spargiLoot(pregen.floodFill(cood(5,5)));
 	int exit = 0;
 	int X = 5, Y = 5;
 	std::cout << std::endl;
 	while (exit == 0) {
 		pregen.StampaChar();
 		if (a=='y')
-			std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire: ";
+			std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,\np per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'invetario nel posto dell'arma: ";
 		char direzione;
 		std::cin >> direzione;
 		std::cout << std::endl;
 		system("CLS");
 		switch (direzione)
 		{
-		case '1':
-			if (pregen.muoviEntita(X, Y, X - 1, Y + 1) == 0) {
-				if (a == 'y')
+		case '1':{
+			auto result = pregen.muoviEntita(X, Y, X - 1, Y + 1);
+			if (result == 0) {
+				if (a == 'y') 
 					std::cout << "Ho provato a muovermi con successo." << std::endl;
 				X--;
 				Y++;
+			}
+			else if (result == 2)
+				pregen.scontro(cood(X - 1, Y + 1), cood(X, Y));
+				
 				//TODO fammi funzionare a modo
 				//if (b == 'y')
 					//pregen.at(X, Y).getEntita()->addInventario(pregen.at(X, Y).getOggetto();
@@ -134,6 +139,13 @@ int main()
 		case 'k':
 			pregen.scontro(cood(6, 2), Danno(std::vector<double>{1}, 4000));
 			break;
+		case 'e':
+			pregen.at(X, Y).getEntita()->equip(1,0);
+		case '0':
+			std::cout << pregen.at(cood(X, Y)).descriviOggettiTerra();
+			break;
+		case 'p':
+			pregen.at(cood(X, Y)).pickup();
 		default:
 			if (a == 'y')
 				std::cout << "Input non valido" << std::endl;

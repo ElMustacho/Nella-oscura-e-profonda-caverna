@@ -28,7 +28,13 @@ bool Piano::removeEntita(cood coodElimina) {
 
 void Piano::scontro(cood posizioneVittima, cood posizioneAttaccante)
 {
-
+	if (pavimento.at(posizione(posizioneAttaccante)).getEntita() == nullptr)
+		return; //nessun attaccante
+	auto danno = pavimento.at(posizione(posizioneAttaccante)).getEntita()->attacca();
+	if (danno.getAmmontare() < 0)
+		return; //nessun danno
+	else
+		scontro(posizioneVittima, danno);
 }
 void Piano::scontro(cood posizioneVittima, Danno dannoInflitto)
 {
@@ -297,7 +303,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 			std::shared_ptr<Entita> temp = pavimento.at(posizione(posX, posY)).getEntita();
 			pavimento.at(posizione(posX, posY)).setEntita(nullptr);
 			pavimento.at(posizione(posX + moveX, posY + moveY)).setEntita(temp);
-			//LOOKATME dovrei funzionare pure io
+			//TODOFAR fammi funzionare al posto delle 3 istruzioni percedenti
 			//pavimento.at(posizione(posX, posY)).getEntita().swap(pavimento.at(posizione(posX + moveX, posY + moveY)).getEntita());
 			cood coordinatePrima(posX, posY);
 			posX += moveX;
@@ -392,4 +398,37 @@ std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
 	
 	}
 	return appoggio;
+}
+//TODO
+std::shared_ptr<Oggetto> Piano::objectFactory(std::string nome)
+{
+	return std::shared_ptr<Oggetto>();
+}
+//default sfera di metallo
+std::shared_ptr<Oggetto> Piano::objectFactory(int codiceID)
+{
+	std::shared_ptr<Oggetto> oggetto;
+	switch (codiceID) {
+	case 0: {
+		oggetto = std::make_shared<Oggetto>(1,"Sfera di metallo","L'inutilita' fatta lucida.",0);
+		break;
+	}
+	case 1: {
+		oggetto = std::make_shared<Oggetto>(4, "Lingotto d'oro", "Incise sopra vi sono 24 carote", 2000);
+		break;
+	}
+	case 2: {
+		oggetto = std::make_shared<Arma>(2, "Spada normale", "Quando l'eroe parte all'avventura, se ha una spada ebbene e' questa", 15, Danno({ 1 }, 10));
+		break;
+	}
+	case 3: {
+		oggetto = std::make_shared<Oggetto>(0.25,"Fermaporte","Non particolarmente utile qui",4);
+		break;
+	}
+	case 4: {
+		oggetto = std::make_shared<Arma>(3, "Cannone laser automatico", "No kill like overkill", 4500, Danno({ 0,0,0,0.5,0.5 }, 600));
+		break;
+	}
+	}
+	return oggetto;
 }
