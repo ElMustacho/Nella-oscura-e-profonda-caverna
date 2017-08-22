@@ -21,6 +21,7 @@ public:
 	Oggetto* getOggetto() { return this->oggetto; }
 	Entita* getEntita() { return this->entita; }
 	void setOggetto(Oggetto* obj);
+	bool hasTrap();
 	bool setEntita(Entita* entity);
 
 	void doEvento();
