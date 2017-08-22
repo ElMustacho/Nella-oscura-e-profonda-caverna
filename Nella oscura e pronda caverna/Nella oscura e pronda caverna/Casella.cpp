@@ -2,6 +2,7 @@
 #include "Scrigno.h"
 #include <iostream>
 #include <cstdlib>
+#include <algorithm>
 Casella::Casella(Tileset tileset, std::list<std::shared_ptr<Oggetto>> oggetti, std::shared_ptr<Entita> entita, bool trasparenza, bool attraversabile, int evento)
 {
 	this->tileset = tileset;
@@ -43,6 +44,19 @@ void Casella::pickup() {
 //TODO raccoglie solo qualche oggetto
 void Casella::pickup(std::vector<unsigned int> posizioni) {
 
+}
+
+void Casella::drop()
+{
+	for each (std::shared_ptr<Oggetto> oggettoMoving in entita->getInventario())
+	{
+		oggetti.push_back(oggettoMoving);
+	}
+	entita->getInventario().clear();
+}
+//TODO abbandona solo quanche oggetto
+void Casella::drop(std::vector<unsigned int> posizioni)
+{
 }
 
 std::string Casella::descriviOggettiTerra()

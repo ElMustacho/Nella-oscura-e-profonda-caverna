@@ -22,6 +22,8 @@ public:
 	void setOggetti(std::list<std::shared_ptr<Oggetto>> oggetti);
 	void pickup();
 	void pickup(std::vector<unsigned int> posizioni);
+	void drop();
+	void drop(std::vector<unsigned int> posizioni);
 	std::string descriviOggettiTerra();
 	void addOggetto(std::shared_ptr<Oggetto> oggetto);
 	void addOggetti(std::vector<std::shared_ptr<Oggetto>> oggetti);

@@ -61,7 +61,11 @@ Danno Entita::attacca()
 			danno.magnifica(attributi.getForza() / 4);
 		srand(time(nullptr));
 		//FIXMe return sempre = 1
-		double random = 1 - (((rand() % 6) / 12) - 1 / 6);
+		double random;
+		random = rand() % 6;
+		random = random / 12;
+		random = random - (double)(1 / 6);
+		random = 1 - random;
 		danno.magnifica(random);
 		return danno;
 	}
@@ -159,7 +163,7 @@ double Entita::carryWeight()
 void Entita::onDeath()
 {
 	auto peso = attributi.getForza() * 10 + attributi.getTempra() * 10 + attributi.getDestrezza() * 2 + attributi.getIntelligenza()*0.25; //L'intelligenza significa la dimensione del cervello. L'intelligenza non dipende dalla quantità di cervello nel mondo reale (dipende dalle sinapsi), ma questo è un gioco.
-	auto object = std::make_shared<Oggetto>(Oggetto(peso, "Cadavere di" + nome, "La carcassa di " + nome + " oramai esanime.", 0));
+	auto object = std::make_shared<Oggetto>(Oggetto(peso, "Cadavere di " + nome, "La carcassa di " + nome + " oramai esanime.", 0));
 	addInventario(object);
 	std::cout << nome << " e' morto!" << std::endl; //TODOFAR implementa sesso
 }

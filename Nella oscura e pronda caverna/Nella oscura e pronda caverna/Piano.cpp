@@ -46,6 +46,7 @@ void Piano::scontro(cood posizioneVittima, Danno dannoInflitto)
 			auto it = std::find(vPosizioni.begin(), vPosizioni.end(), posizioneVittima);
 			//HACK devo chiamare removeEntita
 			entitaPresenti.erase(entitaPresenti.begin()+std::distance(vPosizioni.begin(),it));
+			pavimento.at(posizione(posizioneVittima)).drop();
 			pavimento.at(posizione(posizioneVittima)).setEntita(nullptr);
 	}
 			return; //TODOFAR lascia inventario ed equipaggiamento per terra.

@@ -123,7 +123,9 @@
     <ClInclude Include="Attributi.h" />
     <ClInclude Include="Casella.h" />
     <ClInclude Include="Danno.h" />
+    <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Entita.h" />
+    <ClInclude Include="Equipaggiamento.h" />
     <ClInclude Include="noiseutils.h" />
     <ClInclude Include="Oggetto.h" />
     <ClInclude Include="Piano.h" />
@@ -141,7 +143,9 @@
     <ClCompile Include="Attributi.cpp" />
     <ClCompile Include="Casella.cpp" />
     <ClCompile Include="Danno.cpp" />
+    <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="Entita.cpp" />
+    <ClCompile Include="Equipaggiamento.cpp" />
     <ClCompile Include="noiseutils.cpp" />
     <ClCompile Include="Oggetto.cpp" />
     <ClCompile Include="main.cpp" />

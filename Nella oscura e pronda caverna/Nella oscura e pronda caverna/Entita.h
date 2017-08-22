@@ -25,7 +25,10 @@ public:
 	}
 
 	void onDeath(); //cosa succede se muore
-
+	std::list<std::shared_ptr<Oggetto>> getInventario() const { return inventario; };
+	void setInventario(std::list<std::shared_ptr<Oggetto>> inventario) { this->inventario = inventario; };
+	std::vector<std::shared_ptr<Oggetto>> getEquipaggiamento() const { return equipaggiamento; };
+	void setEquipaggiamento(std::vector<std::shared_ptr<Oggetto>> equipaggiamento) { this->equipaggiamento = equipaggiamento; }
 	Entita(std::string nome, std::list<std::shared_ptr<Oggetto>> inventario, Attributi attributi, std::vector<std::shared_ptr<Oggetto>> equipaggiamento);
 
 	bool operator==(const Entita & rEntita)const;

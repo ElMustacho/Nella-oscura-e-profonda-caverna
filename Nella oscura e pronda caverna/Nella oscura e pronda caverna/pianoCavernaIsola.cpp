@@ -33,9 +33,10 @@ pianoCavernaIsola::pianoCavernaIsola(int lunghezza, int larghezza)
 	std::shared_ptr<Entita> prot = entityFactory();
 	std::vector<cood> caselleOk;
 do {
-		caselleOk = floodFill(placeProtagonista);
+		
 		placeProtagonista.first = rand() % larghezza;
 		placeProtagonista.second = rand() % lunghezza;
+		caselleOk = floodFill(placeProtagonista);
 		counter++;
 	} while ((caselleOk.empty()) ^ counter == 1000); //OPTIMIZE
 	if (counter == 1000)
