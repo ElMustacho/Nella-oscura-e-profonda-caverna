@@ -26,18 +26,24 @@ Che sia chiaro una volta per tutte, anche perché io mi sbaglio più o meno semp
 	  ###..............#
 	Y ##################
 */
+
+typedef std::pair<int, int> coord;
+
 class Piano
 {
 public:
 	virtual ~Piano();
 	
 	int posizione(int x, int y);
+	int posizione(coord xy);
 
 	Casella& at(int x, int y);
 	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY); 
 	bool creaPorte(int posX, int posY, int dimX, int dimY);
 	void StampaChar();
 	int muoviEntita(int posX, int posY, int targetX, int targetY);
+	int muoviEntita(coord pos, coord target);
+	void aStar(coord pos, coord target);
 	void StampaFileChar();
 	bool popolaPiano();
 	bool spargiLoot();

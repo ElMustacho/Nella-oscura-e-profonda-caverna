@@ -21,6 +21,20 @@ int Piano::posizione(int x, int y) {
 		y = lunghezza;
 	return x + y*larghezza;
 }
+
+int Piano::posizione(coord xy) 
+{
+	if (xy.first < 0)
+		xy.first = 0;
+	if (xy.second < 0)
+		xy.second = 0;
+	if (xy.first > larghezza)
+		xy.first = larghezza;
+	if (xy.second > lunghezza)
+		xy.second = lunghezza;
+	return xy.first + xy.second * larghezza;
+}
+
 //Stesso funzionamento di Piano::posizione()
 Casella & Piano::at(int x, int y) 
 { 
@@ -32,7 +46,7 @@ Casella & Piano::at(int x, int y)
 		x = larghezza;
 	if (y > lunghezza)
 		y = lunghezza;
-	return pavimento.at(y + x * larghezza); 
+	return pavimento.at(y + x * larghezza); // LOOKATME dovrebbe essere x + y * larghezza;
 }
 
 
@@ -107,7 +121,7 @@ bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY)
 				return false; //Spazio per stanza non trovato
 			}
 	}
-	for (int i = posX; i < dimX + posX; i++) //CHECK Possibile con un ELSE evitare questo ciclo?
+	for (int i = posX; i < dimX + posX; i++) //LOOKATME Possibile con un ELSE evitare questo ciclo?
 	{
 		for (int j = posY; j < dimY + posY; j++)
 		{
@@ -146,20 +160,35 @@ void Piano::StampaChar()
 	std::cout << mappa;
 }
 
+// Diagonal distance
 double heuristic(int posX, int posY, int targetX, int targetY)
 {
-	// Diagonal distance, version: Octile distance
+	// Version: Octile distance
 	auto dx = abs(posX - targetX);
 	auto dy = abs(posY - targetY);
-	auto D = 1; // Normal cost
-	auto D2 = sqrt(2); // Diagonal cost
-	return D * (dx + dy) + (D2 - 2 * D) * std::min(dx, dy);
+
+	auto normalCost = 1; 
+	auto diagonalCost = sqrt(2);
+
+	return normalCost * (dx + dy) + (diagonalCost - 2 * normalCost) * std::min(dx, dy);
 };
+
+double heuristic(coord pos, coord target)
+{
+	// Version: Octile distance
+	auto dx = abs(pos.first - target.first);
+	auto dy = abs(pos.second - target.second);
+
+	auto normalCost = 1;
+	auto diagonalCost = sqrt(2);
+
+	return normalCost * (dx + dy) + (diagonalCost - 2 * normalCost) * std::min(dx, dy);
+}
 
 //TODO x e y sono invertiti
 int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi due sono quelli da dove parto, gli altri dove arrivo
 {
-	if (pavimento.at(posizione(posX, posY)).getEntita() == NULL) 
+	if (pavimento.at(posizione(posX, posY)).getEntita() == NULL) // CHECK Dovrebbe essere nullptr, no?
 	{
 		return -1; //Qui non c'è nessuno
 	}
@@ -186,18 +215,180 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	//ma solo quella della casella in cui mi voglio spostare, una per volta.
 	//P.S. questo sistema funziona bene anche quando c'è solo una casella da percorrere.
 
-	// TODO ricontrollare costi (oggetti e altro)
+	coord pos(posX, posY);
+	coord target(targetX, targetY);
+
+	aStar(pos, target);
+
+	//FIXME da qui assumo che il movimento sia in linea retta
+	while (distanza != 0 && !(posX == targetX && posY == targetY)) //Esco quando ho terminato i movimenti o quando sono arrivato.
+	{ 
+		int moveX=0, moveY=0;
+		if (posX < targetX)
+		{
+			moveX = 1;
+		}
+		else if (posX > targetX)
+		{
+			moveX = -1;
+		}
+		else {}
+
+		if (posY < targetY)
+		{
+			moveY = 1;
+		}
+		else if (posY > targetY)
+		{
+			moveY = -1;
+		}
+		else {}
+		
+		//Qui l'unico controllo presente è che la casella non sia un muro e che nella casella non ci sia nessuno.
+		if (pavimento.at(posizione(posX + moveX, posY + moveY)).isMuro()) //Qui c'è un muro
+		{  
+			return 1;
+		}
+		else if (pavimento.at(posizione(posX + moveX, posY + moveY)).getEntita() != NULL) //Qui c'è qualcun'altro
+		{
+			return 2;
+		}
+		else //Date le premesse, spostarsi è sicuro e valido
+		{ 
+			Entita* temp = pavimento.at(posizione(posX, posY)).getEntita();
+			pavimento.at(posizione(posX, posY)).setEntita(NULL);
+			pavimento.at(posizione(posX + moveX, posY + moveY)).setEntita(temp);
+			posX += moveX;
+			posY += moveY;
+			pavimento.at(posizione(posX, posY)).doEvento();
+			distanza--;
+		}
+	}
+	if (distanza == 0 && (posX == targetX && posY == targetY))
+	{
+		return 0; //sono arrivato precisamente a destinazione
+	}
+	else if (distanza != 0 && (posX == targetX && posY == targetY))
+	{
+		return 3; //sono arrivato a destinazione ma avevo movimento avanzato
+	}
+	else
+	{
+		return 4; //non sono arrivato a destinazione perché ho finito il movimento
+	}
+}
 
 
+int Piano::muoviEntita(coord pos, coord target) //I primi due sono quelli da dove parto, gli altri dove arrivo
+{
+	if (pavimento.at(posizione(pos)).getEntita() == NULL) // CHECK Dovrebbe essere nullptr, no?
+	{
+		return -1; //Qui non c'è nessuno
+	}
+	if (pos.first == target.first && pos.second == target.second) //Questo significa non spostarsi per davvero
+	{
+		return -2;
+	}
+	if (!(target.first > -1 && target.first < lunghezza && target.second > -1 && target.second < larghezza))
+	{
+		return -3; //Posizione non valida per almeno una delle coordinate
+	}
+
+	int distanza, metodo;
+	pavimento.at( posizione(pos) ).getEntita()->muovi(distanza, metodo);
+
+	if (distanza == 0)
+	{
+		return -4; //Ho provato a muovermi ma sono immobile
+	}
+
+	// TODO A* (Dijkstra + heuristic) per determinare la direzione da percorrere (qualora sia necessario usarlo).
+	//Qui sotto il sistema di spostamento è stupido, ma potrebbe funzionare per gestire entità prive di intelligenza
+	//tipo qualche golem, melma, zombie o goblin ubriaco fradicio. In pratica non verifico la validità finale del percorso,
+	//ma solo quella della casella in cui mi voglio spostare, una per volta.
+	//P.S. questo sistema funziona bene anche quando c'è solo una casella da percorrere.
+
+
+	aStar(pos, target);
+
+	//FIXME da qui assumo che il movimento sia in linea retta
+	while (distanza != 0 && !(pos.first == target.first && pos.second == target.second)) //Esco quando ho terminato i movimenti o quando sono arrivato.
+	{
+		int moveX = 0, moveY = 0;
+		if (pos.first < target.first)
+		{
+			moveX = 1;
+		}
+		else if (pos.first > target.first)
+		{
+			moveX = -1;
+		}
+		else {}
+
+		if (pos.second < target.second)
+		{
+			moveY = 1;
+		}
+		else if (pos.second > target.second)
+		{
+			moveY = -1;
+		}
+		else {}
+
+		coord updatePos(pos.first + moveX, pos.second + moveY);
+
+		//Qui l'unico controllo presente è che la casella non sia un muro e che nella casella non ci sia nessuno.
+		if (pavimento.at(posizione(updatePos)).isMuro()) //Qui c'è un muro
+		{
+			return 1;
+		}
+		else if (pavimento.at(posizione(updatePos)).getEntita() != NULL) //Qui c'è qualcun'altro
+		{
+			return 2;
+		}
+		else //Date le premesse, spostarsi è sicuro e valido
+		{
+			Entita* temp = pavimento.at( posizione(pos) ).getEntita();
+			pavimento.at(posizione(pos)).setEntita(NULL);
+			pavimento.at(posizione(pos.first + moveX, pos.second + moveY)).setEntita(temp);
+			pos.first += moveX;
+			pos.second += moveY;
+			pavimento.at(posizione(pos)).doEvento();
+			distanza--;
+		}
+	}
+	if (distanza == 0 && (pos == target))
+	{
+		return 0; //sono arrivato precisamente a destinazione
+	}
+	else if (distanza != 0 && (pos == target))
+	{
+		return 3; //sono arrivato a destinazione ma avevo movimento avanzato
+	}
+	else
+	{
+		return 4; //non sono arrivato a destinazione perché ho finito il movimento
+	}
+}
+
+
+void Piano::aStar(coord pos, coord target)
+{
 	/* A* Algorithm */
 	/////////////////////////////
 
+	// CHECK Aumento costo se oggetto su casella
+	// CHECK Comportamento se Entita su Casella
+	// DOUBT Scrivere metodo checkSuccessor(coord pos) ???
+	// CHECK Implementa posizione(coord xy)
+	// CHECK Implementa muoviEntita(coord pod, coord target)
+
 	struct node
 	{
-		node(){}
-		node(int posX, int posY, int parentX, int parentY, double f, double g, double h) 
+		node() {}
+		node(int posX, int posY, int parentX, int parentY, double f, double g, double h)
 		{
-			this->posX = posX; 
+			this->posX = posX;
 			this->posY = posY;
 
 			this->parentX = parentX;
@@ -211,23 +402,30 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 		int parentX, parentY;
 		double f, g, h;
 	};
-	
+
 
 	std::vector<node> openList;
 	std::vector<node> closedList;
 	bool destination = false;
 
-	struct node startingNode(posX, posY, posX, posY, heuristic(posX, posY, targetX, targetY), 0, heuristic(posX, posY, targetX, targetY));
+	// Costs
+	auto normalCost = 1;
+	auto diagonalCost = sqrt(2);
+	auto objectCost = 0.5;
+
+	auto beginHeuristic = heuristic(pos, target);
+
+	struct node startingNode(pos.first, pos.second, pos.first, pos.second, beginHeuristic, 0, beginHeuristic);
 	openList.push_back(startingNode);
 
-	while ( !openList.empty() && !destination )
+	while (!openList.empty() && !destination)
 	{
 		double min = DBL_MAX;
 		std::vector<node>::iterator position;
 		struct node q;
 
 		// find the min 'f' node in openList
-		for ( std::vector<node>::iterator i = openList.begin(); i < openList.end(); i++ )
+		for (std::vector<node>::iterator i = openList.begin(); i < openList.end(); i++)
 		{
 			if (i->f < min)
 			{
@@ -238,19 +436,26 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 		// Save the node and erase it from openList
 		q = *position;
 		openList.erase(position);
-		
+
 		/* Generates 8 successors (nearby cells) */
 		//----------- 1st Successor North (x, y-1) ------------
-		
-		if ( !destination && !pavimento.at(posizione(q.posX, q.posY - 1)).isMuro() && !pavimento.at(posizione(q.posX, q.posY - 1)).hasTrap() )
+
+		coord nord(q.posX, q.posY - 1);
+
+		if (!destination && !pavimento.at(posizione(nord)).isMuro() && !pavimento.at(posizione(nord)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
 		{
 
-			double gNew = q.g + 1;
-			double hNew = heuristic(q.posX, q.posY-1, targetX, targetY);
+			double gNew = q.g + normalCost;
+			if (pavimento.at(posizione(nord)).getOggetto() != nullptr)
+			{
+				gNew += objectCost;
+			}
+			
+			double hNew = heuristic(nord, target);
 			double fNew = gNew + hNew;
 
 			// if is destination
-			if ( q.posX==targetX && q.posY-1==targetY )
+			if (nord == target)
 			{
 				struct node north;
 				north.posX = q.posX;
@@ -265,15 +470,15 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 				closedList.push_back(north);
 				destination = true;
 			}
-			else 
+			else
 			{
 				bool found = false;
 				bool minus = false;
 
 				// looking for this node in closedList
-				for ( std::vector<node>::iterator i = closedList.begin(); i < closedList.end(); i++ )
+				for (std::vector<node>::iterator i = closedList.begin(); i < closedList.end(); i++)
 				{
-					if ( i->posX == q.posX && i->posY == q.posY - 1 && i->f < fNew )
+					if (i->posX == q.posX && i->posY == q.posY - 1 && i->f < fNew)
 					{
 						found = true;
 						break;
@@ -283,9 +488,9 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 				if (!found)
 				{
 					// looking for this node in openList
-					for ( std::vector<node>::iterator i = openList.begin(); i < openList.end(); i++ )
+					for (std::vector<node>::iterator i = openList.begin(); i < openList.end(); i++)
 					{
-						if ( i->posX == q.posX && i->posY == q.posY - 1 )
+						if (i->posX == q.posX && i->posY == q.posY - 1)
 						{
 							found = true;
 							if (i->f > fNew)
@@ -294,7 +499,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 						}
 					}
 
-					if ( !found || (found && minus) )
+					if (!found || (found && minus))
 					{
 						struct node north;
 						north.posX = q.posX;
@@ -312,22 +517,29 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 			}
 
 		}
-		
+
 		//----------- 2nd Successor South (x, y+1) ------------
 
-		if ( !destination && !pavimento.at(posizione(q.posX, q.posY + 1)).isMuro() && !pavimento.at(posizione(q.posX, q.posY + 1)).hasTrap() )
+		coord sud(q.posX, q.posY + 1);
+		
+		if (!destination && !pavimento.at(posizione(sud)).isMuro() && !pavimento.at(posizione(sud)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
 		{
 
-			double gNew = q.g + 1;
-			double hNew = heuristic(q.posX, q.posY + 1, targetX, targetY);
+			double gNew = q.g + normalCost;
+			if (pavimento.at(posizione(sud)).getOggetto() != nullptr)
+			{
+				gNew += objectCost;
+			}
+
+			double hNew = heuristic(sud, target);
 			double fNew = gNew + hNew;
 
 			// if is destination
-			if (q.posX == targetX && q.posY + 1 == targetY)
+			if (sud == target)
 			{
 				struct node south;
-				south.posX = q.posX;
-				south.posY = q.posY + 1;
+				south.posX = pos.first;
+				south.posY = pos.second;
 				south.g = gNew;
 				south.h = hNew;
 				south.f = fNew;
@@ -388,15 +600,22 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 
 		//----------- 3rd Successor East (x+1, y) ------------
 
-		if ( !destination && !pavimento.at(posizione(q.posX + 1, q.posY)).isMuro() && !pavimento.at(posizione(q.posX + 1, q.posY)).hasTrap() )
+		coord est(q.posX + 1, q.posY);
+
+		if (!destination && !pavimento.at(posizione(est)).isMuro() && !pavimento.at(posizione(est)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
 		{
 
-			double gNew = q.g + 1;
-			double hNew = heuristic(q.posX + 1, q.posY, targetX, targetY);
+			double gNew = q.g + normalCost;
+			if (pavimento.at(posizione(est)).getOggetto() != nullptr)
+			{
+				gNew += objectCost;
+			}
+
+			double hNew = heuristic(est, target);
 			double fNew = gNew + hNew;
 
 			// if is destination
-			if (q.posX + 1 == targetX && q.posY == targetY)
+			if (est == target)
 			{
 				struct node east;
 				east.posX = q.posX + 1;
@@ -461,15 +680,22 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 
 		//----------- 4th Successor West (x-1, y) ------------
 
-		if ( !destination && !pavimento.at(posizione(q.posX - 1, q.posY)).isMuro() && !pavimento.at(posizione(q.posX - 1, q.posY)).hasTrap() )
+		coord ovest(q.posX - 1, q.posY);
+
+		if (!destination && !pavimento.at(posizione(ovest)).isMuro() && !pavimento.at(posizione(ovest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
 		{
 
-			double gNew = q.g + 1;
-			double hNew = heuristic(q.posX - 1, q.posY, targetX, targetY);
+			double gNew = q.g + normalCost;
+			if (pavimento.at(posizione(ovest)).getOggetto() != nullptr)
+			{
+				gNew += objectCost;
+			}
+
+			double hNew = heuristic(ovest, target);
 			double fNew = gNew + hNew;
 
 			// if is destination
-			if (q.posX - 1 == targetX && q.posY == targetY)
+			if (ovest == target)
 			{
 				struct node west;
 				west.posX = q.posX - 1;
@@ -534,15 +760,22 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 
 		//----------- 5th Successor North-East (x+1, y-1) ------------
 
-		if ( !destination && !pavimento.at(posizione(q.posX + 1, q.posY - 1)).isMuro() && !pavimento.at(posizione(q.posX + 1, q.posY - 1)).hasTrap() )
-		{
+		coord nordEst(q.posX + 1, q.posY - 1);
 
-			double gNew = q.g + sqrt(2);
-			double hNew = heuristic(q.posX + 1, q.posY - 1, targetX, targetY);
+		if (!destination && !pavimento.at(posizione(nordEst)).isMuro() && !pavimento.at(posizione(nordEst)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		{
+			
+			double gNew = q.g + diagonalCost;
+			if (pavimento.at(posizione(nordEst)).getOggetto() != nullptr)
+			{
+				gNew += objectCost;
+			}
+
+			double hNew = heuristic(nordEst, target);
 			double fNew = gNew + hNew;
 
 			// if is destination
-			if (q.posX + 1 == targetX && q.posY - 1 == targetY)
+			if (nordEst == target)
 			{
 				struct node northEast;
 				northEast.posX = q.posX + 1;
@@ -607,15 +840,22 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 
 		//----------- 6th Successor North-West (x-1, y-1) ------------
 
-		if ( !destination && !pavimento.at(posizione(q.posX - 1, q.posY - 1)).isMuro() && !pavimento.at(posizione(q.posX - 1, q.posY - 1)).hasTrap() )
+		coord nordOvest(q.posX - 1, q.posY - 1);
+
+		if (!destination && !pavimento.at(posizione(nordOvest)).isMuro() && !pavimento.at(posizione(nordOvest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
 		{
 
-			double gNew = q.g + sqrt(2);
-			double hNew = heuristic(q.posX - 1, q.posY - 1, targetX, targetY);
+			double gNew = q.g + diagonalCost;
+			if (pavimento.at(posizione(nordOvest)).getOggetto() != nullptr)
+			{
+				gNew += objectCost;
+			}
+
+			double hNew = heuristic(nordOvest, target);
 			double fNew = gNew + hNew;
 
 			// if is destination
-			if (q.posX - 1 == targetX && q.posY - 1 == targetY)
+			if (nordOvest == target)
 			{
 				struct node northWest;
 				northWest.posX = q.posX - 1;
@@ -680,15 +920,22 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 
 		//----------- 7th Successor South-East (x+1, y+1) ------------
 
-		if ( !destination && !pavimento.at(posizione(q.posX + 1, q.posY + 1)).isMuro() && !pavimento.at(posizione(q.posX + 1, q.posY + 1)).hasTrap() )
+		coord sudEst(q.posX + 1, q.posY + 1);
+
+		if (!destination && !pavimento.at(posizione(sudEst)).isMuro() && !pavimento.at(posizione(sudEst)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
 		{
 
-			double gNew = q.g + sqrt(2);
-			double hNew = heuristic(q.posX + 1, q.posY + 1, targetX, targetY);
+			double gNew = q.g + diagonalCost;
+			if (pavimento.at(posizione(sudEst)).getOggetto() != nullptr)
+			{
+				gNew += objectCost;
+			}
+
+			double hNew = heuristic(sudEst, target);
 			double fNew = gNew + hNew;
 
 			// if is destination
-			if (q.posX + 1 == targetX && q.posY + 1 == targetY)
+			if (sudEst == target)
 			{
 				struct node southEast;
 				southEast.posX = q.posX + 1;
@@ -732,7 +979,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 						}
 					}
 
-					if ( !found || (found && minus) )
+					if (!found || (found && minus))
 					{
 						struct node southEast;
 						southEast.posX = q.posX + 1;
@@ -753,15 +1000,22 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 
 		//----------- 8th Successor South-West (x-1, y+1) ------------
 
-		if ( !destination && !pavimento.at(posizione(q.posX - 1, q.posY + 1)).isMuro() && !pavimento.at(posizione(q.posX - 1, q.posY + 1)).hasTrap() )
+		coord sudOvest(q.posX - 1, q.posY + 1);
+
+		if (!destination && !pavimento.at(posizione(sudOvest)).isMuro() && !pavimento.at(posizione(sudOvest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
 		{
 
-			double gNew = q.g + sqrt(2);
-			double hNew = heuristic(q.posX - 1, q.posY + 1, targetX, targetY);
+			double gNew = q.g + diagonalCost;
+			if (pavimento.at(posizione(sudOvest)).getOggetto() != nullptr)
+			{
+				gNew += objectCost;
+			}
+
+			double hNew = heuristic(sudOvest, target);
 			double fNew = gNew + hNew;
 
 			// if is destination
-			if (q.posX - 1 == targetX && q.posY + 1 == targetY)
+			if (sudOvest  == target)
 			{
 				struct node southWest;
 				southWest.posX = q.posX - 1;
@@ -824,8 +1078,8 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 
 
 		}
-		
-		if ( !destination )
+
+		if (!destination)
 		{
 			// Push q on the closedList
 			closedList.push_back(q);
@@ -835,69 +1089,11 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 
 	for (std::vector<node>::iterator i = closedList.begin(); i < closedList.end(); i++)
 	{
-		std::cout << "( " << i->posX << ", " << i->posY << " ) -> "<< i->f << std::endl;
+		std::cout << "( " << i->posX << ", " << i->posY << " ) -> " << i->f << std::endl;
 	}
 
 	/////////////////////////////
 	/* End of A* Algorithm */
-
-
-	//FIXME da qui assumo che il movimento sia in linea retta
-	while (distanza != 0 && !(posX == targetX && posY == targetY)) //Esco quando ho terminato i movimenti o quando sono arrivato.
-	{ 
-		int moveX=0, moveY=0;
-		if (posX < targetX)
-		{
-			moveX = 1;
-		}
-		else if (posX > targetX)
-		{
-			moveX = -1;
-		}
-		else {}
-
-		if (posY < targetY)
-		{
-			moveY = 1;
-		}
-		else if (posY > targetY)
-		{
-			moveY = -1;
-		}
-		else {}
-		
-		//Qui l'unico controllo presente è che la casella non sia un muro e che nella casella non ci sia nessuno.
-		if (pavimento.at(posizione(posX + moveX, posY + moveY)).isMuro()) //Qui c'è un muro
-		{  
-			return 1;
-		}
-		else if (pavimento.at(posizione(posX + moveX, posY + moveY)).getEntita() != NULL) //Qui c'è qualcun'altro
-		{
-			return 2;
-		}
-		else //Date le premesse, spostarsi è sicuro e valido
-		{ 
-			Entita* temp = pavimento.at(posizione(posX, posY)).getEntita();
-			pavimento.at(posizione(posX, posY)).setEntita(NULL);
-			pavimento.at(posizione(posX + moveX, posY + moveY)).setEntita(temp);
-			posX += moveX;
-			posY += moveY;
-			pavimento.at(posizione(posX, posY)).doEvento();
-			distanza--;
-		}
-	}
-	if (distanza == 0 && (posX == targetX && posY == targetY))
-	{
-		return 0; //sono arrivato precisamente a destinazione
-	}
-	else if (distanza != 0 && (posX == targetX && posY == targetY))
-	{
-		return 3; //sono arrivato a destinazione ma avevo movimento avanzato
-	}
-	else
-	{
-		return 4; //non sono arrivato a destinazione perché ho finito il movimento
-	}
 }
 
 void Piano::StampaFileChar() 

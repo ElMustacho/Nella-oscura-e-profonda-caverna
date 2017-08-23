@@ -117,7 +117,6 @@
     <ClInclude Include="Arma.h" />
     <ClInclude Include="Attore.h" />
     <ClInclude Include="Attributi.h" />
-    <ClInclude Include="A_Star.h" />
     <ClInclude Include="Casella.h" />
     <ClInclude Include="Danno.h" />
     <ClInclude Include="Entita.h" />
@@ -134,7 +133,6 @@
     <ClCompile Include="Arma.cpp" />
     <ClCompile Include="Attore.cpp" />
     <ClCompile Include="Attributi.cpp" />
-    <ClCompile Include="A_Star.cpp" />
     <ClCompile Include="Casella.cpp" />
     <ClCompile Include="Danno.cpp" />
     <ClCompile Include="Entita.cpp" />
