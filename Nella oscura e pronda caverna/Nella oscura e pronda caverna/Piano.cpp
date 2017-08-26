@@ -203,6 +203,8 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 
 	int distanza, metodo;
 	pavimento.at(posizione(posX, posY)).getEntita()->muovi(distanza,metodo);
+	/* TENTATIVO STIMA DISTANZA (con heuristic) */
+	distanza = heuristic(posX, posY, targetX, targetY);
 
 	if (distanza == 0)
 	{
@@ -296,6 +298,8 @@ int Piano::muoviEntita(coord pos, coord target) //I primi due sono quelli da dov
 
 	int distanza, metodo;
 	pavimento.at( posizione(pos) ).getEntita()->muovi(distanza, metodo);
+	/* TENTATIVO STIMA DISTANZA (con heuristic) */
+	distanza = heuristic(pos, target);
 
 	if (distanza == 0)
 	{
@@ -312,7 +316,7 @@ int Piano::muoviEntita(coord pos, coord target) //I primi due sono quelli da dov
 	aStar(pos, target);
 
 	//FIXME da qui assumo che il movimento sia in linea retta
-	while (distanza != 0 && !(pos.first == target.first && pos.second == target.second)) //Esco quando ho terminato i movimenti o quando sono arrivato.
+	while (distanza != 0 && !(pos == target)) //Esco quando ho terminato i movimenti o quando sono arrivato.
 	{
 		int moveX = 0, moveY = 0;
 		if (pos.first < target.first)
