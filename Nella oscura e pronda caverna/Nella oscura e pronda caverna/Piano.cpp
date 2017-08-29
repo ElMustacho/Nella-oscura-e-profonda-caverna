@@ -302,8 +302,9 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 
 	int distanza, metodo;
 	pavimento.at(posizione(posX, posY)).getEntita()->muovi(distanza,metodo);
+	
 	/* TENTATIVO STIMA DISTANZA (con heuristic) */
-	distanza = heuristic(posX, posY, targetX, targetY);
+	//distanza = heuristic(posX, posY, targetX, targetY);
 
 	if (distanza == 0)
 	{
@@ -458,14 +459,14 @@ int Piano::muoviEntita(coord pos, coord target) //I primi due sono quelli da dov
 		{
 			return 1;
 		}
-		else if (pavimento.at(posizione(updatePos)).getEntita() != NULL) //Qui c'è qualcun'altro
+		else if (pavimento.at(posizione(updatePos)).getEntita() != nullptr) //Qui c'è qualcun'altro
 		{
 			return 2;
 		}
 		else //Date le premesse, spostarsi è sicuro e valido
 		{
-			Entita* temp = pavimento.at( posizione(pos) ).getEntita();
-			pavimento.at(posizione(pos)).setEntita(NULL);
+			std::shared_ptr<Entita> temp = pavimento.at( posizione(pos) ).getEntita();
+			pavimento.at(posizione(pos)).setEntita(nullptr);
 			pavimento.at(posizione(pos.first + moveX, pos.second + moveY)).setEntita(temp);
 			pos.first += moveX;
 			pos.second += moveY;
@@ -562,7 +563,7 @@ void Piano::aStar(coord pos, coord target)
 		{
 
 			double gNew = q.g + normalCost;
-			if (pavimento.at(posizione(nord)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(nord)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
@@ -642,7 +643,7 @@ void Piano::aStar(coord pos, coord target)
 		{
 
 			double gNew = q.g + normalCost;
-			if (pavimento.at(posizione(sud)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(sud)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
@@ -722,7 +723,7 @@ void Piano::aStar(coord pos, coord target)
 		{
 
 			double gNew = q.g + normalCost;
-			if (pavimento.at(posizione(est)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(est)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
@@ -802,7 +803,7 @@ void Piano::aStar(coord pos, coord target)
 		{
 
 			double gNew = q.g + normalCost;
-			if (pavimento.at(posizione(ovest)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(ovest)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
@@ -882,7 +883,7 @@ void Piano::aStar(coord pos, coord target)
 		{
 			
 			double gNew = q.g + diagonalCost;
-			if (pavimento.at(posizione(nordEst)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(nordEst)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
@@ -962,7 +963,7 @@ void Piano::aStar(coord pos, coord target)
 		{
 
 			double gNew = q.g + diagonalCost;
-			if (pavimento.at(posizione(nordOvest)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(nordOvest)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
@@ -1042,7 +1043,7 @@ void Piano::aStar(coord pos, coord target)
 		{
 
 			double gNew = q.g + diagonalCost;
-			if (pavimento.at(posizione(sudEst)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(sudEst)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
@@ -1122,7 +1123,7 @@ void Piano::aStar(coord pos, coord target)
 		{
 
 			double gNew = q.g + diagonalCost;
-			if (pavimento.at(posizione(sudOvest)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(sudOvest)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}

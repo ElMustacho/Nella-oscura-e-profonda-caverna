@@ -81,4 +81,6 @@ protected:
 	std::vector<std::shared_ptr<Oggetto>> oggettiGenerabili;
 	//Il personaggio deve essere sempre nella prima posizione
 	std::vector<std::pair<std::shared_ptr<Entita>, cood>> entitaPresenti;
+
+	std::deque<Entita> turni;
 };
