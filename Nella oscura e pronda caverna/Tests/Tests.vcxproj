@@ -146,9 +146,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EntitaTests.cpp" />
+    <ClCompile Include="Tests.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="OggettoTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GTest\GTest.vcxproj">

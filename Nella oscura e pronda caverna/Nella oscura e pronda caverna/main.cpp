@@ -21,7 +21,7 @@ int main()
 	PianoFile pregen("testPreload.txt", ok);
 	if (!ok)
 	{
-		std::cout << "Merda";
+		std::cout << "Medda";
 		return -1;
 	}
 	//else
@@ -58,8 +58,14 @@ int main()
 	auto stuff = pregen.getPositionOfPlayer();
 	int X = stuff.first, Y = stuff.second;
 	std::cout << std::endl;
-	while (exit == 0) {
+
+	// pregen.muoviEntita(X, Y, X + 4, Y + 4);
+	
+
+	while (exit == 0) 
+	{
 		pregen.StampaChar();
+
 		if (a=='y')
 			std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,\np per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'invetario nel posto dell'arma: ";
 		char direzione;
@@ -151,10 +157,16 @@ int main()
 			pregen.at(cood(X, Y)).pickup();
 		default:
 			if (a == 'y')
+			{
 				std::cout << "Input non valido" << std::endl;
+			}
 
 		}
 	}
+
+	pregen.StampaChar();
+	pregen.muoviEntita(6, 2, X, Y); // muovo 2° entita
+
 	pregen.StampaChar();
 	std::cout << std::endl;
 	std::cin >> a;

@@ -17,6 +17,7 @@ public:
 	bool isTrasparente() { return this->trasparenza; }
 	void setAttraversabile(bool attraversabile) { this->attraversabile = attraversabile; }
 	bool isAttraversabile() { return this->attraversabile; }
+
 	std::list<std::shared_ptr<Oggetto>> getOggetti() { return this->oggetti; }
 	std::shared_ptr<Entita> getEntita() { return this->entita; }
 	void setOggetti(std::list<std::shared_ptr<Oggetto>> oggetti);
@@ -31,6 +32,8 @@ public:
 	void setEvento(int evento) { this->evento = evento; };
 	int getEvento() const { return evento; };
 	int doEvento();
+	bool hasTrap();
+
 
 private:
 	std::list<std::shared_ptr<Oggetto>> oggetti;

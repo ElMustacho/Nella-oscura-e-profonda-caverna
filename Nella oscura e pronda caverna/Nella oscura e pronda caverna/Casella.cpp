@@ -110,3 +110,8 @@ void Casella::Scava() { //per scavare un muro in modo rapido
 	trasparenza = true;
 	attraversabile = true;
 }
+
+bool Casella::hasTrap()
+{
+	return false; // TODO Cambiare: dovrà provare un castin a Trappola
+}

@@ -27,15 +27,20 @@ Che sia chiaro una volta per tutte, anche perché io mi sbaglio più o meno semp
 	  ###..............#
 	Y ##################
 */
+
+typedef std::pair<int, int> coord;
+
 class Piano
 {
 public:
 	virtual ~Piano();
 	
 	int posizione(int x, int y);
+
 	bool removeEntita(cood coodElimina);
 	void scontro(cood posizioneVittima, cood posizioneAttaccante);
 	void scontro(cood posizioneVittima, Danno dannoInflitto); //gestisce danno ad area e fulmini da divinità furiose
+
 	Casella& at(int x, int y);
 	Casella& at(cood coord);
 	bool isCoodLegal(cood coord);
@@ -47,10 +52,15 @@ public:
 	std::vector<cood> getVectorPosizioni();
 	std::vector<cood> floodFill (cood posizionePartenza);
 	void StampaChar();
+
 	cood getPositionOfPlayer();
 	//posizione nella tabella
 	cood getPositionOfEntity(int position);
 	int muoviEntita(int posX, int posY, int targetX, int targetY); 
+
+	int muoviEntita(coord pos, coord target);
+	void aStar(coord pos, coord target);
+
 	void StampaFileChar();
 	bool popolaPiano();
 	bool spargiLoot();
