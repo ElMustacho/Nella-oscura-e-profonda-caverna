@@ -81,6 +81,7 @@ int main()
 					std::cout << "Ho provato a muovermi con successo." << std::endl;
 				X--;
 				Y++;
+				
 			}
 			else if (result == 2)
 				pregen.scontro(cood(X - 1, Y + 1), cood(X, Y));

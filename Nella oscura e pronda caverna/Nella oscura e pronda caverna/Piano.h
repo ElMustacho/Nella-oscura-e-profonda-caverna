@@ -73,6 +73,8 @@ public:
 	std::shared_ptr<Oggetto> objectFactory(std::string nome);
 	std::shared_ptr<Oggetto> objectFactory(int codiceID = 0);
 
+	
+
 	//Piano(std::string posizione, bool &successo); //Da file 
 protected:
 	std::vector<Casella> pavimento; 

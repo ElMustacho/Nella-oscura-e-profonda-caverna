@@ -110,15 +110,14 @@ bool Piano::placeEntita(std::shared_ptr<Entita> placeMe, cood coord) //FIXME ins
 		std::shared_ptr<Entita> copyTemp = placeMe;
 		std::pair<std::shared_ptr<Entita>, cood> entitaTabella(copyTemp, coord);
 		entitaPresenti.push_back(entitaTabella);
+		turni.push_back(*placeMe);
 		return true;
 	}
 	else	
-  {
+    {
 		return false;
 	}
 }
-
-
 
 
 
@@ -366,6 +365,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 			posX += moveX;
 			posY += moveY;
 			distanza--;
+			
 			cood coordinateDopo(posX, posY);
 			auto vPosizioni = getVectorPosizioni();
 			auto it = std::find(vPosizioni.begin(), vPosizioni.end(), coordinatePrima);
@@ -559,7 +559,7 @@ void Piano::aStar(coord pos, coord target)
 
 		coord nord(q.posX, q.posY - 1);
 
-		if (!destination && !pavimento.at(posizione(nord)).isMuro() && !pavimento.at(posizione(nord)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(nord)).isMuro() && !pavimento.at(posizione(nord)).hasTrap() && pavimento.at(posizione(nord)).getEntita() == nullptr )
 		{
 
 			double gNew = q.g + normalCost;
@@ -604,7 +604,7 @@ void Piano::aStar(coord pos, coord target)
 
 				if (!found)
 				{
-					// looking for this node in openList
+					//CHECK looking for this node in openList
 					for (std::vector<node>::iterator i = openList.begin(); i < openList.end(); i++)
 					{
 						if (i->posX == q.posX && i->posY == q.posY - 1)
@@ -639,7 +639,7 @@ void Piano::aStar(coord pos, coord target)
 
 		coord sud(q.posX, q.posY + 1);
 		
-		if (!destination && !pavimento.at(posizione(sud)).isMuro() && !pavimento.at(posizione(sud)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(sud)).isMuro() && !pavimento.at(posizione(sud)).hasTrap() && pavimento.at(posizione(nord)).getEntita() == nullptr )
 		{
 
 			double gNew = q.g + normalCost;
@@ -719,7 +719,7 @@ void Piano::aStar(coord pos, coord target)
 
 		coord est(q.posX + 1, q.posY);
 
-		if (!destination && !pavimento.at(posizione(est)).isMuro() && !pavimento.at(posizione(est)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(est)).isMuro() && !pavimento.at(posizione(est)).hasTrap() && pavimento.at(posizione(nord)).getEntita() == nullptr )
 		{
 
 			double gNew = q.g + normalCost;
@@ -799,7 +799,7 @@ void Piano::aStar(coord pos, coord target)
 
 		coord ovest(q.posX - 1, q.posY);
 
-		if (!destination && !pavimento.at(posizione(ovest)).isMuro() && !pavimento.at(posizione(ovest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(ovest)).isMuro() && !pavimento.at(posizione(ovest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() == nullptr )
 		{
 
 			double gNew = q.g + normalCost;
@@ -879,7 +879,7 @@ void Piano::aStar(coord pos, coord target)
 
 		coord nordEst(q.posX + 1, q.posY - 1);
 
-		if (!destination && !pavimento.at(posizione(nordEst)).isMuro() && !pavimento.at(posizione(nordEst)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(nordEst)).isMuro() && !pavimento.at(posizione(nordEst)).hasTrap() && pavimento.at(posizione(nord)).getEntita() == nullptr )
 		{
 			
 			double gNew = q.g + diagonalCost;
@@ -959,7 +959,7 @@ void Piano::aStar(coord pos, coord target)
 
 		coord nordOvest(q.posX - 1, q.posY - 1);
 
-		if (!destination && !pavimento.at(posizione(nordOvest)).isMuro() && !pavimento.at(posizione(nordOvest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(nordOvest)).isMuro() && !pavimento.at(posizione(nordOvest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() == nullptr )
 		{
 
 			double gNew = q.g + diagonalCost;
@@ -1039,7 +1039,7 @@ void Piano::aStar(coord pos, coord target)
 
 		coord sudEst(q.posX + 1, q.posY + 1);
 
-		if (!destination && !pavimento.at(posizione(sudEst)).isMuro() && !pavimento.at(posizione(sudEst)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(sudEst)).isMuro() && !pavimento.at(posizione(sudEst)).hasTrap() && pavimento.at(posizione(nord)).getEntita() == nullptr )
 		{
 
 			double gNew = q.g + diagonalCost;
@@ -1119,7 +1119,7 @@ void Piano::aStar(coord pos, coord target)
 
 		coord sudOvest(q.posX - 1, q.posY + 1);
 
-		if (!destination && !pavimento.at(posizione(sudOvest)).isMuro() && !pavimento.at(posizione(sudOvest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(sudOvest)).isMuro() && !pavimento.at(posizione(sudOvest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() == nullptr )
 		{
 
 			double gNew = q.g + diagonalCost;
