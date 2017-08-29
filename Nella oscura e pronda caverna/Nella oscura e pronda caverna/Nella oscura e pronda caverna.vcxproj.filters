@@ -63,6 +63,12 @@
     <ClInclude Include="pianoCavernaIsola.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="Dungeon.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Equipaggiamento.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Oggetto.cpp">
@@ -114,6 +120,12 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="pianoCavernaIsola.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Dungeon.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Equipaggiamento.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>

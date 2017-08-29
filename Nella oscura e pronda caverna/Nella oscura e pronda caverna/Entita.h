@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <list>
 #include "Oggetto.h"
 #include "Sprite.h"
 #include "Attributi.h"
-
+#include <memory>
 
 class Entita
 {
@@ -24,28 +25,35 @@ public:
 	}
 
 	void onDeath(); //cosa succede se muore
+	std::list<std::shared_ptr<Oggetto>> getInventario() const { return inventario; };
+	void setInventario(std::list<std::shared_ptr<Oggetto>> inventario) { this->inventario = inventario; };
+	std::vector<std::shared_ptr<Oggetto>> getEquipaggiamento() const { return equipaggiamento; };
+	void setEquipaggiamento(std::vector<std::shared_ptr<Oggetto>> equipaggiamento) { this->equipaggiamento = equipaggiamento; }
+	Entita(std::string nome, std::list<std::shared_ptr<Oggetto>> inventario, Attributi attributi, std::vector<std::shared_ptr<Oggetto>> equipaggiamento);
 
-	Entita(std::string nome, std::vector<Oggetto> inventario, Attributi attributi, std::vector<Oggetto> equipaggiamento);
+	bool operator==(const Entita & rEntita)const;
 
 	void muovi(int &distanza, int &metodoTrasporto);
 
-	// TODO implement method raccogli
-	// TODO implement method combatti/colpisci
-
+	Danno attacca();
 	Entita(); //TODO vorrei evitare di mettere costruttori vuoti solo perché se no il compilatore si lamenta.
 	Attributi getAttributi() const;
 	void setAttributi(Attributi attr);
-	bool addInventario(std::vector<Oggetto> oggettiAggiunti);
-	bool addInventario(Oggetto oggettoDaAgginugere);
-
+	bool addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti);
+	void equip(int posizioneFrom, int posizioneTo);
+	void unequip(int posisioneFrom);
+	bool addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere);
+	//return true se uccide, false altrimenti
+	bool subisciDanno(Danno dannoSubito);
 	double carryWeight(); //calcolo peso trasportato
 	std::string describeInventario();
 private:
 	std::string nome;
 	Attributi attributi;
 	//FIXME Sprite sprite;   manage Sprite
-	std::vector<Oggetto> inventario; //CHECK forse è meglio che sia una lista, così posso gestire meglio i buchi nell'inventario (di fatto eliminandoli)
-	std::vector<Oggetto> equipaggiamento;
+	std::list<std::shared_ptr<Oggetto>> inventario;
+	//LOOKATME i vector si shrinkano automaticamente quindi direi che in futuro equipaggiamento sarà una classe a sé stante
+	std::vector<std::shared_ptr<Oggetto>> equipaggiamento;
 	/*
 	nella posizione X di equipaggiamento ci sarà:
 	0) mano primaria (arma)

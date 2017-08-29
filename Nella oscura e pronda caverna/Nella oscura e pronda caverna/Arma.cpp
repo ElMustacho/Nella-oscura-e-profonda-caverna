@@ -2,10 +2,9 @@
 
 
 
-Arma::Arma(double peso, std::string nome, std::string descrizione, long valore, int danno, std::vector<bool> tipo) : Oggetto(peso, nome, descrizione, valore)
+Arma::Arma(double peso, std::string nome, std::string descrizione, long valore, Danno danno) : Oggetto(peso, nome, descrizione, valore)
 {
-	this->danno = danno;
-	this->tipo = tipo;
+	dannoBase = danno;
 }
 
 
@@ -13,7 +12,23 @@ Arma::~Arma()
 {
 }
 
-void Arma::usa()
+Danno Arma::getDannoBase() const {
+	return dannoBase;
+}
+
+void Arma::setDannoBase(Danno danno) {
+	dannoBase = danno;
+}
+
+Danno Arma::attacca()
 {
-	// TODO effect!
+	return dannoBase;
+}
+
+void Arma::Incanta(){
+	dannoBase.setParteDanno("magico", dannoBase.getParteDanno("magico") + 5);
+}
+
+void Arma::Deincanta() {
+
 }

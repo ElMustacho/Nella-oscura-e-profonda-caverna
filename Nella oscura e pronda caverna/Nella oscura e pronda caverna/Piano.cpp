@@ -1,7 +1,11 @@
 #include <fstream>
 #include <iostream>
 #include <cmath>
+
+#include <deque>
+
 #include <algorithm>
+
 #include "Piano.h"
 
 
@@ -15,25 +19,44 @@ int Piano::posizione(int x, int y) {
 		x = 0;
 	if (y < 0)
 		y = 0;
-	if (x > larghezza)
-		x = larghezza;
-	if (y > lunghezza)
-		y = lunghezza;
+	if (x >= larghezza)
+		x = larghezza-1;
+	if (y >= lunghezza)
+		y = lunghezza-1;
 	return x + y*larghezza;
 }
 
-int Piano::posizione(coord xy) 
-{
-	if (xy.first < 0)
-		xy.first = 0;
-	if (xy.second < 0)
-		xy.second = 0;
-	if (xy.first > larghezza)
-		xy.first = larghezza;
-	if (xy.second > lunghezza)
-		xy.second = lunghezza;
-	return xy.first + xy.second * larghezza;
+//TODO
+bool Piano::removeEntita(cood coodElimina) {
+	return false;
 }
+
+void Piano::scontro(cood posizioneVittima, cood posizioneAttaccante)
+{
+	if (pavimento.at(posizione(posizioneAttaccante)).getEntita() == nullptr)
+		return; //nessun attaccante
+	auto danno = pavimento.at(posizione(posizioneAttaccante)).getEntita()->attacca();
+	if (danno.getAmmontare() < 0)
+		return; //nessun danno
+	else
+		scontro(posizioneVittima, danno);
+}
+void Piano::scontro(cood posizioneVittima, Danno dannoInflitto)
+{
+	if (pavimento.at(posizione(posizioneVittima)).getEntita().get() == nullptr)
+		return; //nessun bersaglio
+	else
+		if(pavimento.at(posizione(posizioneVittima)).getEntita()->subisciDanno(dannoInflitto)){
+			auto vPosizioni = getVectorPosizioni();
+			auto it = std::find(vPosizioni.begin(), vPosizioni.end(), posizioneVittima);
+			//HACK devo chiamare removeEntita
+			entitaPresenti.erase(entitaPresenti.begin()+std::distance(vPosizioni.begin(),it));
+			pavimento.at(posizione(posizioneVittima)).drop();
+			pavimento.at(posizione(posizioneVittima)).setEntita(nullptr);
+	}
+			return; //TODOFAR lascia equipaggiamento per terra.
+}
+
 
 //Stesso funzionamento di Piano::posizione()
 Casella & Piano::at(int x, int y) 
@@ -42,13 +65,32 @@ Casella & Piano::at(int x, int y)
 		x = 0;
 	if (y < 0)
 		y = 0;
-	if (x > larghezza)
-		x = larghezza;
-	if (y > lunghezza)
-		y = lunghezza;
-	return pavimento.at(y + x * larghezza); // LOOKATME dovrebbe essere x + y * larghezza;
+
+	if (x >= larghezza)
+		x = larghezza-1;
+	if (y >= lunghezza)
+		y = lunghezza-1;
+	return pavimento.at(x + y * larghezza); 
+
 }
 
+Casella & Piano::at(cood coord) {
+	return at(coord.first, coord.second);
+}
+
+bool Piano::isCoodLegal(cood coord) {
+	if (coord.first < 0 || coord.first >= larghezza || coord.second < 0 || coord.second >= lunghezza)
+		return false;
+	return true;
+}
+
+int Piano::posizione(cood coord) {
+	return posizione(coord.first,coord.second);
+}
+
+cood Piano::fromPosizioneToInt(int x) {
+	return cood(x % larghezza, x / larghezza);
+}
 
 bool Piano::popolaPiano()
 {
@@ -60,53 +102,33 @@ bool Piano::spargiLoot()
 	return false;
 }
 
+bool Piano::placeEntita(std::shared_ptr<Entita> placeMe, cood coord) //FIXME inserisco gente nelle pareti
+{
+
+	if (pavimento.at(posizione(coord)).getEntita() == nullptr) {
+		pavimento.at(posizione(coord)).setEntita(placeMe);
+		std::shared_ptr<Entita> copyTemp = placeMe;
+		std::pair<std::shared_ptr<Entita>, cood> entitaTabella(copyTemp, coord);
+		entitaPresenti.push_back(entitaTabella);
+		return true;
+	}
+	else	
+  {
+		return false;
+	}
+}
+
+
+
+
+
 Piano::Piano() {
 
 }
 
-Piano::Piano(int larghezza, int lunghezza, std::vector<Oggetto> lootPossibile, std::vector<Entita> entitaPossibili)
+Piano::Piano(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> lootPossibile, std::vector<std::shared_ptr<Entita>> entitaPossibili)
 {
 }
-/*
-// TODO per ora io prendo solo la struttura del piano, entità e oggetti non verranno considerati
-//in futuro, se da un piano non trovo il personaggio od ho altri probelmi, l'operazione deve fallire, e il piano deve essere scartato
-//Chiedo un persorso file, se riesco ad arrivare in fondo successo sarà true, altrimenti false.
-Piano::Piano(std::string posizione, bool &successo)
-{
-	std::ifstream inputPiano(posizione);
-	std::string lineaCaselle;
-	lunghezza = 0, larghezza = 0;
-	for (int i = 0; std::getline(inputPiano, lineaCaselle); i++)
-	{
-	case 1:
-		if (1==1)//TODO controlli sulla validità del piano.
-			auto generato = GeneratoreV1();
-		break;
-	default:
-		auto generato = GeneratoreV1();//questo sarà il generatore di default.
-		
-		for (unsigned int j = 0; j < lineaCaselle.size(); j++)
-		{
-			if (lineaCaselle.at(j) == '#')
-				pavimento.push_back(Casella(false));
-			else if (lineaCaselle.at(j) == '.')
-				pavimento.push_back(Casella(true));
-			else {
-				std::cout << "E' successo un casino.\n";
-				successo = false;
-			}
-		}
-		if (i == 0)
-			larghezza=lineaCaselle.size();
-		lunghezza++;
-	}
-	pavimento.reserve(lunghezza*larghezza); //LOOKATME questa chiamata è molto importante, e deve essere fatta alla fine di ogni costruttore!
-}
-bool Piano::GeneratoreV1() 
-{
-	return false;
-}
-*/
 
 bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY) 
 {
@@ -136,8 +158,71 @@ bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //TODO Presa una s
 	return true;
 }
 
+std::vector<std::shared_ptr<Entita>> Piano::getVectorEntita() {
+	std::vector<std::shared_ptr<Entita>> returned;
+	for each (std::pair<std::shared_ptr<Entita>,cood> entity in entitaPresenti)
+	{
+		returned.push_back(entity.first);
+	}
+	return returned;
+}
 
+std::vector<cood> Piano::getVectorPosizioni() {
+	std::vector<cood> returned;
+	for each (std::pair<std::shared_ptr<Entita>, cood> entity in entitaPresenti)
+	{
+		returned.push_back(entity.second);
+	}
+	return returned;
+}
 
+std::vector<cood> Piano::floodFill(cood posizionePartenza)
+{
+	std::vector<cood> caselleOk{};
+	caselleOk.reserve(lunghezza*larghezza);
+	std::deque<cood> codaCaselle;
+	auto casella = pavimento.at(posizione(posizionePartenza));
+	if (casella.isMuro()) {
+		return caselleOk;
+	}
+	codaCaselle.push_back(posizionePartenza);
+	while (!codaCaselle.empty()) {
+		auto casellaControllata = codaCaselle.front();
+		codaCaselle.pop_front();
+		if (!pavimento.at(posizione(casellaControllata)).isMuro()) {
+			if (std::find(caselleOk.begin(), caselleOk.end(), casellaControllata) == caselleOk.end()) {
+				caselleOk.push_back(casellaControllata);
+				cood coordFF(casellaControllata.first+1, casellaControllata.second);
+				if(isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+				coordFF.second++;
+				if (isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+				coordFF.first--;
+				if (isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+				coordFF.first--;
+				if (isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+				coordFF.second--;
+				if (isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+				coordFF.second--;
+				if (isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+				coordFF.first++;
+				if (isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+				coordFF.first++;
+				if (isCoodLegal(coordFF))	
+					codaCaselle.push_back(coordFF);
+			}
+		}
+	}
+	return caselleOk;
+}
+
+//TODOFAR il carattere stampato deve essere restituito dalla casella tramite una sua funzione
 void Piano::StampaChar() 
 { 
 	std::string mappa="";
@@ -146,12 +231,18 @@ void Piano::StampaChar()
 	{
 		auto casella = pavimento.at(i);
 		auto entity = casella.getEntita();
-		if (pavimento.at(i).isMuro())
+		if (casella.isMuro())
 			mappa.push_back('#');
-		else if (dynamic_cast<Protagonista*>(entity) != NULL) 
+		//else if (dynamic_cast<Protagonista*>(entity.get()) != NULL) //LOOKATME così si prende il tipo di puntatore shared ptr
+		//	mappa.push_back('@');
+		else if (std::dynamic_pointer_cast<Protagonista>(entity) != nullptr)
 			mappa.push_back('@');
-		else if (dynamic_cast<Attore*>(entity) != NULL) 
+		else if (dynamic_cast<Attore*>(entity.get()) != NULL)
 			mappa.push_back('*');
+		else if (!casella.getOggetti().empty())
+			mappa.push_back(casella.getOggetti().front()->getNome().front()); //Il primo carattere del nome dell'oggetto in cima alla lista
+		else if (casella.getEvento() == 1) 
+			mappa.push_back('>');//Scale
 		else
 			mappa.push_back('.');
 		if ((i + 1) % larghezza == 0)
@@ -159,6 +250,13 @@ void Piano::StampaChar()
 	}
 	std::cout << mappa;
 }
+
+
+cood Piano::getPositionOfPlayer()
+{
+	return entitaPresenti.begin()->second;
+}
+
 
 // Diagonal distance
 double heuristic(int posX, int posY, int targetX, int targetY)
@@ -186,6 +284,7 @@ double heuristic(coord pos, coord target)
 }
 
 //TODO x e y sono invertiti
+
 int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi due sono quelli da dove parto, gli altri dove arrivo
 {
 	if (pavimento.at(posizione(posX, posY)).getEntita() == NULL) // CHECK Dovrebbe essere nullptr, no?
@@ -196,7 +295,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	{
 		return -2;
 	}
-	if (!(targetX > -1 && targetX<lunghezza && targetY>-1 && targetY < larghezza))
+	if (!(targetX > -1 && targetX<larghezza && targetY>-1 && targetY < lunghezza))
 	{
 		return -3; //Posizione non valida per almeno una delle coordinate
 	}
@@ -257,13 +356,23 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 		}
 		else //Date le premesse, spostarsi è sicuro e valido
 		{ 
-			Entita* temp = pavimento.at(posizione(posX, posY)).getEntita();
-			pavimento.at(posizione(posX, posY)).setEntita(NULL);
+			std::shared_ptr<Entita> temp = pavimento.at(posizione(posX, posY)).getEntita();
+			pavimento.at(posizione(posX, posY)).setEntita(nullptr);
 			pavimento.at(posizione(posX + moveX, posY + moveY)).setEntita(temp);
+			//TODOFAR fammi funzionare al posto delle 3 istruzioni percedenti
+			//pavimento.at(posizione(posX, posY)).getEntita().swap(pavimento.at(posizione(posX + moveX, posY + moveY)).getEntita());
+			cood coordinatePrima(posX, posY);
 			posX += moveX;
 			posY += moveY;
-			pavimento.at(posizione(posX, posY)).doEvento();
 			distanza--;
+			cood coordinateDopo(posX, posY);
+			auto vPosizioni = getVectorPosizioni();
+			auto it = std::find(vPosizioni.begin(), vPosizioni.end(), coordinatePrima);
+			if (it != vPosizioni.end()) {
+				auto distanza = std::distance(vPosizioni.begin(), it);
+				entitaPresenti[distanza].second = coordinateDopo;
+			}
+			pavimento.at(posizione(posX, posY)).doEvento();
 		}
 	}
 	if (distanza == 0 && (posX == targetX && posY == targetY))
@@ -279,6 +388,9 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 		return 4; //non sono arrivato a destinazione perché ho finito il movimento
 	}
 }
+
+//TODOFAR il carattere stampato deve essere restituito dalla casella tramite una sua funzione
+
 
 
 int Piano::muoviEntita(coord pos, coord target) //I primi due sono quelli da dove parto, gli altri dove arrivo
@@ -1100,6 +1212,7 @@ void Piano::aStar(coord pos, coord target)
 	/* End of A* Algorithm */
 }
 
+
 void Piano::StampaFileChar() 
 {
 	std::ofstream file ("mappa.map");
@@ -1108,7 +1221,8 @@ void Piano::StampaFileChar()
 		auto casella = pavimento.at(i);
 		auto entity = casella.getEntita();
 		//Per ora l'ordine va bene così, ma non è detto che in un muro non ci possano essere nemici (tipo fantasmi)
-		if (dynamic_cast<Protagonista*>(entity) != NULL) //se entity è NULL il dynamic cast risponde NULL
+		//FIXME dev'essere come l'altra stampa
+		if (dynamic_cast<Protagonista*>((&entity)->get()) != NULL) //se entity è NULL il dynamic cast risponde NULL
 		{
 			file << '@';
 		}
@@ -1116,7 +1230,7 @@ void Piano::StampaFileChar()
 		{
 			file << '#';
 		}
-		else if (dynamic_cast<Attore*>(entity) != NULL) //Same
+		else if (dynamic_cast<Attore*>((&entity)->get()) != NULL) //Same
 		{
 			file << '*';
 		}
@@ -1131,3 +1245,72 @@ void Piano::StampaFileChar()
 	}
 	file.close();
 }
+
+//TODO
+std::shared_ptr<Entita> Piano::entityFactory(std::string)
+{
+	return nullptr;
+}
+//Lasciare vuoto per avere un personaggio principale, oppure mandare 0. Di default non rende nulla
+std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
+{
+	std::shared_ptr<Entita> appoggio;
+	switch (codiceID) {
+	case 0: {
+		//TODO qui ovviamente dovrà esserci il modo di caricare un personaggio preesistente o di invocare il creatore di personaggi, per ora lo tratto come un qualunque idiota
+		std::list<std::shared_ptr<Oggetto>> inventario{ std::shared_ptr<Oggetto> (new Oggetto(0.5, "Sfera di metallo", "Direi piuttosto che si tratta di un oggetto a forma d'uovo", 2)) };
+		Attributi nellaMedia(4, 4, 4, 4, 4, 4, 4, 4);
+		std::vector<std::shared_ptr<Oggetto>> equipaggiamento; //Picche, non hai nulla scemo
+		appoggio = std::make_shared<Protagonista>(Protagonista("Medioman", inventario, nellaMedia, equipaggiamento, 1, 0, 0));
+		break;
+	}
+	case 1:
+	{// Goblin scrauso, puzzone e nudo
+		std::list<std::shared_ptr<Oggetto>> inventario;
+		Attributi scarso(3, 4, 2, 2, 2, 1, 3, 1);
+		std::vector<std::shared_ptr<Oggetto>> equipaggiamento; //Picche, non hai nulla scemo puzzone
+		appoggio = std::make_shared<Attore>("Goblin puzzone", inventario, scarso, equipaggiamento,1.1);
+		break;
+	}
+	default:
+	{
+		appoggio = nullptr;
+	}
+	
+	}
+	return appoggio;
+}
+//TODO
+std::shared_ptr<Oggetto> Piano::objectFactory(std::string nome)
+{
+	return std::shared_ptr<Oggetto>();
+}
+//default sfera di metallo
+std::shared_ptr<Oggetto> Piano::objectFactory(int codiceID)
+{
+	std::shared_ptr<Oggetto> oggetto;
+	switch (codiceID) {
+	case 0: {
+		oggetto = std::make_shared<Oggetto>(1,"Sfera di metallo","L'inutilita' fatta lucida.",0);
+		break;
+	}
+	case 1: {
+		oggetto = std::make_shared<Oggetto>(4, "Lingotto d'oro", "Incise sopra vi sono 24 carote", 2000);
+		break;
+	}
+	case 2: {
+		oggetto = std::make_shared<Arma>(2, "Spada normale", "Quando l'eroe parte all'avventura, se ha una spada ebbene e' questa", 15, Danno({ 1 }, 10));
+		break;
+	}
+	case 3: {
+		oggetto = std::make_shared<Oggetto>(0.25,"Fermaporte","Non particolarmente utile qui",4);
+		break;
+	}
+	case 4: {
+		oggetto = std::make_shared<Arma>(3, "Cannone laser automatico", "No kill like overkill", 4500, Danno({ 0,0,0,0.5,0.5 }, 600));
+		break;
+	}
+	}
+	return oggetto;
+}
+

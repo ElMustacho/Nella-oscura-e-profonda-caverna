@@ -35,6 +35,10 @@ void Danno::equalize(bool alteraAmmontare)
 	}
 }
 
+Danno::Danno()
+{
+}
+
 Danno::~Danno()
 {
 }
@@ -42,10 +46,8 @@ Danno::~Danno()
 //quando e se aggiungeremo altre categorie di danni questa sarà la cosa da modificare.
 const std::vector<std::string> Danno::giveCategoriaDanni()
 {
-	//LOOKATME lo possiamo fare in una sola riga?
-	std::vector<std::string> tmp = { "tagliente", "perforante", "contundente", "magico", "fuoco", "freddo", "elettrico", "acido",
+	return std::vector<std::string>  { "tagliente", "perforante", "contundente", "magico", "fuoco", "freddo", "elettrico", "acido",
 		"sonico", "sacro", "sacrilego", "esplosivo", "positivo", "negativo", "mentale", "forza" };
-	return tmp;
 }
 // percentuale = 0.5 -> categoria dimezzata, percentuale = 1.5 -> categoria aumentata della metà
 void Danno::magnifica(int posizione, double percentuale)
@@ -106,6 +108,30 @@ double const Danno::getParteDanno(std::string posizione)
 	return 0; //Una parte di qualcosa che non esiste è 0
 }
 
+void Danno::setParteDanno(std::string posizione, double ammontare)
+{
+	auto tipiDanno = giveCategoriaDanni();
+	auto it = std::find(tipiDanno.begin(), tipiDanno.end(), posizione); //ricerca stringa
+	if (it != tipiDanno.end()) //la stringa c'è
+	{
+		if(ammontare<0)
+			tipo.at(std::distance(tipiDanno.begin(), it)) = 0;
+		else
+			tipo.at(std::distance(tipiDanno.begin(), it)) = ammontare;
+		equalize(false);
+	}
+	
+}
+
+void Danno::setParteDanno(int posizione, double ammontare) {
+	if (posizione > -1 && (unsigned int)posizione < giveCategoriaDanni().size()) {
+		if (ammontare<0)
+			tipo.at(posizione) = 0;
+		else
+			tipo.at(posizione) = ammontare;
+		equalize(false);
+	}
+}
 //Neutralità ad un tipo di danno -> 1// Doppi danni da un tipo -> 2// Immunità ad un tipo di danno -> 0 ectv
 double const Danno::calcolaDannoTotale(std::vector<double> resistenze)
 {
