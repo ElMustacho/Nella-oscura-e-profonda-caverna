@@ -40,7 +40,7 @@ Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int
 	hp = maxHp;
 	potereMagico = maxPotereMagico;
 	stamina = maxStamina;
-	forzaDiCarico = (forza * 10 + 1)*(forza / 8);
+	forzaDiCarico = (forza * 10 + 1)*(double)(forza / 8.);
 	if (destrezza > 7 && livello > 10) { //Segnala se l'entità è percepibile aldilà della vista
 		silenzioso = true;
 	}

@@ -33,7 +33,9 @@ int main()
 	std::cout << "Autopickup? y/n: ";
 	while (b != 'y'&&b != 'n')
 		std::cin >> b;
-	Attore JimBob("JimBob", tabellaLoot, dexAlta, Equipaggiamento, 4.);/*
+
+	Attore JimBob("JimBob", tabellaLoot, dexAlta, Equipaggiamento, 4.);
+/*
 	pregen.at(5, 5).setEntita(std::make_shared<Protagonista>(Saitama));
 	pregen.at(6, 2).setEntita(std::make_shared<Attore>(JimBob));
 	*/
@@ -53,7 +55,8 @@ int main()
 	*/
 	pregen.spargiLoot(pregen.floodFill(cood(5,5)));
 	int exit = 0;
-	int X = 5, Y = 5;
+	auto stuff = pregen.getPositionOfPlayer();
+	int X = stuff.first, Y = stuff.second;
 	std::cout << std::endl;
 	while (exit == 0) {
 		pregen.StampaChar();

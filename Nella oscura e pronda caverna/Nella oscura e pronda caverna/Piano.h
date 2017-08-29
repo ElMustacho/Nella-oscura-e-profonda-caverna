@@ -47,6 +47,9 @@ public:
 	std::vector<cood> getVectorPosizioni();
 	std::vector<cood> floodFill (cood posizionePartenza);
 	void StampaChar();
+	cood getPositionOfPlayer();
+	//posizione nella tabella
+	cood getPositionOfEntity(int position);
 	int muoviEntita(int posX, int posY, int targetX, int targetY); 
 	void StampaFileChar();
 	bool popolaPiano();
@@ -66,5 +69,6 @@ protected:
 	int lunghezza, larghezza; 
 	std::vector<std::shared_ptr<Entita>> entitaGenerabili;
 	std::vector<std::shared_ptr<Oggetto>> oggettiGenerabili;
+	//Il personaggio deve essere sempre nella prima posizione
 	std::vector<std::pair<std::shared_ptr<Entita>, cood>> entitaPresenti;
 };

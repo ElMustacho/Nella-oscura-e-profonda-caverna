@@ -49,7 +49,7 @@ void Piano::scontro(cood posizioneVittima, Danno dannoInflitto)
 			pavimento.at(posizione(posizioneVittima)).drop();
 			pavimento.at(posizione(posizioneVittima)).setEntita(nullptr);
 	}
-			return; //TODOFAR lascia inventario ed equipaggiamento per terra.
+			return; //TODOFAR lascia equipaggiamento per terra.
 }
 //Stesso funzionamento di Piano::posizione()
 Casella & Piano::at(int x, int y) 
@@ -235,6 +235,11 @@ void Piano::StampaChar()
 			mappa.push_back('\n');
 	}
 	std::cout << mappa;
+}
+
+cood Piano::getPositionOfPlayer()
+{
+	return entitaPresenti.begin()->second;
 }
 
 int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi due sono quelli da dove parto, gli altri dove arrivo
