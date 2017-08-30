@@ -1,11 +1,8 @@
 #include <fstream>
 #include <iostream>
 #include <cmath>
-
 #include <deque>
-
 #include <algorithm>
-
 #include "Piano.h"
 
 
@@ -20,9 +17,9 @@ int Piano::posizione(int x, int y) {
 	if (y < 0)
 		y = 0;
 	if (x >= larghezza)
-		x = larghezza-1;
+		x = larghezza - 1;
 	if (y >= lunghezza)
-		y = lunghezza-1;
+		y = lunghezza - 1;
 	return x + y*larghezza;
 }
 
@@ -46,32 +43,30 @@ void Piano::scontro(cood posizioneVittima, Danno dannoInflitto)
 	if (pavimento.at(posizione(posizioneVittima)).getEntita().get() == nullptr)
 		return; //nessun bersaglio
 	else
-		if(pavimento.at(posizione(posizioneVittima)).getEntita()->subisciDanno(dannoInflitto)){
+		if (pavimento.at(posizione(posizioneVittima)).getEntita()->subisciDanno(dannoInflitto)) {
 			auto vPosizioni = getVectorPosizioni();
 			auto it = std::find(vPosizioni.begin(), vPosizioni.end(), posizioneVittima);
 			//HACK devo chiamare removeEntita
-			entitaPresenti.erase(entitaPresenti.begin()+std::distance(vPosizioni.begin(),it));
+			entitaPresenti.erase(entitaPresenti.begin() + std::distance(vPosizioni.begin(), it));
 			pavimento.at(posizione(posizioneVittima)).drop();
 			pavimento.at(posizione(posizioneVittima)).setEntita(nullptr);
-	}
-			return; //TODOFAR lascia equipaggiamento per terra.
+		}
+	return; //TODOFAR lascia equipaggiamento per terra.
 }
 
 
 //Stesso funzionamento di Piano::posizione()
-Casella & Piano::at(int x, int y) 
-{ 
+Casella & Piano::at(int x, int y)
+{
 	if (x < 0)
 		x = 0;
 	if (y < 0)
 		y = 0;
-
 	if (x >= larghezza)
-		x = larghezza-1;
+		x = larghezza - 1;
 	if (y >= lunghezza)
-		y = lunghezza-1;
-	return pavimento.at(x + y * larghezza); 
-
+		y = lunghezza - 1;
+	return pavimento.at(x + y * larghezza);
 }
 
 Casella & Piano::at(cood coord) {
@@ -85,7 +80,7 @@ bool Piano::isCoodLegal(cood coord) {
 }
 
 int Piano::posizione(cood coord) {
-	return posizione(coord.first,coord.second);
+	return posizione(coord.first, coord.second);
 }
 
 cood Piano::fromPosizioneToInt(int x) {
@@ -97,7 +92,7 @@ bool Piano::popolaPiano()
 	return false;
 }
 
-bool Piano::spargiLoot() 
+bool Piano::spargiLoot()
 {
 	return false;
 }
@@ -112,8 +107,8 @@ bool Piano::placeEntita(std::shared_ptr<Entita> placeMe, cood coord) //FIXME ins
 		entitaPresenti.push_back(entitaTabella);
 		return true;
 	}
-	else	
-  {
+	else
+	{
 		return false;
 	}
 }
@@ -130,15 +125,15 @@ Piano::Piano(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>>
 {
 }
 
-bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY) 
+bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY)
 {
 	if (posX + dimX  > lunghezza || posY + dimY > larghezza)
 		return false; //Stanza prodotta fuori dal piano
-	
-	for (int i = posX; i < dimX + posX; i++) 
+
+	for (int i = posX; i < dimX + posX; i++)
 	{
 		for (int j = posY; j < dimY + posY; j++)
-			if (!pavimento.at(posizione(i,j)).isMuro()) 
+			if (!pavimento.at(posizione(i, j)).isMuro())
 			{
 				return false; //Spazio per stanza non trovato
 			}
@@ -160,7 +155,7 @@ bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //TODO Presa una s
 
 std::vector<std::shared_ptr<Entita>> Piano::getVectorEntita() {
 	std::vector<std::shared_ptr<Entita>> returned;
-	for each (std::pair<std::shared_ptr<Entita>,cood> entity in entitaPresenti)
+	for each (std::pair<std::shared_ptr<Entita>, cood> entity in entitaPresenti)
 	{
 		returned.push_back(entity.first);
 	}
@@ -192,29 +187,29 @@ std::vector<cood> Piano::floodFill(cood posizionePartenza)
 		if (!pavimento.at(posizione(casellaControllata)).isMuro()) {
 			if (std::find(caselleOk.begin(), caselleOk.end(), casellaControllata) == caselleOk.end()) {
 				caselleOk.push_back(casellaControllata);
-				cood coordFF(casellaControllata.first+1, casellaControllata.second);
-				if(isCoodLegal(coordFF))	
+				cood coordFF(casellaControllata.first + 1, casellaControllata.second);
+				if (isCoodLegal(coordFF))
 					codaCaselle.push_back(coordFF);
 				coordFF.second++;
-				if (isCoodLegal(coordFF))	
+				if (isCoodLegal(coordFF))
 					codaCaselle.push_back(coordFF);
 				coordFF.first--;
-				if (isCoodLegal(coordFF))	
+				if (isCoodLegal(coordFF))
 					codaCaselle.push_back(coordFF);
 				coordFF.first--;
-				if (isCoodLegal(coordFF))	
+				if (isCoodLegal(coordFF))
 					codaCaselle.push_back(coordFF);
 				coordFF.second--;
-				if (isCoodLegal(coordFF))	
+				if (isCoodLegal(coordFF))
 					codaCaselle.push_back(coordFF);
 				coordFF.second--;
-				if (isCoodLegal(coordFF))	
+				if (isCoodLegal(coordFF))
 					codaCaselle.push_back(coordFF);
 				coordFF.first++;
-				if (isCoodLegal(coordFF))	
+				if (isCoodLegal(coordFF))
 					codaCaselle.push_back(coordFF);
 				coordFF.first++;
-				if (isCoodLegal(coordFF))	
+				if (isCoodLegal(coordFF))
 					codaCaselle.push_back(coordFF);
 			}
 		}
@@ -223,9 +218,9 @@ std::vector<cood> Piano::floodFill(cood posizionePartenza)
 }
 
 //TODOFAR il carattere stampato deve essere restituito dalla casella tramite una sua funzione
-void Piano::StampaChar() 
-{ 
-	std::string mappa="";
+void Piano::StampaChar()
+{
+	std::string mappa = "";
 	for (unsigned int i = 0; i < pavimento.size(); i++)
 
 	{
@@ -241,7 +236,7 @@ void Piano::StampaChar()
 			mappa.push_back('*');
 		else if (!casella.getOggetti().empty())
 			mappa.push_back(casella.getOggetti().front()->getNome().front()); //Il primo carattere del nome dell'oggetto in cima alla lista
-		else if (casella.getEvento() == 1) 
+		else if (casella.getEvento() == 1)
 			mappa.push_back('>');//Scale
 		else
 			mappa.push_back('.');
@@ -265,31 +260,35 @@ double heuristic(int posX, int posY, int targetX, int targetY)
 	auto dx = abs(posX - targetX);
 	auto dy = abs(posY - targetY);
 
-	auto normalCost = 1; 
+	auto normalCost = 1;
 	auto diagonalCost = sqrt(2);
 
 	return normalCost * (dx + dy) + (diagonalCost - 2 * normalCost) * std::min(dx, dy);
 };
 
-double heuristic(coord pos, coord target)
-{
-	// Version: Octile distance
-	auto dx = abs(pos.first - target.first);
-	auto dy = abs(pos.second - target.second);
-
-	auto normalCost = 1;
-	auto diagonalCost = sqrt(2);
-
-	return normalCost * (dx + dy) + (diagonalCost - 2 * normalCost) * std::min(dx, dy);
+double heuristic(coord pos, coord target) {
+	return heuristic(pos.first, pos.second, target.first, target.second);
 }
 
-//TODO x e y sono invertiti
+
+cood Piano::getPositionOfEntity(std::shared_ptr<Entita> entita)
+{
+	auto vect = getVectorEntita();
+	auto it = std::find(vect.begin(), vect.end(), entita);
+	if (it == vect.end())
+		return cood(-1, -1);
+	else {
+		auto posizione = *(getVectorPosizioni().begin() + (std::distance(vect.begin(), it)));
+		return posizione;
+	}
+}
 
 int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi due sono quelli da dove parto, gli altri dove arrivo
 {
-	if (pavimento.at(posizione(posX, posY)).getEntita() == NULL) // CHECK Dovrebbe essere nullptr, no?
+	if (pavimento.at(posizione(posX, posY)).getEntita() == nullptr) // CHECK Dovrebbe essere nullptr, no?
 	{
 		return -1; //Qui non c'è nessuno
+				   //FIXME ordine sbagliato
 	}
 	if (posX == targetX && posY == targetY) //Questo significa non spostarsi per davvero
 	{
@@ -301,9 +300,9 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	}
 
 	int distanza, metodo;
-	pavimento.at(posizione(posX, posY)).getEntita()->muovi(distanza,metodo);
+	pavimento.at(posizione(posX, posY)).getEntita()->muovi(distanza, metodo);
 	/* TENTATIVO STIMA DISTANZA (con heuristic) */
-	distanza = heuristic(posX, posY, targetX, targetY);
+	//distanza = heuristic(posX, posY, targetX, targetY);
 
 	if (distanza == 0)
 	{
@@ -323,8 +322,8 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 
 	//FIXME da qui assumo che il movimento sia in linea retta
 	while (distanza != 0 && !(posX == targetX && posY == targetY)) //Esco quando ho terminato i movimenti o quando sono arrivato.
-	{ 
-		int moveX=0, moveY=0;
+	{
+		int moveX = 0, moveY = 0;
 		if (posX < targetX)
 		{
 			moveX = 1;
@@ -344,10 +343,10 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 			moveY = -1;
 		}
 		else {}
-		
+
 		//Qui l'unico controllo presente è che la casella non sia un muro e che nella casella non ci sia nessuno.
 		if (pavimento.at(posizione(posX + moveX, posY + moveY)).isMuro()) //Qui c'è un muro
-		{  
+		{
 			return 1;
 		}
 		else if (pavimento.at(posizione(posX + moveX, posY + moveY)).getEntita() != NULL) //Qui c'è qualcun'altro
@@ -355,7 +354,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 			return 2;
 		}
 		else //Date le premesse, spostarsi è sicuro e valido
-		{ 
+		{
 			std::shared_ptr<Entita> temp = pavimento.at(posizione(posX, posY)).getEntita();
 			pavimento.at(posizione(posX, posY)).setEntita(nullptr);
 			pavimento.at(posizione(posX + moveX, posY + moveY)).setEntita(temp);
@@ -395,96 +394,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 
 int Piano::muoviEntita(coord pos, coord target) //I primi due sono quelli da dove parto, gli altri dove arrivo
 {
-	if (pavimento.at(posizione(pos)).getEntita() == NULL) // CHECK Dovrebbe essere nullptr, no?
-	{
-		return -1; //Qui non c'è nessuno
-	}
-	if (pos.first == target.first && pos.second == target.second) //Questo significa non spostarsi per davvero
-	{
-		return -2;
-	}
-	if (!(target.first > -1 && target.first < lunghezza && target.second > -1 && target.second < larghezza))
-	{
-		return -3; //Posizione non valida per almeno una delle coordinate
-	}
-
-	int distanza, metodo;
-	pavimento.at( posizione(pos) ).getEntita()->muovi(distanza, metodo);
-	/* TENTATIVO STIMA DISTANZA (con heuristic) */
-	distanza = heuristic(pos, target);
-
-	if (distanza == 0)
-	{
-		return -4; //Ho provato a muovermi ma sono immobile
-	}
-
-	// TODO A* (Dijkstra + heuristic) per determinare la direzione da percorrere (qualora sia necessario usarlo).
-	//Qui sotto il sistema di spostamento è stupido, ma potrebbe funzionare per gestire entità prive di intelligenza
-	//tipo qualche golem, melma, zombie o goblin ubriaco fradicio. In pratica non verifico la validità finale del percorso,
-	//ma solo quella della casella in cui mi voglio spostare, una per volta.
-	//P.S. questo sistema funziona bene anche quando c'è solo una casella da percorrere.
-
-
-	aStar(pos, target);
-
-	//FIXME da qui assumo che il movimento sia in linea retta
-	while (distanza != 0 && !(pos == target)) //Esco quando ho terminato i movimenti o quando sono arrivato.
-	{
-		int moveX = 0, moveY = 0;
-		if (pos.first < target.first)
-		{
-			moveX = 1;
-		}
-		else if (pos.first > target.first)
-		{
-			moveX = -1;
-		}
-		else {}
-
-		if (pos.second < target.second)
-		{
-			moveY = 1;
-		}
-		else if (pos.second > target.second)
-		{
-			moveY = -1;
-		}
-		else {}
-
-		coord updatePos(pos.first + moveX, pos.second + moveY);
-
-		//Qui l'unico controllo presente è che la casella non sia un muro e che nella casella non ci sia nessuno.
-		if (pavimento.at(posizione(updatePos)).isMuro()) //Qui c'è un muro
-		{
-			return 1;
-		}
-		else if (pavimento.at(posizione(updatePos)).getEntita() != NULL) //Qui c'è qualcun'altro
-		{
-			return 2;
-		}
-		else //Date le premesse, spostarsi è sicuro e valido
-		{
-			Entita* temp = pavimento.at( posizione(pos) ).getEntita();
-			pavimento.at(posizione(pos)).setEntita(NULL);
-			pavimento.at(posizione(pos.first + moveX, pos.second + moveY)).setEntita(temp);
-			pos.first += moveX;
-			pos.second += moveY;
-			pavimento.at(posizione(pos)).doEvento();
-			distanza--;
-		}
-	}
-	if (distanza == 0 && (pos == target))
-	{
-		return 0; //sono arrivato precisamente a destinazione
-	}
-	else if (distanza != 0 && (pos == target))
-	{
-		return 3; //sono arrivato a destinazione ma avevo movimento avanzato
-	}
-	else
-	{
-		return 4; //non sono arrivato a destinazione perché ho finito il movimento
-	}
+	return muoviEntita(pos.first, pos.second, target.first, target.second);
 }
 
 
@@ -558,15 +468,15 @@ void Piano::aStar(coord pos, coord target)
 
 		coord nord(q.posX, q.posY - 1);
 
-		if (!destination && !pavimento.at(posizione(nord)).isMuro() && !pavimento.at(posizione(nord)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(nord)).isMuro() && !pavimento.at(posizione(nord)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr)
 		{
 
 			double gNew = q.g + normalCost;
-			if (pavimento.at(posizione(nord)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(nord)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
-			
+
 			double hNew = heuristic(nord, target);
 			double fNew = gNew + hNew;
 
@@ -637,12 +547,12 @@ void Piano::aStar(coord pos, coord target)
 		//----------- 2nd Successor South (x, y+1) ------------
 
 		coord sud(q.posX, q.posY + 1);
-		
-		if (!destination && !pavimento.at(posizione(sud)).isMuro() && !pavimento.at(posizione(sud)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+
+		if (!destination && !pavimento.at(posizione(sud)).isMuro() && !pavimento.at(posizione(sud)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr)
 		{
 
 			double gNew = q.g + normalCost;
-			if (pavimento.at(posizione(sud)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(sud)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
@@ -718,11 +628,11 @@ void Piano::aStar(coord pos, coord target)
 
 		coord est(q.posX + 1, q.posY);
 
-		if (!destination && !pavimento.at(posizione(est)).isMuro() && !pavimento.at(posizione(est)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(est)).isMuro() && !pavimento.at(posizione(est)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr)
 		{
 
 			double gNew = q.g + normalCost;
-			if (pavimento.at(posizione(est)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(est)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
@@ -798,11 +708,11 @@ void Piano::aStar(coord pos, coord target)
 
 		coord ovest(q.posX - 1, q.posY);
 
-		if (!destination && !pavimento.at(posizione(ovest)).isMuro() && !pavimento.at(posizione(ovest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(ovest)).isMuro() && !pavimento.at(posizione(ovest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr)
 		{
 
 			double gNew = q.g + normalCost;
-			if (pavimento.at(posizione(ovest)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(ovest)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
@@ -878,11 +788,11 @@ void Piano::aStar(coord pos, coord target)
 
 		coord nordEst(q.posX + 1, q.posY - 1);
 
-		if (!destination && !pavimento.at(posizione(nordEst)).isMuro() && !pavimento.at(posizione(nordEst)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(nordEst)).isMuro() && !pavimento.at(posizione(nordEst)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr)
 		{
-			
+
 			double gNew = q.g + diagonalCost;
-			if (pavimento.at(posizione(nordEst)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(nordEst)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
@@ -958,11 +868,11 @@ void Piano::aStar(coord pos, coord target)
 
 		coord nordOvest(q.posX - 1, q.posY - 1);
 
-		if (!destination && !pavimento.at(posizione(nordOvest)).isMuro() && !pavimento.at(posizione(nordOvest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(nordOvest)).isMuro() && !pavimento.at(posizione(nordOvest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr)
 		{
 
 			double gNew = q.g + diagonalCost;
-			if (pavimento.at(posizione(nordOvest)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(nordOvest)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
@@ -1038,11 +948,11 @@ void Piano::aStar(coord pos, coord target)
 
 		coord sudEst(q.posX + 1, q.posY + 1);
 
-		if (!destination && !pavimento.at(posizione(sudEst)).isMuro() && !pavimento.at(posizione(sudEst)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(sudEst)).isMuro() && !pavimento.at(posizione(sudEst)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr)
 		{
 
 			double gNew = q.g + diagonalCost;
-			if (pavimento.at(posizione(sudEst)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(sudEst)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
@@ -1118,11 +1028,11 @@ void Piano::aStar(coord pos, coord target)
 
 		coord sudOvest(q.posX - 1, q.posY + 1);
 
-		if (!destination && !pavimento.at(posizione(sudOvest)).isMuro() && !pavimento.at(posizione(sudOvest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr )
+		if (!destination && !pavimento.at(posizione(sudOvest)).isMuro() && !pavimento.at(posizione(sudOvest)).hasTrap() && pavimento.at(posizione(nord)).getEntita() != nullptr)
 		{
 
 			double gNew = q.g + diagonalCost;
-			if (pavimento.at(posizione(sudOvest)).getOggetto() != nullptr)
+			if (pavimento.at(posizione(sudOvest)).getOggetti().size() != 0)
 			{
 				gNew += objectCost;
 			}
@@ -1131,7 +1041,7 @@ void Piano::aStar(coord pos, coord target)
 			double fNew = gNew + hNew;
 
 			// if is destination
-			if (sudOvest  == target)
+			if (sudOvest == target)
 			{
 				struct node southWest;
 				southWest.posX = q.posX - 1;
@@ -1213,16 +1123,16 @@ void Piano::aStar(coord pos, coord target)
 }
 
 
-void Piano::StampaFileChar() 
+void Piano::StampaFileChar()
 {
-	std::ofstream file ("mappa.map");
+	std::ofstream file("mappa.map");
 	for (int i = 0; i < lunghezza*larghezza; i++)
 	{
 		auto casella = pavimento.at(i);
 		auto entity = casella.getEntita();
 		//Per ora l'ordine va bene così, ma non è detto che in un muro non ci possano essere nemici (tipo fantasmi)
 		//FIXME dev'essere come l'altra stampa
-		if (dynamic_cast<Protagonista*>((&entity)->get()) != NULL) //se entity è NULL il dynamic cast risponde NULL
+		if (dynamic_cast<Protagonista*>((&entity)->get()) != nullptr) //se entity è NULL il dynamic cast risponde NULL
 		{
 			file << '@';
 		}
@@ -1230,7 +1140,7 @@ void Piano::StampaFileChar()
 		{
 			file << '#';
 		}
-		else if (dynamic_cast<Attore*>((&entity)->get()) != NULL) //Same
+		else if (dynamic_cast<Attore*>((&entity)->get()) != nullptr) //Same
 		{
 			file << '*';
 		}
@@ -1258,7 +1168,7 @@ std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
 	switch (codiceID) {
 	case 0: {
 		//TODO qui ovviamente dovrà esserci il modo di caricare un personaggio preesistente o di invocare il creatore di personaggi, per ora lo tratto come un qualunque idiota
-		std::list<std::shared_ptr<Oggetto>> inventario{ std::shared_ptr<Oggetto> (new Oggetto(0.5, "Sfera di metallo", "Direi piuttosto che si tratta di un oggetto a forma d'uovo", 2)) };
+		std::list<std::shared_ptr<Oggetto>> inventario{ std::shared_ptr<Oggetto>(new Oggetto(0.5, "Sfera di metallo", "Direi piuttosto che si tratta di un oggetto a forma d'uovo", 2)) };
 		Attributi nellaMedia(4, 4, 4, 4, 4, 4, 4, 4);
 		std::vector<std::shared_ptr<Oggetto>> equipaggiamento; //Picche, non hai nulla scemo
 		appoggio = std::make_shared<Protagonista>(Protagonista("Medioman", inventario, nellaMedia, equipaggiamento, 1, 0, 0));
@@ -1269,14 +1179,14 @@ std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
 		std::list<std::shared_ptr<Oggetto>> inventario;
 		Attributi scarso(3, 4, 2, 2, 2, 1, 3, 1);
 		std::vector<std::shared_ptr<Oggetto>> equipaggiamento; //Picche, non hai nulla scemo puzzone
-		appoggio = std::make_shared<Attore>("Goblin puzzone", inventario, scarso, equipaggiamento,1.1);
+		appoggio = std::make_shared<Attore>("Goblin puzzone", inventario, scarso, equipaggiamento, 1.1);
 		break;
 	}
 	default:
 	{
 		appoggio = nullptr;
 	}
-	
+
 	}
 	return appoggio;
 }
@@ -1291,7 +1201,7 @@ std::shared_ptr<Oggetto> Piano::objectFactory(int codiceID)
 	std::shared_ptr<Oggetto> oggetto;
 	switch (codiceID) {
 	case 0: {
-		oggetto = std::make_shared<Oggetto>(1,"Sfera di metallo","L'inutilita' fatta lucida.",0);
+		oggetto = std::make_shared<Oggetto>(1, "Sfera di metallo", "L'inutilita' fatta lucida.", 0);
 		break;
 	}
 	case 1: {
@@ -1303,7 +1213,7 @@ std::shared_ptr<Oggetto> Piano::objectFactory(int codiceID)
 		break;
 	}
 	case 3: {
-		oggetto = std::make_shared<Oggetto>(0.25,"Fermaporte","Non particolarmente utile qui",4);
+		oggetto = std::make_shared<Oggetto>(0.25, "Fermaporte", "Non particolarmente utile qui", 4);
 		break;
 	}
 	case 4: {

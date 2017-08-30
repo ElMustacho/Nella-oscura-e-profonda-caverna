@@ -10,22 +10,22 @@ typedef std::pair<int, int> cood;
 /*
 LOOKATME
 Che sia chiaro una volta per tutte, anche perché io mi sbaglio più o meno sempre, dannato sia il 2D
- 
-	l larghezza ---> X
-	u ##################
-	n ##################
-	g ########........##
-	h ########........##
-	e ########........##
-	z #############.####
-	z #############.####
-	a #############.####
-	| #############.####
-	| ###..............#
-	| ###..............#
-	V ###..............#
-	  ###..............#
-	Y ##################
+
+l larghezza ---> X
+u ##################
+n ##################
+g ########........##
+h ########........##
+e ########........##
+z #############.####
+z #############.####
+a #############.####
+| #############.####
+| ###..............#
+| ###..............#
+V ###..............#
+  ###..............#
+Y ##################
 */
 
 typedef std::pair<int, int> coord;
@@ -34,7 +34,7 @@ class Piano
 {
 public:
 	virtual ~Piano();
-	
+
 	int posizione(int x, int y);
 
 	bool removeEntita(cood coodElimina);
@@ -46,17 +46,17 @@ public:
 	bool isCoodLegal(cood coord);
 	int posizione(cood coord);
 	cood fromPosizioneToInt(int x);
-	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY); 
+	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY);
 	bool creaPorte(int posX, int posY, int dimX, int dimY);
 	std::vector<std::shared_ptr<Entita>> getVectorEntita();
 	std::vector<cood> getVectorPosizioni();
-	std::vector<cood> floodFill (cood posizionePartenza);
+	std::vector<cood> floodFill(cood posizionePartenza);
 	void StampaChar();
 
 	cood getPositionOfPlayer();
 	//posizione nella tabella
-	cood getPositionOfEntity(int position);
-	int muoviEntita(int posX, int posY, int targetX, int targetY); 
+	cood getPositionOfEntity(std::shared_ptr<Entita> entita);
+	int muoviEntita(int posX, int posY, int targetX, int targetY);
 
 	int muoviEntita(coord pos, coord target);
 	void aStar(coord pos, coord target);
@@ -68,15 +68,15 @@ public:
 	Piano();
 	Piano(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> lootPossibile, std::vector<std::shared_ptr<Entita>> entitaPossibili);
 	//TODOFAR far funzionare con entita generabili
-	std::shared_ptr<Entita> entityFactory(std::string nome); 
-	std::shared_ptr<Entita> entityFactory(int codiceID=0);
+	std::shared_ptr<Entita> entityFactory(std::string nome);
+	std::shared_ptr<Entita> entityFactory(int codiceID = 0);
 	std::shared_ptr<Oggetto> objectFactory(std::string nome);
 	std::shared_ptr<Oggetto> objectFactory(int codiceID = 0);
 
 	//Piano(std::string posizione, bool &successo); //Da file 
 protected:
-	std::vector<Casella> pavimento; 
-	int lunghezza, larghezza; 
+	std::vector<Casella> pavimento;
+	int lunghezza, larghezza;
 	std::vector<std::shared_ptr<Entita>> entitaGenerabili;
 	std::vector<std::shared_ptr<Oggetto>> oggettiGenerabili;
 	//Il personaggio deve essere sempre nella prima posizione

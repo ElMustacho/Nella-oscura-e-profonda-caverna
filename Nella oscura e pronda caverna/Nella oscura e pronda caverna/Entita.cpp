@@ -16,7 +16,7 @@ Entita::Entita(std::string nome, std::list<std::shared_ptr<Oggetto>> inventario,
 		this->equipaggiamento = equipaggiamento;
 		this->inventario = inventario;
 		this->attributi = attributi;
-		this->equipaggiamento.reserve(20);
+		this->equipaggiamento.resize(20);
 }
 bool Entita::operator==(const Entita & rEntita) const
 {
@@ -104,7 +104,7 @@ void Entita::equip(int posizioneFrom, int posiozioneTo) {
 		std::advance(it, posizioneFrom);
 		auto moving = inventario;
 		//HACK funziona solo con le armi
-		equipaggiamento.push_back(*it);
+		equipaggiamento.at(0)=*it;
 		inventario.erase(it);
 	}	//TODOFAR carico massimo
 }
