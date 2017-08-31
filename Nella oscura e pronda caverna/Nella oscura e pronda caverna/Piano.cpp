@@ -306,7 +306,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	if ( typeid( *(pavimento.at(posizione(pos)).getEntita()) ) != typeid(Protagonista) )
 	{
 		/* TENTATIVO STIMA DISTANZA (con heuristic) */
-		distanza = heuristic(pos, target);
+		//distanza = heuristic(pos, target);
 
 		return aStar(pos, target, distanza, metodo);
 	}
@@ -388,7 +388,7 @@ int Piano::muoviEntita(coord pos, coord target) //I primi due sono quelli da dov
 }
 
 
-void Piano::checkSuccessor(coord pos, coord target, coord check, std::string direct, bool &destination, node &q, std::vector<node> &openList, std::vector<node> &closedList)
+void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &destination, node &q, std::vector<node> &openList, std::vector<node> &closedList)
 {
 	// Costs
 	auto normalCost = 1;
@@ -439,10 +439,10 @@ void Piano::checkSuccessor(coord pos, coord target, coord check, std::string dir
 			// looking for this node in closedList
 			for (std::vector<node>::iterator i = closedList.begin(); i < closedList.end(); i++)
 			{
-				if (i->posX == direction.posX && i->posY == direction.posY && i->f < fNew)
+				if (i->posX == direction.posX && i->posY == direction.posY ) // && i->f < fNew v.1
 				{
 					found = true;
-					break;
+					break; // v.1 fuori if
 				}
 			}
 
@@ -455,12 +455,15 @@ void Piano::checkSuccessor(coord pos, coord target, coord check, std::string dir
 					{
 						found = true;
 						if (i->f > fNew)
+						{
 							minus = true;
-						break;
+							*i = direction; // Non c'era v.1
+						}
+						break; // v.1
 					}
 				}
 
-				if (!found || (found && minus))
+				if (!found) // || (found && minus) v.1
 				{
 					openList.push_back(direction);
 				}
@@ -468,6 +471,14 @@ void Piano::checkSuccessor(coord pos, coord target, coord check, std::string dir
 
 		}
 
+	}
+	else
+	{
+		if (check == target)
+		{
+			std::cout << "Non posso raggiungere la destinazione, solo andarci vicino" << std::endl;
+			destination = true;
+		}
 	}
 }
 
@@ -507,42 +518,42 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 		//----------- 1st Successor North (x, y-1) ------------
 
 		coord nord(q.posX, q.posY - 1);
-		checkSuccessor(pos, target, nord, "nord",destination, q, openList, closedList);
+		checkSuccessor(nord, target, "nord",destination, q, openList, closedList);
 
 		//----------- 2nd Successor South (x, y+1) ------------
 
 		coord sud(q.posX, q.posY + 1);
-		checkSuccessor(pos, target, sud, "sud",destination, q, openList, closedList);
+		checkSuccessor(sud, target, "sud",destination, q, openList, closedList);
 
 		//----------- 3rd Successor East (x+1, y) ------------
 
 		coord est(q.posX + 1, q.posY);
-		checkSuccessor(pos, target, est, "est",destination, q, openList, closedList);
+		checkSuccessor(est, target, "est",destination, q, openList, closedList);
 
 		//----------- 4th Successor West (x-1, y) ------------
 
 		coord ovest(q.posX - 1, q.posY);
-		checkSuccessor(pos, target, ovest, "ovest",destination, q, openList, closedList);
+		checkSuccessor(ovest, target, "ovest",destination, q, openList, closedList);
 
 		//----------- 5th Successor North-East (x+1, y-1) ------------
 
 		coord nordEst(q.posX + 1, q.posY - 1);
-		checkSuccessor(pos, target, nordEst, "nordEst",destination, q, openList, closedList);
+		checkSuccessor(nordEst, target, "nordEst",destination, q, openList, closedList);
 
 		//----------- 6th Successor North-West (x-1, y-1) ------------
 
 		coord nordOvest(q.posX - 1, q.posY - 1);
-		checkSuccessor(pos, target, nordOvest, "nordOvest", destination, q, openList, closedList);
+		checkSuccessor(nordOvest, target, "nordOvest", destination, q, openList, closedList);
 
 		//----------- 7th Successor South-East (x+1, y+1) ------------
 
 		coord sudEst(q.posX + 1, q.posY + 1);
-		checkSuccessor(pos, target, sudEst, "sudEst", destination, q, openList, closedList);
+		checkSuccessor(sudEst, target, "sudEst", destination, q, openList, closedList);
 
 		//----------- 8th Successor South-West (x-1, y+1) ------------
 
 		coord sudOvest(q.posX - 1, q.posY + 1);
-		checkSuccessor(pos, target, sudOvest, "sudOvest", destination, q, openList, closedList);
+		checkSuccessor(sudOvest, target, "sudOvest", destination, q, openList, closedList);
 		
 		if (!destination)
 		{
@@ -567,7 +578,6 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 		
 		pavimento.at( posizione(next) ).doEvento();
 		distanza--;
-
 	}
 
 	//CHECK Arrivato?

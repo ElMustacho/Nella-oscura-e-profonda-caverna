@@ -81,7 +81,7 @@ public:
 	int muoviEntita(int posX, int posY, int targetX, int targetY); 
 
 	int muoviEntita(coord pos, coord target);
-	void checkSuccessor(coord pos, coord target, coord check, std::string direct, bool &destination, node &q, std::vector<node> &openList, std::vector<node> &closedList);
+	void checkSuccessor(coord check, coord target, std::string direct, bool &destination, node &q, std::vector<node> &openList, std::vector<node> &closedList);
 	int aStar(coord pos, coord target, int distanza, int metodo);
 
 	void StampaFileChar();

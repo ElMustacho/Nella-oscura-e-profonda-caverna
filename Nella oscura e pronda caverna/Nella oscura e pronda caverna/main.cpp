@@ -35,6 +35,7 @@ int main()
 		std::cin >> b;
 
 	Attore JimBob("JimBob", tabellaLoot, dexAlta, Equipaggiamento, 4.);
+	Attore Orco("Orco", tabellaLoot, dexAlta, Equipaggiamento, 4.);
 /*
 	pregen.at(5, 5).setEntita(std::make_shared<Protagonista>(Saitama));
 	pregen.at(6, 2).setEntita(std::make_shared<Attore>(JimBob));
@@ -42,6 +43,7 @@ int main()
 	auto controllo = pregen.floodFill(coord);
 	pregen.placeEntita(std::make_shared<Protagonista>(Saitama), cood(5, 5));
 	pregen.placeEntita(std::make_shared<Attore>(JimBob), cood(6, 2));
+	pregen.placeEntita(std::make_shared<Attore>(Orco), cood(24, 9));
 	Oggetto oggettoDebug(10.,"Cosa", "Qualcosa di fantastico", 40);
 	Oggetto oggettoDebug2(5., "Altra cosa", "Qualcosa di altrettanti fantastico", 15);
 	Saitama.addInventario(std::make_shared<Oggetto>(oggettoDebug));
@@ -163,11 +165,12 @@ int main()
 			}
 
 		}
+		
 	}
 
 	pregen.StampaChar();
 	pregen.muoviEntita(6, 2, X, Y); // muovo 2° entita
-
+	pregen.muoviEntita(24, 9, X, Y); // muovo 3° entita
 	pregen.StampaChar();
 	std::cout << std::endl;
 	std::cin >> a;
