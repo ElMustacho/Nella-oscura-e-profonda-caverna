@@ -9,6 +9,7 @@ public:
 	~Protagonista();
 	double getEsperienza() const { return esperienza; } ;
 	void setEsperienza(double esperienza) { this->esperienza = esperienza; };
+	virtual void onDeath() override;
 private:
 	unsigned int livello; //FIXME livello è gia contenuto dentro attributi, ereditati da Entita
 	double esperienza;

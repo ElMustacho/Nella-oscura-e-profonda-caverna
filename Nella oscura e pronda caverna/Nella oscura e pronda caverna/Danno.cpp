@@ -25,8 +25,10 @@ void Danno::equalize(bool alteraAmmontare)
 		ammontare = 0;
 	else {
 		//Porta totale ad 1
-		for each(double numero in tipo) {
-			numero*=totale;
+		for(unsigned int numero=0;numero<tipo.size();numero++)
+		{
+			auto temp = tipo.at(numero) / totale;
+			tipo.at(numero) =temp;
 		}
 		if (alteraAmmontare)
 		{
@@ -114,11 +116,12 @@ void Danno::setParteDanno(std::string posizione, double ammontare)
 	auto it = std::find(tipiDanno.begin(), tipiDanno.end(), posizione); //ricerca stringa
 	if (it != tipiDanno.end()) //la stringa c'è
 	{
-		if(ammontare<0)
+		if(ammontare-getParteDanno(posizione)<0)
 			tipo.at(std::distance(tipiDanno.begin(), it)) = 0;
-		else
-			tipo.at(std::distance(tipiDanno.begin(), it)) = ammontare;
-		equalize(false);
+		else {
+			tipo.at(std::distance(tipiDanno.begin(), it)) = (ammontare / this->ammontare);
+		}
+		equalize(true);
 	}
 	
 }
@@ -128,13 +131,18 @@ void Danno::setParteDanno(int posizione, double ammontare) {
 		if (ammontare<0)
 			tipo.at(posizione) = 0;
 		else
-			tipo.at(posizione) = ammontare;
+			tipo.at(posizione) = (ammontare / this->ammontare);
 		equalize(false);
 	}
 }
-//Neutralità ad un tipo di danno -> 1// Doppi danni da un tipo -> 2// Immunità ad un tipo di danno -> 0 ectv
+//Neutralità ad un tipo di danno -> 1// Doppi danni da un tipo -> 2// Immunità ad un tipo di danno -> 0 ect
 double const Danno::calcolaDannoTotale(std::vector<double> resistenze)
 {
+	
+	for (auto lack = 16 - resistenze.size(); lack <= 0; lack--) {
+		resistenze.push_back(1);
+	}
+	resistenze.resize(16);
 	double totale = 0;
 	for (unsigned int i = 0; i < giveCategoriaDanni().size(); i++) {
 		totale += getParteDanno(i)*(resistenze[i]);

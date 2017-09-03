@@ -29,11 +29,17 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="TESTATTEMPT.cpp">
+    <ClCompile Include="TESTtest.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="TESTtest.cpp">
-      <Filter>File di intestazione</Filter>
+    <ClCompile Include="main.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="PianoTest.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="TestOggetti.cpp">
+      <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

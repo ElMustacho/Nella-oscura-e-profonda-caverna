@@ -17,7 +17,7 @@ public:
 	std::string getNome() const { return nome; }
 
 	void setNome(std::string nome) { this->nome = nome; }
-	void onDeath(); //cosa succede se muore
+	virtual void onDeath(); //cosa succede se muore
 	std::list<std::shared_ptr<Oggetto>> getInventario() const { return inventario; };
 	void setInventario(std::list<std::shared_ptr<Oggetto>> inventario) { this->inventario = inventario; };
 	std::vector<std::shared_ptr<Oggetto>> getEquipaggiamento() const { return equipaggiamento; };

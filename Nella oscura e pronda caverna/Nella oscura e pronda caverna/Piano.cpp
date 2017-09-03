@@ -123,11 +123,16 @@ Piano::Piano() {
 
 Piano::Piano(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> lootPossibile, std::vector<std::shared_ptr<Entita>> entitaPossibili)
 {
+	this->lunghezza = lunghezza;
+	this->larghezza = larghezza;
+	pavimento.reserve(lunghezza*larghezza); //Velocizza l'accesso futuro alla memoria.
+	pavimento = std::vector<Casella>(lunghezza*larghezza, Casella(false)); //Riempio tutto di muri all'inizio
+
 }
 
 bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY)
 {
-	if (posX + dimX  > lunghezza || posY + dimY > larghezza)
+	if (posX + dimX  > larghezza || posY + dimY > lunghezza)
 		return false; //Stanza prodotta fuori dal piano
 
 	for (int i = posX; i < dimX + posX; i++)
@@ -1113,10 +1118,10 @@ void Piano::aStar(coord pos, coord target)
 
 	}
 
-	for (std::vector<node>::iterator i = closedList.begin(); i < closedList.end(); i++)
-	{
-		std::cout << "( " << i->posX << ", " << i->posY << " ) -> " << i->f << std::endl;
-	}
+	//for (std::vector<node>::iterator i = closedList.begin(); i < closedList.end(); i++)
+	//{
+	//	std::cout << "( " << i->posX << ", " << i->posY << " ) -> " << i->f << std::endl;
+	//}
 
 	/////////////////////////////
 	/* End of A* Algorithm */

@@ -50,7 +50,7 @@ int main()
 	Saitama.addInventario(std::make_shared<Oggetto>(oggettoDebug));
 	pregen.at(5, 5).getEntita()->addInventario(std::make_shared<Oggetto>(oggettoDebug2)); //FIXME sballo se non ho valori validi
 	std::cout << std::endl << pregen.at(5, 5).getEntita()->describeInventario() << std::endl; //FIXME same
-	std::cout << "Premi k per ammazzare l'asterisco al primo turno" << std::endl;
+	std::cout << "Premi k per ammazzare l'asterisco al primo turno, oppure s per il suicidio" << std::endl;
 	/*
 	Attributi dexAlta(4, 14, 4, 4, 4, 4, 4, 1);
 	Saitama.setAttributi(dexAlta);
@@ -200,6 +200,9 @@ int main()
 				break;
 			case 'k':
 				pregen.scontro(cood(31, 7), Danno(std::vector<double>{1}, 4000));
+				break;
+			case 's':
+				pregen.scontro(pregen.getPositionOfPlayer(), Danno(std::vector<double>{1}, 4000));
 				break;
 			case 'e':
 				pregen.at(X, Y).getEntita()->equip(1, 0);
