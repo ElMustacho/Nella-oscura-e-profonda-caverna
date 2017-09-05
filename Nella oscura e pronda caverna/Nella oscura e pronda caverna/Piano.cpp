@@ -282,9 +282,9 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	}
 	if ( pos == target ) //Questo significa non spostarsi per davvero
 	{
-		return -2;
+		return -2; 
 	}
-	if ( !(target.first > -1 && target.first < lunghezza && target.second > -1 && target.second < larghezza) )
+	if ( !isCoodLegal(target) )
 	{
 		return -3; //Posizione non valida per almeno una delle coordinate
 	}
