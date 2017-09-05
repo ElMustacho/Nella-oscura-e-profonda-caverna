@@ -158,6 +158,7 @@ int main()
 				break;
 			case '5':
 				exit++;
+				pilaTurni.clear();
 				break;
 			case '6':
 				if (pregen.muoviEntita(X, Y, X + 1, Y) == 0) {
