@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <algorithm>
 pianoCavernaIsola::pianoCavernaIsola(int lunghezza, int larghezza)
 {
 	this->larghezza = larghezza;
@@ -44,6 +45,8 @@ do {
 	else
 		placeEntita(prot, placeProtagonista);
 	spargiLoot(caselleOk);
+	caselleOk.erase(std::remove(caselleOk.begin(), caselleOk.end(), getPositionOfPlayer()), caselleOk.end());
+	placeEntita(entityFactory(1),caselleOk[rand()%caselleOk.size()]);
 }
 
 

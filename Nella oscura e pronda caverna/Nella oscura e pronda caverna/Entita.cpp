@@ -30,7 +30,7 @@ bool Entita::operator==(const Entita & rEntita) const
 }
 void Entita::muovi(int & distanza, int & metodoTrasporto)
 {
-	distanza = 1;
+	distanza = attributi.getDestrezza()/8+1;
 	//distanza = (int)(1+attributi.getDestrezza()/8); //distanza 0 significa essere immobili, ma chiamare questa funzione ed ottenere distanza 0 significa
 				  //che si è provato a muoversi ma si è fallito (e il tentativo conta)
 	metodoTrasporto = 0;

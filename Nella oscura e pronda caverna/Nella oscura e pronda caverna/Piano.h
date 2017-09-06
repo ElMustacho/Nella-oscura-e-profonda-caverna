@@ -60,8 +60,8 @@ public:
 	int posizione(int x, int y);
 
 	bool removeEntita(cood coodElimina);
-	void scontro(cood posizioneVittima, cood posizioneAttaccante);
-	void scontro(cood posizioneVittima, Danno dannoInflitto); //gestisce danno ad area e fulmini da divinità furiose
+	int scontro(cood posizioneVittima, cood posizioneAttaccante);
+	int scontro(cood posizioneVittima, Danno dannoInflitto); //gestisce danno ad area e fulmini da divinità furiose
 
 	Casella& at(int x, int y);
 	Casella& at(cood coord);
@@ -83,7 +83,8 @@ public:
 	int muoviEntita(coord pos, coord target);
 	void checkSuccessor(coord check, coord target, std::string direct, bool &destination, node &q, std::vector<node> &openList, std::vector<node> &closedList);
 	int aStar(coord pos, coord target, int distanza, int metodo);
-
+	int playPiano();
+	int playerAct(bool loquace);
 	void StampaFileChar();
 	bool popolaPiano();
 	bool spargiLoot();

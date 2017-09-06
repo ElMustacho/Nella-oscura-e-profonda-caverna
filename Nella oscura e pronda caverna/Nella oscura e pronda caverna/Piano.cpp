@@ -3,7 +3,7 @@
 #include <cmath>
 #include <algorithm>
 #include <typeinfo>
-
+#include <deque>
 #include "Piano.h"
 
 
@@ -29,30 +29,34 @@ bool Piano::removeEntita(cood coodElimina) {
 	return false;
 }
 
-void Piano::scontro(cood posizioneVittima, cood posizioneAttaccante)
+int Piano::scontro(cood posizioneVittima, cood posizioneAttaccante)
 {
 	if (pavimento.at(posizione(posizioneAttaccante)).getEntita() == nullptr)
-		return; //nessun attaccante
+		return -1; //nessun attaccante
 	auto danno = pavimento.at(posizione(posizioneAttaccante)).getEntita()->attacca();
 	if (danno.getAmmontare() < 0)
-		return; //nessun danno
+		return -2; //nessun danno
 	else
 		scontro(posizioneVittima, danno);
 }
-void Piano::scontro(cood posizioneVittima, Danno dannoInflitto)
+int Piano::scontro(cood posizioneVittima, Danno dannoInflitto)
 {
 	if (pavimento.at(posizione(posizioneVittima)).getEntita().get() == nullptr)
-		return; //nessun bersaglio
-	else
-		if (pavimento.at(posizione(posizioneVittima)).getEntita()->subisciDanno(dannoInflitto)) {
+		return -3; //nessun bersaglio
+	else {
+		auto morteAvvenuta = pavimento.at(posizione(posizioneVittima)).getEntita()->subisciDanno(dannoInflitto);
+		if (morteAvvenuta) {
+			//TODOFAR lascia equipaggiamento per terra.
 			auto vPosizioni = getVectorPosizioni();
 			auto it = std::find(vPosizioni.begin(), vPosizioni.end(), posizioneVittima);
 			//HACK devo chiamare removeEntita
 			entitaPresenti.erase(entitaPresenti.begin() + std::distance(vPosizioni.begin(), it));
 			pavimento.at(posizione(posizioneVittima)).drop();
 			pavimento.at(posizione(posizioneVittima)).setEntita(nullptr);
+			return 1;
 		}
-	return; //TODOFAR lascia equipaggiamento per terra.
+	}
+	return 0; 
 }
 
 
@@ -63,7 +67,6 @@ Casella & Piano::at(int x, int y)
 		x = 0;
 	if (y < 0)
 		y = 0;
-
 	if (x >= larghezza)
 		x = larghezza - 1;
 	if (y >= lunghezza)
@@ -357,6 +360,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 			if (pavimento.at(posizione(updatePos)).isMuro()) //Qui c'è un muro
 			{
 				return 1;
+				std::cout << "Sbam!" << std::endl;
 			}
 			else if (pavimento.at(posizione(updatePos)).getEntita() != nullptr) //Qui c'è qualcun'altro
 			{
@@ -496,7 +500,7 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 	{
 		if (check == target)
 		{
-			std::cout << "Non posso raggiungere la destinazione, solo andarci vicino" << std::endl;
+			//std::cout << "Non posso raggiungere la destinazione, solo andarci vicino" << std::endl;
 			destination = true;
 		}
 	}
@@ -585,7 +589,7 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 
 	for (std::vector<node>::iterator i = closedList.begin(); i < closedList.end() && distanza > 0; i++)
 	{
-		std::cout << "( " << i->posX << ", " << i->posY << " ) -> " << i->f << std::endl;
+		//std::cout << "( " << i->posX << ", " << i->posY << " ) -> " << i->f << std::endl;
 		cood coordinatePrima(pos.first, pos.second);
 		//TODO muovi enita
 		pos.first = i->posX;
@@ -600,6 +604,8 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 			auto distanza = std::distance(vPosizioni.begin(), it);
 			entitaPresenti[distanza].second = next;
 		}
+
+		//StampaChar();
 		pavimento.at(posizione(next)).doEvento();
 		distanza--;
 	}
@@ -618,6 +624,138 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 		return 4; //non sono arrivato a destinazione perché ho finito il movimento
 	}
 
+}
+
+int Piano::playPiano()
+{
+	bool a;
+	char input = '1';
+	std::cout << "Bloat text? y/n: ";
+	while (input != 'y'&&input != 'n')
+		std::cin >> input;
+	if (input == 'y')
+		a = true;
+	else
+		a = false;
+	std::deque<std::shared_ptr<Entita>> turni;
+	for each (auto it in entitaPresenti)
+	{
+		turni.push_back(it.first);
+	}
+	while (!turni.empty()) {
+		
+			auto attivo = turni.front();
+			if (pavimento.at(posizione(getPositionOfEntity(attivo))).getEntita() == nullptr) { //
+				//TODO elimina ogni traccia di "attivo"
+			}
+			std::cout << "Adesso sta a " << attivo->getNome() << std::endl;
+			turni.pop_front();
+			auto posizioneAttivo = getPositionOfEntity(attivo);
+			if (getPositionOfPlayer() != posizioneAttivo) {
+				//HACK qui si muove e basta, ma poi dovrà decidere l'intelligenza artificiale dell'entità
+				auto resultMovement=muoviEntita(posizioneAttivo, getPositionOfPlayer());
+			}
+			else {
+				auto resultPlayer = playerAct(a);
+				while(resultPlayer<0)
+				{ 
+					resultPlayer = playerAct(a);
+				}
+				if (resultPlayer == 2) {
+					turni.clear();
+					return 0;
+				}
+			}
+			turni.push_back(attivo);
+		}
+	
+}
+
+int Piano::playerAct(bool a)
+{
+		StampaChar();
+		if(a)
+			std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi: ";
+		char direzione;
+		std::cin >> direzione;
+		std::cout << std::endl;
+		system("CLS");
+		auto playerPos = getPositionOfPlayer();
+		int result;
+		switch (direzione)
+		{
+		case '1': {
+			result = muoviEntita(playerPos.first,playerPos.second,playerPos.first-1,playerPos.second+1);
+			if (result == 0) {
+				if (a)
+					std::cout << "Ho provato a muovermi con successo." << std::endl;
+			}
+			break;
+		case '2':
+			if (muoviEntita(playerPos.first,playerPos.second,playerPos.first,playerPos.second+1) == 0) {
+				if (a)
+					std::cout << "Ho provato a muovermi con successo." << std::endl;
+			}
+			break;
+		case '3':
+			if (muoviEntita(playerPos.first, playerPos.second, playerPos.first + 1, playerPos.second + 1) == 0) {
+				if (a)
+					std::cout << "Ho provato a muovermi con successo." << std::endl;
+			}
+			break;
+		case '4':
+			if (muoviEntita(playerPos.first, playerPos.second, playerPos.first - 1, playerPos.second) == 0) {
+				if (a)
+					std::cout << "Ho provato a muovermi con successo." << std::endl;
+			}
+			break;
+		case '5':
+			return 2;
+		case '6':
+			if (muoviEntita(playerPos.first, playerPos.second, playerPos.first + 1, playerPos.second) == 0) {
+				if (a)
+					std::cout << "Ho provato a muovermi con successo." << std::endl;
+			}
+			break;
+		case '7':
+			if (muoviEntita(playerPos.first, playerPos.second, playerPos.first - 1, playerPos.second - 1) == 0) {
+				if (a)
+					std::cout << "Ho provato a muovermi con successo." << std::endl;
+			}
+			break;
+		case '8':
+			if (muoviEntita(playerPos.first, playerPos.second, playerPos.first, playerPos.second - 1) == 0) {
+				if (a)
+					std::cout << "Ho provato a muovermi con successo." << std::endl;
+			}
+			break;
+		case '9':
+			if (muoviEntita(playerPos.first, playerPos.second, playerPos.first + 1, playerPos.second - 1) == 0) {
+				if (a)
+					std::cout << "Ho provato a muovermi con successo." << std::endl;
+			}
+			break;
+		case 's':
+			scontro(getPositionOfPlayer(), Danno(std::vector<double>{1}, 4000));
+			break;
+		case 'e':
+			pavimento.at(posizione(playerPos)).getEntita()->equip(1, 0);
+			break;
+		case '0':
+			std::cout << pavimento.at(posizione(getPositionOfPlayer())).descriviOggettiTerra();
+			return -1;
+		case 'p':
+			pavimento.at(posizione(getPositionOfPlayer())).pickup();
+			break;
+		default:
+			if (a)
+			{
+				std::cout << "Input non valido" << std::endl;
+			}
+			return -1;
+		}
+	}
+		return 0;
 }
 
 
