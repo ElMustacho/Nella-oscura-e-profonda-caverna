@@ -15,7 +15,7 @@ int main()
 {
 	
 	std::vector<std::shared_ptr<Oggetto>> tabellaLoot; //VUOTA
-	std::vector<std::shared_ptr<Oggetto>> Equipaggiamento;
+	Equipaggiamento Equipaggiamento;
 	std::vector<Entita> tabellaEntita; //VUOTA
 	cood coord(5, 5);
 	Attributi dexAlta(4, 4, 4, 4, 4, 4, 4, 1);

@@ -41,6 +41,19 @@ bool Equipaggiamento::equipaggia(std::shared_ptr<Oggetto> toEquip)
 	}
 }
 
+double Equipaggiamento::getPeso() const
+{
+	return armaPrimaria->getPeso() / 2 + armatura->getPeso() / 2;
+}
+
+bool Equipaggiamento::operator==(const Equipaggiamento & rEquipaggiamento) const
+{
+	if (this->armaPrimaria == rEquipaggiamento.armaPrimaria)
+		if (this->armatura == rEquipaggiamento.armatura)
+			return true;
+	return false;
+}
+
 std::shared_ptr<Oggetto> Equipaggiamento::disequip(int posizione)
 {
 	switch (posizione) {

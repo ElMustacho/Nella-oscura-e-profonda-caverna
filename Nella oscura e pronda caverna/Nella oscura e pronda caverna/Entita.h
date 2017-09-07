@@ -20,12 +20,11 @@ public:
 	virtual void onDeath(); //cosa succede se muore
 	std::vector<std::shared_ptr<Oggetto>> getInventario() const { return inventario; };
 	void setInventario(std::vector<std::shared_ptr<Oggetto>> inventario) { this->inventario = inventario; };
-	std::vector<std::shared_ptr<Oggetto>> getEquipaggiamento() const { return equipaggiamento; };
-	void setEquipaggiamento(std::vector<std::shared_ptr<Oggetto>> equipaggiamento) { this->equipaggiamento = equipaggiamento; }
-	Entita(std::string nome, std::vector<std::shared_ptr<Oggetto>> inventario, Attributi attributi, std::vector<std::shared_ptr<Oggetto>> equipaggiamento);
+	Equipaggiamento getEquipaggiamento() const { return equipaggiamento; };
+	void setEquipaggiamento(Equipaggiamento equipaggiamento) { this->equipaggiamento = equipaggiamento; }
+	Entita(std::string nome, std::vector<std::shared_ptr<Oggetto>> inventario, Attributi attributi, Equipaggiamento equipaggiamento);
 	bool operator==(const Entita & rEntita)const;
 	void muovi(int &distanza, int &metodoTrasporto);
-	Danno attaccaNext();
 	Danno attacca();
 	Entita(); //TODO vorrei evitare di mettere costruttori vuoti solo perché se no il compilatore si lamenta.
 	Attributi getAttributi() const;
@@ -33,7 +32,6 @@ public:
 	bool addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti);
 	bool equip(int posizioneOggetto);
 	bool equip();
-	void equip(int posizioneFrom, int posizioneTo);
 	void unequip(int posisioneFrom);
 	bool addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere);
 	//return true se uccide, false altrimenti
@@ -46,8 +44,7 @@ private:
 	//FIXME Sprite sprite;   manage Sprite
 	std::vector<std::shared_ptr<Oggetto>> inventario;
 	//LOOKATME i vector si shrinkano automaticamente quindi direi che in futuro equipaggiamento sarà una classe a sé stante
-	std::vector<std::shared_ptr<Oggetto>> equipaggiamento;
-	Equipaggiamento equipaggiamentoNext;
+	Equipaggiamento equipaggiamento;
 	/*
 	nella posizione X di equipaggiamento ci sarà:
 	0) mano primaria (arma)

@@ -740,7 +740,7 @@ int Piano::playerAct(bool a)
 			scontro(getPositionOfPlayer(), Danno(std::vector<double>{1}, 4000));
 			break;
 		case 'e':
-			pavimento.at(posizione(playerPos)).getEntita()->equip(1, 0);
+			pavimento.at(posizione(playerPos)).getEntita()->equip();
 			break;
 		case 'n':
 			pavimento.at(posizione(playerPos)).getEntita()->equip();
@@ -810,7 +810,7 @@ std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
 		//TODO qui ovviamente dovrà esserci il modo di caricare un personaggio preesistente o di invocare il creatore di personaggi, per ora lo tratto come un qualunque idiota
 		std::vector<std::shared_ptr<Oggetto>> inventario{ std::shared_ptr<Oggetto>(new Oggetto(0.5, "Sfera di metallo", "Direi piuttosto che si tratta di un oggetto a forma d'uovo", 2)) };
 		Attributi nellaMedia(4, 4, 4, 4, 4, 4, 4, 4);
-		std::vector<std::shared_ptr<Oggetto>> equipaggiamento; //Picche, non hai nulla scemo
+		Equipaggiamento equipaggiamento; //Picche, non hai nulla scemo
 		appoggio = std::make_shared<Protagonista>(Protagonista("Medioman", inventario, nellaMedia, equipaggiamento, 1, 0, 0));
 		break;
 	}
@@ -818,7 +818,7 @@ std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
 	{// Goblin scrauso, puzzone e nudo
 		std::vector<std::shared_ptr<Oggetto>> inventario;
 		Attributi scarso(3, 4, 2, 2, 2, 1, 3, 1);
-		std::vector<std::shared_ptr<Oggetto>> equipaggiamento; //Picche, non hai nulla scemo puzzone
+		Equipaggiamento equipaggiamento; //Picche, non hai nulla scemo puzzone
 		appoggio = std::make_shared<Attore>("Goblin puzzone", inventario, scarso, equipaggiamento, 1.1);
 		break;
 	}
