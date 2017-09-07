@@ -610,6 +610,11 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 
 	}
 
+	if (!destination)
+	{
+		return 4;
+	}
+
 	// BEGIN Path creation
 	path = closedList;
 	std::reverse(path.begin(), path.end());
