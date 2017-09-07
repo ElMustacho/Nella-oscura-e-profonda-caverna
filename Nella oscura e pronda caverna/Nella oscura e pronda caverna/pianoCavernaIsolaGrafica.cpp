@@ -1,9 +1,12 @@
-#include "PianoFileGrafica.h"
-#include <string>
-#include <vector>
+#include "pianoCavernaIsolaGrafica.h"
 #include "SFML\Graphics.hpp"
 
-void PianoFileGrafica::stampaPianoSuFinestra()
+
+pianoCavernaIsolaGrafica::pianoCavernaIsolaGrafica(int larghezza, int lunghezza):pianoCavernaIsola(larghezza,lunghezza)
+{
+}
+
+void pianoCavernaIsolaGrafica::stampaPianoSuFinestra()
 {
 	sf::Texture tileTexture;
 	sf::Sprite tiles;
@@ -30,8 +33,8 @@ void PianoFileGrafica::stampaPianoSuFinestra()
 		window.clear();
 		for (unsigned int i = 0; i < pavimento.size(); i++) {
 			if (pavimento.at(i).isMuro()) {
-				int a = i % larghezza, b = i/larghezza;
-				tiles.setPosition(a*32,b*32);
+				int a = i % larghezza, b = i / larghezza;
+				tiles.setPosition(a * 32, b * 32);
 				tiles.setTextureRect(sf::IntRect(0, 0, 32, 32));
 				window.draw(tiles);
 			}
@@ -47,11 +50,6 @@ void PianoFileGrafica::stampaPianoSuFinestra()
 	}
 }
 
-PianoFileGrafica::PianoFileGrafica(std::string posizione, bool successo):PianoFile(posizione, successo)
-{
-}
-
-
-PianoFileGrafica::~PianoFileGrafica()
+pianoCavernaIsolaGrafica::~pianoCavernaIsolaGrafica()
 {
 }

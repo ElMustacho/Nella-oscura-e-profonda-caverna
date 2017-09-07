@@ -38,6 +38,7 @@ int Piano::scontro(cood posizioneVittima, cood posizioneAttaccante)
 		return -2; //nessun danno
 	else
 		scontro(posizioneVittima, danno);
+	return 4000;
 }
 int Piano::scontro(cood posizioneVittima, Danno dannoInflitto)
 {
@@ -675,7 +676,7 @@ int Piano::playerAct(bool a)
 {
 		StampaChar();
 		if(a)
-			std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi: ";
+			std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, n per inventarioNext: ";
 		char direzione;
 		std::cin >> direzione;
 		std::cout << std::endl;
@@ -741,6 +742,9 @@ int Piano::playerAct(bool a)
 		case 'e':
 			pavimento.at(posizione(playerPos)).getEntita()->equip(1, 0);
 			break;
+		case 'n':
+			pavimento.at(posizione(playerPos)).getEntita()->equip();
+			break;
 		case '0':
 			std::cout << pavimento.at(posizione(getPositionOfPlayer())).descriviOggettiTerra();
 			return -1;
@@ -804,7 +808,7 @@ std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
 	switch (codiceID) {
 	case 0: {
 		//TODO qui ovviamente dovrà esserci il modo di caricare un personaggio preesistente o di invocare il creatore di personaggi, per ora lo tratto come un qualunque idiota
-		std::list<std::shared_ptr<Oggetto>> inventario{ std::shared_ptr<Oggetto>(new Oggetto(0.5, "Sfera di metallo", "Direi piuttosto che si tratta di un oggetto a forma d'uovo", 2)) };
+		std::vector<std::shared_ptr<Oggetto>> inventario{ std::shared_ptr<Oggetto>(new Oggetto(0.5, "Sfera di metallo", "Direi piuttosto che si tratta di un oggetto a forma d'uovo", 2)) };
 		Attributi nellaMedia(4, 4, 4, 4, 4, 4, 4, 4);
 		std::vector<std::shared_ptr<Oggetto>> equipaggiamento; //Picche, non hai nulla scemo
 		appoggio = std::make_shared<Protagonista>(Protagonista("Medioman", inventario, nellaMedia, equipaggiamento, 1, 0, 0));
@@ -812,7 +816,7 @@ std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
 	}
 	case 1:
 	{// Goblin scrauso, puzzone e nudo
-		std::list<std::shared_ptr<Oggetto>> inventario;
+		std::vector<std::shared_ptr<Oggetto>> inventario;
 		Attributi scarso(3, 4, 2, 2, 2, 1, 3, 1);
 		std::vector<std::shared_ptr<Oggetto>> equipaggiamento; //Picche, non hai nulla scemo puzzone
 		appoggio = std::make_shared<Attore>("Goblin puzzone", inventario, scarso, equipaggiamento, 1.1);

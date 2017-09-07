@@ -18,18 +18,21 @@ public:
 
 	void setNome(std::string nome) { this->nome = nome; }
 	virtual void onDeath(); //cosa succede se muore
-	std::list<std::shared_ptr<Oggetto>> getInventario() const { return inventario; };
-	void setInventario(std::list<std::shared_ptr<Oggetto>> inventario) { this->inventario = inventario; };
+	std::vector<std::shared_ptr<Oggetto>> getInventario() const { return inventario; };
+	void setInventario(std::vector<std::shared_ptr<Oggetto>> inventario) { this->inventario = inventario; };
 	std::vector<std::shared_ptr<Oggetto>> getEquipaggiamento() const { return equipaggiamento; };
 	void setEquipaggiamento(std::vector<std::shared_ptr<Oggetto>> equipaggiamento) { this->equipaggiamento = equipaggiamento; }
-	Entita(std::string nome, std::list<std::shared_ptr<Oggetto>> inventario, Attributi attributi, std::vector<std::shared_ptr<Oggetto>> equipaggiamento);
+	Entita(std::string nome, std::vector<std::shared_ptr<Oggetto>> inventario, Attributi attributi, std::vector<std::shared_ptr<Oggetto>> equipaggiamento);
 	bool operator==(const Entita & rEntita)const;
 	void muovi(int &distanza, int &metodoTrasporto);
+	Danno attaccaNext();
 	Danno attacca();
 	Entita(); //TODO vorrei evitare di mettere costruttori vuoti solo perché se no il compilatore si lamenta.
 	Attributi getAttributi() const;
 	void setAttributi(Attributi attr);
 	bool addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti);
+	bool equip(int posizioneOggetto);
+	bool equip();
 	void equip(int posizioneFrom, int posizioneTo);
 	void unequip(int posisioneFrom);
 	bool addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere);
@@ -41,7 +44,7 @@ private:
 	std::string nome;
 	Attributi attributi;
 	//FIXME Sprite sprite;   manage Sprite
-	std::list<std::shared_ptr<Oggetto>> inventario;
+	std::vector<std::shared_ptr<Oggetto>> inventario;
 	//LOOKATME i vector si shrinkano automaticamente quindi direi che in futuro equipaggiamento sarà una classe a sé stante
 	std::vector<std::shared_ptr<Oggetto>> equipaggiamento;
 	Equipaggiamento equipaggiamentoNext;

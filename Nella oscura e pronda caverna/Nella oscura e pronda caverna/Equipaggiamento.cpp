@@ -10,7 +10,9 @@ Equipaggiamento::Equipaggiamento()
 Equipaggiamento::~Equipaggiamento()
 {
 }
-//TODO FIXME
+//TODO aggiungere funzione a parte per equipaggiare qualsiasi oggetto come arma
+
+//Questa funzione mette a posto da sola gli oggetti che vengono passati, se può farlo
 bool Equipaggiamento::equipaggia(std::shared_ptr<Oggetto> toEquip)
 {
 	if (std::dynamic_pointer_cast<Arma>(toEquip) != nullptr) //È un'arma?
@@ -19,8 +21,7 @@ bool Equipaggiamento::equipaggia(std::shared_ptr<Oggetto> toEquip)
 			return false; //Sì
 		else
 		{
-			auto something = std::make_shared<Arma>(*toEquip);
-			armaPrimaria = std::make_shared<Arma>(*toEquip);
+			armaPrimaria = std::dynamic_pointer_cast<Arma>(toEquip);
 			return true; //No, quindi la equipaggio
 		}
 
@@ -31,7 +32,7 @@ bool Equipaggiamento::equipaggia(std::shared_ptr<Oggetto> toEquip)
 			return false; //Sì
 		else
 		{
-			armatura = std::make_shared<Armatura>(*toEquip);
+			armatura = std::dynamic_pointer_cast<Armatura>(toEquip);
 			return true; //No, quindi la equipaggio
 		}
 	}

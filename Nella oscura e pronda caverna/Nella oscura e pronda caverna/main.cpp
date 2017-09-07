@@ -9,40 +9,20 @@
 #include "Danno.h"
 #include "pianoCavernaIsola.h"
 #include "PianoFileGrafica.h"
+#include "pianoCavernaIsolaGrafica.h"
 #include "SFML\Graphics.hpp"
 int main()
 {
-	//std::string nomeDaInserire("");
-	//// SFML TEST!!!!!!
-	//sf::RenderWindow window(sf::VideoMode(200, 200), "Il peggior lettore di testo della storia");
-
-	//while (window.isOpen())
-	//{
-	//	sf::Event event;
-	//	while (window.pollEvent(event))
-	//	{
-	//		switch (event.type) {
-	//		case sf::Event::Closed:
-	//			window.close();
-	//			break;
-
-	//		case sf::Event::TextEntered:
-	//			nomeDaInserire.push_back((char)event.text.unicode);
-	//			break;
-	//		}
-	//	}
-	//	window.display();
-	//}
-
-	//
-	std::list<std::shared_ptr<Oggetto>> tabellaLoot; //VUOTA
+	
+	std::vector<std::shared_ptr<Oggetto>> tabellaLoot; //VUOTA
 	std::vector<std::shared_ptr<Oggetto>> Equipaggiamento;
 	std::vector<Entita> tabellaEntita; //VUOTA
 	cood coord(5, 5);
 	Attributi dexAlta(4, 4, 4, 4, 4, 4, 4, 1);
 	Attributi normale(4, 4, 4, 4, 4, 4, 4, 4);
 	Protagonista Saitama("Saitama", tabellaLoot, normale, Equipaggiamento, 1, 1094.6099, 400); //Sto usando tabella loot giusto perchè è vuota
-	pianoCavernaIsola please(20, 20);
+	pianoCavernaIsolaGrafica please(20, 20);
+	please.stampaPianoSuFinestra();
 	please.StampaChar();
 	please.playPiano();
 	bool ok = true;
@@ -56,7 +36,7 @@ int main()
 	//pregen.StampaChar();
 	
 
-	PianoFileGrafica mappaGrafica("mappaPiccolaTest.txt", ok);
+	PianoFileGrafica mappaGrafica("testPreload.txt", ok);
 	mappaGrafica.StampaChar();
 	mappaGrafica.stampaPianoSuFinestra();
 

@@ -46,7 +46,7 @@ do {
 		placeEntita(prot, placeProtagonista);
 	spargiLoot(caselleOk);
 	caselleOk.erase(std::remove(caselleOk.begin(), caselleOk.end(), getPositionOfPlayer()), caselleOk.end());
-	placeEntita(entityFactory(1),caselleOk[rand()%caselleOk.size()]);
+	//placeEntita(entityFactory(1),caselleOk[rand()%caselleOk.size()]);
 }
 
 
@@ -56,7 +56,7 @@ pianoCavernaIsola::~pianoCavernaIsola()
 }
 
 bool pianoCavernaIsola::spargiLoot(std::vector<cood> posizioniValide) {
-	for (int i = (lunghezza + larghezza) / 8; i >= 0; i--) {
+	for (int i = (lunghezza + larghezza) / 4; i >= 0; i--) {
 		auto oggettoInserito = objectFactory(rand()%5);
 		pavimento.at(rand() % posizioniValide.size()).addOggetto(oggettoInserito);
 	}

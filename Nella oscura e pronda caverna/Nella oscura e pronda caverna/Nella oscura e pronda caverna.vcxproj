@@ -136,6 +136,7 @@
     <ClInclude Include="Oggetto.h" />
     <ClInclude Include="Piano.h" />
     <ClInclude Include="pianoCavernaIsola.h" />
+    <ClInclude Include="pianoCavernaIsolaGrafica.h" />
     <ClInclude Include="PianoFile.h" />
     <ClInclude Include="PianoFileGrafica.h" />
     <ClInclude Include="PianoGen.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Piano.cpp" />
     <ClCompile Include="pianoCavernaIsola.cpp" />
+    <ClCompile Include="pianoCavernaIsolaGrafica.cpp" />
     <ClCompile Include="PianoFile.cpp" />
     <ClCompile Include="PianoFileGrafica.cpp" />
     <ClCompile Include="PianoGen.cpp" />

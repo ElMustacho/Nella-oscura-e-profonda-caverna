@@ -10,7 +10,7 @@ Entita::~Entita()
 	//TODO ~Entita()
 }
 
-Entita::Entita(std::string nome, std::list<std::shared_ptr<Oggetto>> inventario, Attributi attributi, std::vector<std::shared_ptr<Oggetto>> equipaggiamento): attributi(attributi) {
+Entita::Entita(std::string nome, std::vector<std::shared_ptr<Oggetto>> inventario, Attributi attributi, std::vector<std::shared_ptr<Oggetto>> equipaggiamento): attributi(attributi) {
 	
 		this->nome = nome;
 		this->equipaggiamento = equipaggiamento;
@@ -45,7 +45,29 @@ void Entita::muovi(int & distanza, int & metodoTrasporto)
 
 }
 
-
+Danno Entita::attaccaNext()
+{
+	if (equipaggiamentoNext.getArmaPrimaria() == nullptr) {
+		return Danno(std::vector<double>{1}, -1);
+	}
+	auto danno = equipaggiamentoNext.getArmaPrimaria()->attacca();
+	if (danno.getAmmontare() > 0) //is this even impossible
+	{
+		if (equipaggiamentoNext.getArmaPrimaria()->getPeso() < 0.5) //arma piccola usa la destrezza
+			danno.magnifica(attributi.getDestrezza() / 4);
+		else										//arma grande no
+			danno.magnifica(attributi.getForza() / 4);
+		srand((unsigned int)time(nullptr));
+		double random;
+		random = rand() % 6;
+		random = random / 12;
+		random = random - (double)(1 / 6);
+		random = 1 - random;
+		danno.magnifica(random);
+		return danno;
+	}
+	return Danno(std::vector<double>{1}, -1);
+}
 Danno Entita::attacca()
 {
 	if (equipaggiamento.size()==0)
@@ -60,7 +82,6 @@ Danno Entita::attacca()
 		else										//arma grande no
 			danno.magnifica(attributi.getForza() / 4);
 		srand((unsigned int)time(nullptr));
-		//FIXMe return sempre = 1
 		double random;
 		random = rand() % 6;
 		random = random / 12;
@@ -92,6 +113,37 @@ bool Entita::addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti)
 {
 	inventario.insert(inventario.end(), oggettiAggiunti.begin(), oggettiAggiunti.end());
 	return true;
+}
+
+//TODO spostami in protagonista, visto che dovrebbe essere l'unico con l'UI
+bool Entita::equip(int posizioneOggetto)
+{
+	if (equipaggiamentoNext.equipaggia(inventario.at(posizioneOggetto))) {
+		inventario.erase(inventario.begin()+posizioneOggetto);
+		return true;
+	}
+	else 
+		return false;
+}
+//TODO spostami in protagonista, visto che dovrebbe essere l'unico con l'UI
+bool Entita::equip() 
+{
+	int numero = 0;
+	std::cout << std::endl;
+	for each (auto oggetto in inventario)
+	{
+		std::cout << numero << ") " << oggetto->getNome() << " --> " << oggetto->getDescrizione() << std::endl;
+		numero++;
+	}
+	std::cout << "Inserisci il numero dell'oggetto da inserire: ";
+	//FIXME funziono solo con numeri, non forzarmi please
+	std::cin >> numero;
+	if (numero >= 0 && numero < inventario.size())
+		return equip(numero);
+	else {
+		std::cout << "Non ho potuto equipaggiare l'oggetto perché non so come si fa." << std::endl;
+		return false;
+	}
 }
 
 void Entita::equip(int posizioneFrom, int posiozioneTo) {

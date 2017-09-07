@@ -8,6 +8,10 @@ public:
 	Equipaggiamento();
 	~Equipaggiamento();
 	bool equipaggia(std::shared_ptr<Oggetto> toEquip);
+	void setArmaPrimaria(std::shared_ptr<Arma> armaPrimaria) { this->armaPrimaria = armaPrimaria; };
+	std::shared_ptr<Arma> getArmaPrimaria() const { return armaPrimaria; };
+	void setArmatura(std::shared_ptr<Armatura> armatura) { this->armatura = armatura; };
+	std::shared_ptr<Armatura> getArmatura() const { return armatura; };
 	//vedi Equipaggiamento.h per capire a cosa posizione punterà
 	std::shared_ptr<Oggetto> disequip(int posizione);
 private:

@@ -75,6 +75,9 @@
     <ClInclude Include="Armatura.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="pianoCavernaIsolaGrafica.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Oggetto.cpp">
@@ -138,6 +141,9 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="Armatura.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="pianoCavernaIsolaGrafica.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>
