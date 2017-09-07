@@ -541,42 +541,66 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 		//----------- 1st Successor North (x, y-1) ------------
 
 		coord nord(q.posX, q.posY - 1);
-		checkSuccessor(nord, target, "nord", destination, q, openList, closedList);
+		if (isCoodLegal(nord))
+		{
+			checkSuccessor(nord, target, "nord", destination, q, openList, closedList);
+		}
 
 		//----------- 2nd Successor South (x, y+1) ------------
 
 		coord sud(q.posX, q.posY + 1);
-		checkSuccessor(sud, target, "sud", destination, q, openList, closedList);
+		if (isCoodLegal(sud))
+		{
+			checkSuccessor(sud, target, "sud", destination, q, openList, closedList);
+		}
 
 		//----------- 3rd Successor East (x+1, y) ------------
 
 		coord est(q.posX + 1, q.posY);
-		checkSuccessor(est, target, "est", destination, q, openList, closedList);
+		if (isCoodLegal(est))
+		{
+			checkSuccessor(est, target, "est", destination, q, openList, closedList);
+		}
 
 		//----------- 4th Successor West (x-1, y) ------------
 
 		coord ovest(q.posX - 1, q.posY);
-		checkSuccessor(ovest, target, "ovest", destination, q, openList, closedList);
+		if (isCoodLegal(ovest))
+		{
+			checkSuccessor(ovest, target, "ovest", destination, q, openList, closedList);
+		}
 
 		//----------- 5th Successor North-East (x+1, y-1) ------------
 
 		coord nordEst(q.posX + 1, q.posY - 1);
-		checkSuccessor(nordEst, target, "nordEst", destination, q, openList, closedList);
+		if (isCoodLegal(nordEst))
+		{
+			checkSuccessor(nordEst, target, "nordEst", destination, q, openList, closedList);
+		}
 
 		//----------- 6th Successor North-West (x-1, y-1) ------------
 
 		coord nordOvest(q.posX - 1, q.posY - 1);
-		checkSuccessor(nordOvest, target, "nordOvest", destination, q, openList, closedList);
+		if (isCoodLegal(nordOvest))
+		{
+			checkSuccessor(nordOvest, target, "nordOvest", destination, q, openList, closedList);
+		}
 
 		//----------- 7th Successor South-East (x+1, y+1) ------------
 
 		coord sudEst(q.posX + 1, q.posY + 1);
-		checkSuccessor(sudEst, target, "sudEst", destination, q, openList, closedList);
+		if (isCoodLegal(sudEst))
+		{
+			checkSuccessor(sudEst, target, "sudEst", destination, q, openList, closedList);
+		}
 
 		//----------- 8th Successor South-West (x-1, y+1) ------------
 
 		coord sudOvest(q.posX - 1, q.posY + 1);
-		checkSuccessor(sudOvest, target, "sudOvest", destination, q, openList, closedList);
+		if (isCoodLegal(sudOvest))
+		{
+			checkSuccessor(sudOvest, target, "sudOvest", destination, q, openList, closedList);
+		}
 
 		if (!destination)
 		{
@@ -590,19 +614,23 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 	path = closedList;
 	std::reverse(path.begin(), path.end());
 
-	for (std::vector<node>::iterator i = path.begin(); i < path.end()-1; i++)
+	for (std::vector<node>::iterator i = path.begin(); i < path.end()-1; )
 	{
 		if ( i->parentX != (i+1)->posX || i->parentY != (i+1)->posY )
 		{
 			path.erase(i + 1);
-			i--;
+			//i--;
+		}
+		else
+		{
+			i++;
 		}
 	}
 
 	std::reverse(path.begin(), path.end());
 	// END Path creation
 
-	for (std::vector<node>::iterator i = path.begin(); i < path.end() && distanza > 0; i++)
+	for (std::vector<node>::iterator i = path.begin(); i+1 != path.end() && distanza > 0; i++)
 	{
 		std::cout << "( " << i->posX << ", " << i->posY << " ) -> " << i->f << std::endl;
 		cood coordinatePrima(pos.first, pos.second);
