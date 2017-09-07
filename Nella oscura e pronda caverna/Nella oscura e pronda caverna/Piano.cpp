@@ -454,7 +454,7 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 		else
 		{
 			bool found = false;
-			bool minus = false;
+			//bool minus = false;
 
 			// looking for this node in closedList
 			for (std::vector<node>::iterator i = closedList.begin(); i < closedList.end(); i++)
@@ -474,9 +474,9 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 					if (i->posX == direction.posX && i->posY == direction.posY)
 					{
 						found = true;
-						if (i->f > fNew)
+						if ( gNew < i->g ) // v.1 i->f > fNew
 						{
-							minus = true;
+							//minus = true;
 							*i = direction; // Non c'era v.1
 						}
 						break; // v.1
@@ -497,6 +497,7 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 		if (check == target)
 		{
 			std::cout << "Non posso raggiungere la destinazione, solo andarci vicino" << std::endl;
+			closedList.push_back(q);
 			destination = true;
 		}
 	}
@@ -508,6 +509,8 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 
 	std::vector<node> openList;
 	std::vector<node> closedList;
+	std::vector<node> path;
+
 	bool destination = false;
 	auto beginHeuristic = heuristic(pos, target);
 
@@ -516,16 +519,16 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 
 	while (!openList.empty() && !destination)
 	{
-		double min = DBL_MAX;
+		double minF = DBL_MAX;
 		std::vector<node>::iterator position;
 		struct node q;
 
 		// find the min 'f' node in openList
 		for (std::vector<node>::iterator i = openList.begin(); i < openList.end(); i++)
 		{
-			if (i->f < min)
+			if (i->f < minF)
 			{
-				min = i->f;
+				minF = i->f;
 				position = i;
 			}
 		}
@@ -578,12 +581,28 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 		if (!destination)
 		{
 			// Push q on the closedList
-			closedList.push_back(q);
+			closedList.push_back(q); //LOOKATME potrei aggiungerlo comunque prima dei successori ed evitare il controllo
 		}
 
 	}
 
-	for (std::vector<node>::iterator i = closedList.begin(); i < closedList.end() && distanza > 0; i++)
+	// BEGIN Path creation
+	path = closedList;
+	std::reverse(path.begin(), path.end());
+
+	for (std::vector<node>::iterator i = path.begin(); i < path.end()-1; i++)
+	{
+		if ( i->parentX != (i+1)->posX || i->parentY != (i+1)->posY )
+		{
+			path.erase(i + 1);
+			i--;
+		}
+	}
+
+	std::reverse(path.begin(), path.end());
+	// END Path creation
+
+	for (std::vector<node>::iterator i = path.begin(); i < path.end() && distanza > 0; i++)
 	{
 		std::cout << "( " << i->posX << ", " << i->posY << " ) -> " << i->f << std::endl;
 		cood coordinatePrima(pos.first, pos.second);
