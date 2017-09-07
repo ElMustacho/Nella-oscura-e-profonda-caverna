@@ -2,10 +2,10 @@
 #include <string>
 #include <vector>
 #include <list>
-#include "Oggetto.h"
-#include "Sprite.h"
-#include "Attributi.h"
 #include <memory>
+#include "Oggetto.h"
+#include "Attributi.h"
+#include "Equipaggiamento.h"
 
 class Entita
 {
@@ -44,6 +44,7 @@ private:
 	std::list<std::shared_ptr<Oggetto>> inventario;
 	//LOOKATME i vector si shrinkano automaticamente quindi direi che in futuro equipaggiamento sarà una classe a sé stante
 	std::vector<std::shared_ptr<Oggetto>> equipaggiamento;
+	Equipaggiamento equipaggiamentoNext;
 	/*
 	nella posizione X di equipaggiamento ci sarà:
 	0) mano primaria (arma)

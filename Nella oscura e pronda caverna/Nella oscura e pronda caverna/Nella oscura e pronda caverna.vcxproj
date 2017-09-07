@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Arma.h" />
+    <ClInclude Include="Armatura.h" />
     <ClInclude Include="Attore.h" />
     <ClInclude Include="Attributi.h" />
     <ClInclude Include="Casella.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="Piano.h" />
     <ClInclude Include="pianoCavernaIsola.h" />
     <ClInclude Include="PianoFile.h" />
+    <ClInclude Include="PianoFileGrafica.h" />
     <ClInclude Include="PianoGen.h" />
     <ClInclude Include="Protagonista.h" />
     <ClInclude Include="Scrigno.h" />
@@ -144,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arma.cpp" />
+    <ClCompile Include="Armatura.cpp" />
     <ClCompile Include="Attore.cpp" />
     <ClCompile Include="Attributi.cpp" />
     <ClCompile Include="Casella.cpp" />
@@ -157,6 +160,7 @@
     <ClCompile Include="Piano.cpp" />
     <ClCompile Include="pianoCavernaIsola.cpp" />
     <ClCompile Include="PianoFile.cpp" />
+    <ClCompile Include="PianoFileGrafica.cpp" />
     <ClCompile Include="PianoGen.cpp" />
     <ClCompile Include="Protagonista.cpp" />
     <ClCompile Include="Scrigno.cpp" />
