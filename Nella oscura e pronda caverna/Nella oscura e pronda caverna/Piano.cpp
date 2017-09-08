@@ -3,6 +3,7 @@
 #include <cmath>
 #include <algorithm>
 #include <typeinfo>
+#include <time.h>
 
 #include "Piano.h"
 
@@ -319,8 +320,40 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	{
 		/* TENTATIVO STIMA DISTANZA (con heuristic) */
 		//distanza = heuristic(pos, target);
+		auto ret = aStar(pos, target, distanza, metodo);
+		while ( ret == 5 )
+		{
+			//TODO Change target/behavior
+			srand(time(NULL));
+			
+			auto behave = rand() % 2 + 1;
+			coord newCoord(rand() % lunghezza - 1, rand() % larghezza - 1);
 
-		return aStar(pos, target, distanza, metodo);
+			switch (behave)
+			{
+				case 1: // Patrol
+					while ( !isCoodLegal(newCoord) && pavimento.at(posizione(newCoord)).getEntita() != nullptr && pavimento.at(posizione(newCoord)).hasTrap() && pavimento.at(posizione(newCoord)).isMuro() )
+					{
+						newCoord.first = rand() % lunghezza - 1;
+						newCoord.second = rand() % larghezza - 1;
+					}
+					break;
+				case 2: // Go and wait near the stairs
+					for (auto i = 0; i != pavimento.size(); i++)
+					{
+						if (pavimento.at(i).getEvento() == 1)
+						{
+							newCoord = fromPosizioneToInt(i);
+						}
+					}
+					break;
+				default:
+					std::cout << "Something wrong, now I long for yesterday..." << std::endl;
+			}
+
+			ret = aStar(pos, newCoord, distanza, metodo);
+		}
+		return ret;
 	}
 	else
 	{
@@ -377,7 +410,10 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 					auto distanza = std::distance(vPosizioni.begin(), it);
 					entitaPresenti[distanza].second = coordinateDopo;
 				}
-				pavimento.at(posizione(pos)).doEvento();
+				if ( pavimento.at(posizione(pos)).getEvento() != 1)
+				{
+					pavimento.at(posizione(pos)).doEvento();
+				}
 				distanza--;
 			}
 		}
@@ -415,7 +451,7 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 	auto diagonalCost = sqrt(2);
 	auto objectCost = 0.5;
 
-	if (!destination && !pavimento.at(posizione(check)).isMuro() && !pavimento.at(posizione(check)).hasTrap() && pavimento.at(posizione(check)).getEntita() == nullptr)
+	if (!destination && !pavimento.at(posizione(check)).isMuro() && !pavimento.at(posizione(check)).hasTrap() ) // && pavimento.at(posizione(check)).getEntita() == nullptr
 	{
 		double gNew = q.g;
 
@@ -612,7 +648,7 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 
 	if (!destination)
 	{
-		return 4;
+		return 5; // Non trovo una via per arrivare a destinazione
 	}
 
 	// BEGIN Path creation
@@ -639,24 +675,33 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 	{
 		std::cout << "( " << i->posX << ", " << i->posY << " ) -> " << i->f << std::endl;
 		cood coordinatePrima(pos.first, pos.second);
-		//TODO muovi enita
+		//CHECK muovi enita
 		pos.first = i->posX;
 		pos.second = i->posY;
 		coord next((i + 1)->posX, (i + 1)->posY);
+
+		if (pavimento.at(posizione(next)).getEntita() != nullptr) // Qui c'è qualcun altro
+		{
+			std::cout << "Qualcuno osa sbarrarmi la strada!" << std::endl;
+			//TODO Combatto per liberar la via?
+			return 2;
+		}
 		std::shared_ptr<Entita> temp = pavimento.at(posizione(pos)).getEntita();
 		pavimento.at(posizione(pos)).setEntita(nullptr);
-		pavimento.at(posizione(next)).setEntita(temp); 
+		pavimento.at(posizione(next)).setEntita(temp);
+
 		auto vPosizioni = getVectorPosizioni();
 		auto it = std::find(vPosizioni.begin(), vPosizioni.end(), coordinatePrima);
-		if (it != vPosizioni.end()) {
+		if (it != vPosizioni.end())
+		{
 			auto distanza = std::distance(vPosizioni.begin(), it);
 			entitaPresenti[distanza].second = next;
 		}
 		pavimento.at(posizione(next)).doEvento();
 		distanza--;
+		
 	}
 
-	//CHECK Arrivato?
 	if (distanza == 0 && (pos == target))
 	{
 		return 0; //sono arrivato precisamente a destinazione
