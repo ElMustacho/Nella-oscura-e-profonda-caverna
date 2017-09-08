@@ -119,7 +119,6 @@ bool Piano::placeEntita(std::shared_ptr<Entita> placeMe, cood coord) //FIXME ins
 }
 
 
-
 Piano::Piano() {
 
 }
@@ -283,21 +282,21 @@ double heuristic(coord pos, coord target)
 	return heuristic(pos.first, pos.second, target.first, target.second);
 }
 
-//TODO x e y sono invertiti
+//CHECK x e y sono invertiti
 int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi due sono quelli da dove parto, gli altri dove arrivo
 {
 	coord pos(posX, posY);
 	coord target(targetX, targetY);
 	//FIXME return -2 non può essere mai raggiunto perché tale caso rientra nel return -1
-	if (pavimento.at(posizione(pos)).getEntita() == nullptr)
+	if ( pavimento.at(posizione(pos)).getEntita() == nullptr )
 	{
 		return -1; //Qui non c'è nessuno
 	}
-	if (pos == target) //Questo significa non spostarsi per davvero
+	if ( pos == target ) //Questo significa non spostarsi per davvero
 	{
 		return -2;
 	}
-	if (!isCoodLegal(target))
+	if ( !isCoodLegal(target) )
 	{
 		return -3; //Posizione non valida per almeno una delle coordinate
 	}
@@ -305,7 +304,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	int distanza, metodo;
 	pavimento.at(posizione(pos)).getEntita()->muovi(distanza, metodo);
 
-	if (distanza == 0)
+	if ( distanza == 0 )
 	{
 		return -4; //Ho provato a muovermi ma sono immobile
 	}
@@ -316,14 +315,13 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	//ma solo quella della casella in cui mi voglio spostare, una per volta.
 	//P.S. questo sistema funziona bene anche quando c'è solo una casella da percorrere.
 
-	if (typeid(*(pavimento.at(posizione(pos)).getEntita())) != typeid(Protagonista))
+	if ( typeid(*(pavimento.at(posizione(pos)).getEntita())) != typeid(Protagonista) )
 	{
-		/* TENTATIVO STIMA DISTANZA (con heuristic) */
-		//distanza = heuristic(pos, target);
 		auto ret = aStar(pos, target, distanza, metodo);
+
 		while ( ret == 5 )
 		{
-			//TODO Change target/behavior
+			//CHECK Change target/behavior
 			srand(time(NULL));
 			
 			auto behave = rand() % 2 + 1;
@@ -339,13 +337,16 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 					}
 					break;
 				case 2: // Go and wait near the stairs
-					for (auto i = 0; i != pavimento.size(); i++)
+					for ( auto i = 0; i != pavimento.size(); i++ )
 					{
-						if (pavimento.at(i).getEvento() == 1)
+						if ( pavimento.at(i).getEvento() == 1 )
 						{
 							newCoord = fromPosizioneToInt(i);
 						}
 					}
+					break;
+				case 3: // Freeze (never going to happen - see the rand value...)
+					newCoord = pos;
 					break;
 				default:
 					std::cout << "Something wrong, now I long for yesterday..." << std::endl;
@@ -357,41 +358,41 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	}
 	else
 	{
-		//FIXME da qui assumo che il movimento sia in linea retta
-		while (distanza != 0 && !(pos == target)) //Esco quando ho terminato i movimenti o quando sono arrivato.
+		//CHECK da qui assumo che il movimento sia in linea retta
+		while ( distanza != 0 && !(pos == target) ) //Esco quando ho terminato i movimenti o quando sono arrivato.
 		{
 			int moveX = 0, moveY = 0;
 
-			if (pos.first < target.first)
+			if ( pos.first < target.first )
 			{
 				moveX = 1;
 			}
-			else if (pos.first > target.first)
+			else if ( pos.first > target.first )
 			{
 				moveX = -1;
 			}
 			else {}
 
-			if (pos.second < target.second)
+			if ( pos.second < target.second )
 			{
 				moveY = 1;
 			}
-			else if (pos.second > target.second)
+			else if ( pos.second > target.second )
 			{
 				moveY = -1;
 			}
-			else
+			else //FIXME Not necessary?
 			{
 			}
 
 			coord updatePos(pos.first + moveX, pos.second + moveY);
 
 			//Qui l'unico controllo presente è che la casella non sia un muro e che nella casella non ci sia nessuno.
-			if (pavimento.at(posizione(updatePos)).isMuro()) //Qui c'è un muro
+			if ( pavimento.at(posizione(updatePos)).isMuro() ) //Qui c'è un muro
 			{
 				return 1;
 			}
-			else if (pavimento.at(posizione(updatePos)).getEntita() != nullptr) //Qui c'è qualcun'altro
+			else if ( pavimento.at(posizione(updatePos)).getEntita() != nullptr ) //Qui c'è qualcun'altro
 			{
 				return 2;
 			}
@@ -406,11 +407,12 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 				cood coordinateDopo(pos.first, pos.second);
 				auto vPosizioni = getVectorPosizioni();
 				auto it = std::find(vPosizioni.begin(), vPosizioni.end(), coordinatePrima);
-				if (it != vPosizioni.end()) {
+				if ( it != vPosizioni.end() ) 
+				{
 					auto distanza = std::distance(vPosizioni.begin(), it);
 					entitaPresenti[distanza].second = coordinateDopo;
 				}
-				if ( pavimento.at(posizione(pos)).getEvento() != 1)
+				if ( pavimento.at(posizione(pos)).getEvento() != 1 )
 				{
 					pavimento.at(posizione(pos)).doEvento();
 				}
@@ -495,10 +497,10 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 			// looking for this node in closedList
 			for (std::vector<node>::iterator i = closedList.begin(); i < closedList.end(); i++)
 			{
-				if (i->posX == direction.posX && i->posY == direction.posY) // && i->f < fNew v.1
+				if (i->posX == direction.posX && i->posY == direction.posY)
 				{
 					found = true;
-					break; // v.1 fuori if
+					break;
 				}
 			}
 
@@ -510,16 +512,16 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 					if (i->posX == direction.posX && i->posY == direction.posY)
 					{
 						found = true;
-						if ( gNew < i->g ) // v.1 i->f > fNew
+						if ( gNew < i->g )
 						{
 							//minus = true;
-							*i = direction; // Non c'era v.1
+							*i = direction; 
 						}
-						break; // v.1
+						break;
 					}
 				}
 
-				if (!found) // || (found && minus) v.1
+				if (!found)
 				{
 					openList.push_back(direction);
 				}
