@@ -116,7 +116,7 @@ bool Entita::equip()
 	if (numero >= 0 && numero < inventario.size())
 		return equip(numero);
 	else {
-		std::cout << "Non ho potuto equipaggiare l'oggetto perché non so come si fa." << std::endl;
+		std::cout << "Non ho potuto equipaggiare l'oggetto perche' non so come si fa." << std::endl;
 		return false;
 	}
 }
@@ -169,7 +169,11 @@ void Entita::onDeath()
 }
 std::string Entita::describeInventario() {
 	std::string returnStringa;
-	for (auto i = inventario.begin(); i != inventario.end(); i++)
+	for (auto i = inventario.begin(); i != inventario.end(); i++) {
+		returnStringa.append(i->get()->getNome());
+		returnStringa.append(" --> ");
 		returnStringa.append(i->get()->getDescrizione());
+		returnStringa.append("\n");
+	}
 	return returnStringa;
 }

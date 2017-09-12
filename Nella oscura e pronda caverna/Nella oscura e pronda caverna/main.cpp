@@ -23,7 +23,6 @@ int main()
 	Protagonista Saitama("Saitama", tabellaLoot, normale, Equipaggiamento, 1, 1094.6099, 400); //Sto usando tabella loot giusto perchè è vuota
 	pianoCavernaIsolaGrafica please(20, 20);
 	please.stampaPianoSuFinestra();
-	please.StampaChar();
 	please.playPiano();
 	bool ok = true;
 	PianoFile pregen("testPreload.txt", ok);

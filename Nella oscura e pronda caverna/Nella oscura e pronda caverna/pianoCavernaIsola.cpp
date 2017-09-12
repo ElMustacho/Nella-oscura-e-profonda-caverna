@@ -46,7 +46,7 @@ do {
 		placeEntita(prot, placeProtagonista);
 	spargiLoot(caselleOk);
 	caselleOk.erase(std::remove(caselleOk.begin(), caselleOk.end(), getPositionOfPlayer()), caselleOk.end());
-	//placeEntita(entityFactory(1),caselleOk[rand()%caselleOk.size()]);
+	placeEntita(entityFactory(1),caselleOk[rand()%caselleOk.size()]);
 }
 
 
