@@ -2,10 +2,10 @@
 #include <string>
 #include <vector>
 #include <list>
-#include "Oggetto.h"
-#include "Sprite.h"
-#include "Attributi.h"
 #include <memory>
+#include "Oggetto.h"
+#include "Attributi.h"
+#include "Equipaggiamento.h"
 
 class Entita
 {
@@ -18,11 +18,11 @@ public:
 
 	void setNome(std::string nome) { this->nome = nome; }
 	virtual void onDeath(); //cosa succede se muore
-	std::list<std::shared_ptr<Oggetto>> getInventario() const { return inventario; };
-	void setInventario(std::list<std::shared_ptr<Oggetto>> inventario) { this->inventario = inventario; };
-	std::vector<std::shared_ptr<Oggetto>> getEquipaggiamento() const { return equipaggiamento; };
-	void setEquipaggiamento(std::vector<std::shared_ptr<Oggetto>> equipaggiamento) { this->equipaggiamento = equipaggiamento; }
-	Entita(std::string nome, std::list<std::shared_ptr<Oggetto>> inventario, Attributi attributi, std::vector<std::shared_ptr<Oggetto>> equipaggiamento);
+	std::vector<std::shared_ptr<Oggetto>> getInventario() const { return inventario; };
+	void setInventario(std::vector<std::shared_ptr<Oggetto>> inventario) { this->inventario = inventario; };
+	Equipaggiamento getEquipaggiamento() const { return equipaggiamento; };
+	void setEquipaggiamento(Equipaggiamento equipaggiamento) { this->equipaggiamento = equipaggiamento; }
+	Entita(std::string nome, std::vector<std::shared_ptr<Oggetto>> inventario, Attributi attributi, Equipaggiamento equipaggiamento);
 	bool operator==(const Entita & rEntita)const;
 	void muovi(int &distanza, int &metodoTrasporto);
 	Danno attacca();
@@ -30,7 +30,8 @@ public:
 	Attributi getAttributi() const;
 	void setAttributi(Attributi attr);
 	bool addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti);
-	void equip(int posizioneFrom, int posizioneTo);
+	bool equip(int posizioneOggetto);
+	bool equip();
 	void unequip(int posisioneFrom);
 	bool addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere);
 	//return true se uccide, false altrimenti
@@ -41,9 +42,9 @@ private:
 	std::string nome;
 	Attributi attributi;
 	//FIXME Sprite sprite;   manage Sprite
-	std::list<std::shared_ptr<Oggetto>> inventario;
+	std::vector<std::shared_ptr<Oggetto>> inventario;
 	//LOOKATME i vector si shrinkano automaticamente quindi direi che in futuro equipaggiamento sarà una classe a sé stante
-	std::vector<std::shared_ptr<Oggetto>> equipaggiamento;
+	Equipaggiamento equipaggiamento;
 	/*
 	nella posizione X di equipaggiamento ci sarà:
 	0) mano primaria (arma)

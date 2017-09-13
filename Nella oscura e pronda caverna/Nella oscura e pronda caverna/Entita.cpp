@@ -11,13 +11,12 @@ Entita::~Entita()
 	//TODO ~Entita()
 }
 
-Entita::Entita(std::string nome, std::list<std::shared_ptr<Oggetto>> inventario, Attributi attributi, std::vector<std::shared_ptr<Oggetto>> equipaggiamento): attributi(attributi) {
+Entita::Entita(std::string nome, std::vector<std::shared_ptr<Oggetto>> inventario, Attributi attributi, Equipaggiamento equipaggiamento): attributi(attributi) {
 	
 		this->nome = nome;
 		this->equipaggiamento = equipaggiamento;
 		this->inventario = inventario;
 		this->attributi = attributi;
-		this->equipaggiamento.resize(20);
 }
 bool Entita::operator==(const Entita & rEntita) const
 {
@@ -31,7 +30,7 @@ bool Entita::operator==(const Entita & rEntita) const
 }
 void Entita::muovi(int & distanza, int & metodoTrasporto)
 {
-	distanza = 1;
+	distanza = attributi.getDestrezza()/8+1;
 	//distanza = (int)(1+attributi.getDestrezza()/8); //distanza 0 significa essere immobili, ma chiamare questa funzione ed ottenere distanza 0 significa
 				  //che si è provato a muoversi ma si è fallito (e il tentativo conta)
 	metodoTrasporto = 0;
@@ -46,22 +45,19 @@ void Entita::muovi(int & distanza, int & metodoTrasporto)
 
 }
 
-
 Danno Entita::attacca()
 {
-	if (equipaggiamento.size()==0)
-		return Danno(std::vector<double>{1}, -1); //nulla in mano
-	if (equipaggiamento.at(0).get()==nullptr)
-		return Danno(std::vector<double>{1}, -1); //nulla in mano
-	auto danno = equipaggiamento.at(0)->attacca();
+	if (equipaggiamento.getArmaPrimaria() == nullptr) {
+		return Danno(std::vector<double>{1}, -1);
+	}
+	auto danno = equipaggiamento.getArmaPrimaria()->attacca();
 	if (danno.getAmmontare() > 0) //is this even impossible
 	{
-		if (equipaggiamento.at(0)->getPeso() < 0.5) //arma piccola usa la destrezza
+		if (equipaggiamento.getArmaPrimaria()->getPeso() < 0.5) //arma piccola usa la destrezza
 			danno.magnifica(attributi.getDestrezza() / 4);
 		else										//arma grande no
 			danno.magnifica(attributi.getForza() / 4);
 		srand((unsigned int)time(nullptr));
-		//FIXMe return sempre = 1
 		double random;
 		random = rand() % 6;
 		random = random / 12;
@@ -95,31 +91,38 @@ bool Entita::addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti)
 	return true;
 }
 
-void Entita::equip(int posizioneFrom, int posiozioneTo) {
-	if (posiozioneTo > 40) //troppo in là nell'inventario
-		return;
-	if (posizioneFrom<0 ||(unsigned int) posizioneFrom>inventario.size())
-		return; //non è dentro
-	else {
-		auto it = inventario.begin();
-		std::advance(it, posizioneFrom);
-		auto moving = inventario;
-		//HACK funziona solo con le armi
-		equipaggiamento.at(0)=*it;
-		inventario.erase(it);
-	}	//TODOFAR carico massimo
+//TODO spostami in protagonista, visto che dovrebbe essere l'unico con l'UI
+bool Entita::equip(int posizioneOggetto)
+{
+	if (equipaggiamento.equipaggia(inventario.at(posizioneOggetto))) {
+		inventario.erase(inventario.begin()+posizioneOggetto);
+		return true;
+	}
+	else 
+		return false;
 }
-
-void Entita::unequip(int posisioneFrom) {
-	if (posisioneFrom<0 ||(unsigned int) posisioneFrom>inventario.size())
-		return; //non è dentro
+//TODO spostami in protagonista, visto che dovrebbe essere l'unico con l'UI
+bool Entita::equip() 
+{
+	int numero = 0;
+	std::cout << std::endl;
+	for each (auto oggetto in inventario)
+	{
+		std::cout << numero << ") " << oggetto->getNome() << " --> " << oggetto->getDescrizione() << std::endl;
+		numero++;
+	}
+	std::cout << "Inserisci il numero dell'oggetto da inserire: ";
+	//FIXME funziono solo con numeri, non forzarmi please
+	std::cin >> numero;
+	if (numero >= 0 && numero < inventario.size())
+		return equip(numero);
 	else {
-		auto moving = equipaggiamento.at(posisioneFrom);
-		equipaggiamento.push_back(moving);
-		equipaggiamento.erase(equipaggiamento.begin() + posisioneFrom);
-		return;
+		std::cout << "Non ho potuto equipaggiare l'oggetto perche' non so come si fa." << std::endl;
+		return false;
 	}
 }
+
+
 
 bool Entita::addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere)
 {
@@ -153,11 +156,8 @@ double Entita::carryWeight()
 	{
 		total += i->getPeso();
 	}
-	for (auto i : equipaggiamento) 
-	{
-		total += i->getPeso() / 2;	// Gli oggetti equipaggiati vengono calcolati con un peso minore perché in quanto
-	}								// più vicini al centro di massa (l'entità che li solleva) serve meno sforzo per
-	return total;					// sollevarli.
+	total += equipaggiamento.getPeso();	// più vicini al centro di massa (l'entità che li solleva) serve meno sforzo per
+	return total;						// sollevarli.
 }
 
 
@@ -170,7 +170,11 @@ void Entita::onDeath()
 }
 std::string Entita::describeInventario() {
 	std::string returnStringa;
-	for (auto i = inventario.begin(); i != inventario.end(); i++)
+	for (auto i = inventario.begin(); i != inventario.end(); i++) {
+		returnStringa.append(i->get()->getNome());
+		returnStringa.append(" --> ");
 		returnStringa.append(i->get()->getDescrizione());
+		returnStringa.append("\n");
+	}
 	return returnStringa;
 }

@@ -3,8 +3,8 @@
 #include <cmath>
 #include <algorithm>
 #include <typeinfo>
+#include <deque>
 #include <time.h>
-
 #include "Piano.h"
 
 
@@ -30,30 +30,34 @@ bool Piano::removeEntita(cood coodElimina) {
 	return false;
 }
 
-void Piano::scontro(cood posizioneVittima, cood posizioneAttaccante)
+int Piano::scontro(cood posizioneVittima, cood posizioneAttaccante)
 {
 	if (pavimento.at(posizione(posizioneAttaccante)).getEntita() == nullptr)
-		return; //nessun attaccante
+		return -1; //nessun attaccante
 	auto danno = pavimento.at(posizione(posizioneAttaccante)).getEntita()->attacca();
 	if (danno.getAmmontare() < 0)
-		return; //nessun danno
+		return -2; //nessun danno
 	else
-		scontro(posizioneVittima, danno);
+		return scontro(posizioneVittima, danno);
 }
-void Piano::scontro(cood posizioneVittima, Danno dannoInflitto)
+int Piano::scontro(cood posizioneVittima, Danno dannoInflitto)
 {
 	if (pavimento.at(posizione(posizioneVittima)).getEntita().get() == nullptr)
-		return; //nessun bersaglio
-	else
-		if (pavimento.at(posizione(posizioneVittima)).getEntita()->subisciDanno(dannoInflitto)) {
+		return -3; //nessun bersaglio
+	else {
+		auto morteAvvenuta = pavimento.at(posizione(posizioneVittima)).getEntita()->subisciDanno(dannoInflitto);
+		if (morteAvvenuta) {
+			//TODOFAR lascia equipaggiamento per terra.
 			auto vPosizioni = getVectorPosizioni();
 			auto it = std::find(vPosizioni.begin(), vPosizioni.end(), posizioneVittima);
 			//HACK devo chiamare removeEntita
 			entitaPresenti.erase(entitaPresenti.begin() + std::distance(vPosizioni.begin(), it));
 			pavimento.at(posizione(posizioneVittima)).drop();
 			pavimento.at(posizione(posizioneVittima)).setEntita(nullptr);
+			return 1;
 		}
-	return; //TODOFAR lascia equipaggiamento per terra.
+	}
+	return 0; 
 }
 
 
@@ -64,7 +68,6 @@ Casella & Piano::at(int x, int y)
 		x = 0;
 	if (y < 0)
 		y = 0;
-
 	if (x >= larghezza)
 		x = larghezza - 1;
 	if (y >= lunghezza)
@@ -101,9 +104,10 @@ bool Piano::spargiLoot()
 	return false;
 }
 
-bool Piano::placeEntita(std::shared_ptr<Entita> placeMe, cood coord) //FIXME inserisco gente nelle pareti
+bool Piano::placeEntita(std::shared_ptr<Entita> placeMe, cood coord) 
 {
-
+	if (pavimento.at(posizione(coord)).isMuro())
+		return false;
 	if (pavimento.at(posizione(coord)).getEntita() == nullptr) {
 		pavimento.at(posizione(coord)).setEntita(placeMe);
 		std::shared_ptr<Entita> copyTemp = placeMe;
@@ -390,6 +394,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 			//Qui l'unico controllo presente è che la casella non sia un muro e che nella casella non ci sia nessuno.
 			if ( pavimento.at(posizione(updatePos)).isMuro() ) //Qui c'è un muro
 			{
+				std::cout << "Sbam!" << std::endl;
 				return 1;
 			}
 			else if ( pavimento.at(posizione(updatePos)).getEntita() != nullptr ) //Qui c'è qualcun'altro
@@ -534,6 +539,7 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 	{
 		if (check == target)
 		{
+
 			std::cout << "Non posso raggiungere la destinazione, solo andarci vicino" << std::endl;
 			closedList.push_back(q);
 			destination = true;
@@ -675,7 +681,7 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 
 	for (std::vector<node>::iterator i = path.begin(); i+1 != path.end() && distanza > 0; i++)
 	{
-		std::cout << "( " << i->posX << ", " << i->posY << " ) -> " << i->f << std::endl;
+		//std::cout << "( " << i->posX << ", " << i->posY << " ) -> " << i->f << std::endl;
 		cood coordinatePrima(pos.first, pos.second);
 		//CHECK muovi enita
 		pos.first = i->posX;
@@ -699,6 +705,8 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 			auto distanza = std::distance(vPosizioni.begin(), it);
 			entitaPresenti[distanza].second = next;
 		}
+
+		//StampaChar();
 		pavimento.at(posizione(next)).doEvento();
 		distanza--;
 		
@@ -717,6 +725,163 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 		return 4; //non sono arrivato a destinazione perché ho finito il movimento
 	}
 
+}
+
+int Piano::playPiano()
+{
+	int spwTurni = 0;
+	int totTurni = 0;
+	bool a;
+	char input = '1';
+	std::cout << "Bloat text? y/n: ";
+	while (input != 'y'&&input != 'n')
+		std::cin >> input;
+	if (input == 'y')
+		a = true;
+	else
+		a = false;
+	std::deque<std::shared_ptr<Entita>> turni;
+	for each (auto it in entitaPresenti)
+	{
+		turni.push_back(it.first);
+	}
+	while (!turni.empty()) {
+		if (spwTurni > 50 + rand() % 100) { //dopo ogni 50 turni arriva un ulteriore goblin puzzone, di sicuro dopo 150
+			auto caselleOk=floodFill(getPositionOfPlayer());
+			cood casellaSpawn;
+			do //FIXME se non c'è nessuna casella libera sballo
+				casellaSpawn = caselleOk[rand() % caselleOk.size()];
+			while(!placeEntita(entityFactory(1), casellaSpawn));
+			auto smt = pavimento.at(posizione(casellaSpawn)).getEntita();
+			turni.push_back(smt);
+			auto nomeDaDare = smt->getNome();
+			nomeDaDare.append(" arrivato al turno "+std::to_string(totTurni));
+			smt->setNome(nomeDaDare);
+			spwTurni = 0;
+		}
+		auto attivo = turni.front();
+		turni.pop_front();
+		if (pavimento.at(posizione(getPositionOfEntity(attivo))).getEntita() == nullptr) { //
+			
+			continue;
+		}
+		std::cout << "Adesso sta a " << attivo->getNome() << std::endl;
+		auto posizioneAttivo = getPositionOfEntity(attivo);
+		if (getPositionOfPlayer() != posizioneAttivo) {
+			//HACK qui si muove e basta, ma poi dovrà decidere l'intelligenza artificiale dell'entità
+			auto resultMovement=muoviEntita(posizioneAttivo, getPositionOfPlayer());
+		}
+		else {
+			auto resultPlayer = playerAct(a);
+			while(resultPlayer<0)
+			{ 
+				resultPlayer = playerAct(a);
+			}
+			if (resultPlayer == 2) {
+				turni.clear();
+				return 0;
+			}
+			spwTurni++;
+			totTurni++;
+		}
+		turni.push_back(attivo);
+	}
+	
+}
+//LOOKATME questa è la versione del terminale, quella grafica dovrà lavorare in altri modi.
+//return -1 significa che non è passato un turno, per esempio guardando il proprio inventario o per terra
+int Piano::playerAct(bool a)
+{
+		StampaChar();
+		if(a)
+			std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ";
+		char azione;
+		std::cin >> azione;
+		std::cout << std::endl;
+		system("CLS");
+		auto playerPos = getPositionOfPlayer();
+		auto toPosizione = playerPos;
+		int result;
+
+		switch (azione){
+		case '1':
+			toPosizione.first--;
+			toPosizione.second++;
+			break;
+		case '2':
+			toPosizione.second++;
+			break;
+		case '3':
+			toPosizione.first++;
+			toPosizione.second++;
+			break;
+		case '4':
+			toPosizione.first--;
+			break;
+		case '6':
+			toPosizione.first++;
+			break;
+		case '7':
+			toPosizione.first--;
+			toPosizione.second--;
+			break;
+		case '8':
+			toPosizione.second--;
+			break;
+		case '9':
+			toPosizione.first++;
+			toPosizione.second--;
+			break;
+		}
+		if (playerPos != toPosizione) //L'azione scelta è un movimento
+		{
+			result = muoviEntita(playerPos.first, playerPos.second, toPosizione.first, toPosizione.second);
+			if (result == 0) {
+				if (a)
+					std::cout << "Ho provato a muovermi con successo." << std::endl;
+				return 0;
+			}
+			else if (result==2) {
+				if (a)
+					std::cout << "Scontro!" << std::endl;
+				scontro(toPosizione, playerPos);
+				return 0;
+			}
+			else {
+				if (a)
+					std::cout << "Muoversi ha risposto " << result << std::endl;
+				return -1;
+			}
+		}
+		else {
+			switch (azione) {
+				case '5':
+					return 2;
+				case 's':
+					scontro(playerPos, Danno(std::vector<double>{1}, 4000));
+					break;
+				case 'e':
+					pavimento.at(posizione(playerPos)).getEntita()->equip();
+					break;
+				case '0':
+					std::cout << pavimento.at(posizione(getPositionOfPlayer())).descriviOggettiTerra();
+					return -1;
+				case 'p':
+					pavimento.at(posizione(getPositionOfPlayer())).pickup();
+					break;
+				case 'i':
+					std::cout << pavimento.at(posizione(playerPos)).getEntita()->describeInventario() << std::endl;
+					return -1;
+				default:
+					if (a)
+					{
+						std::cout << "Input non valido" << std::endl;
+					}
+					return -1;
+				}
+			}
+		return 0;
+		
 }
 
 
@@ -765,17 +930,17 @@ std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
 	switch (codiceID) {
 	case 0: {
 		//TODO qui ovviamente dovrà esserci il modo di caricare un personaggio preesistente o di invocare il creatore di personaggi, per ora lo tratto come un qualunque idiota
-		std::list<std::shared_ptr<Oggetto>> inventario{ std::shared_ptr<Oggetto>(new Oggetto(0.5, "Sfera di metallo", "Direi piuttosto che si tratta di un oggetto a forma d'uovo", 2)) };
+		std::vector<std::shared_ptr<Oggetto>> inventario{ std::shared_ptr<Oggetto>(new Oggetto(0.5, "Una pietra", "Terra condensata.", 0)) };
 		Attributi nellaMedia(4, 4, 4, 4, 4, 4, 4, 4);
-		std::vector<std::shared_ptr<Oggetto>> equipaggiamento; //Picche, non hai nulla scemo
+		Equipaggiamento equipaggiamento; //Picche, non hai nulla scemo
 		appoggio = std::make_shared<Protagonista>(Protagonista("Medioman", inventario, nellaMedia, equipaggiamento, 1, 0, 0));
 		break;
 	}
 	case 1:
 	{// Goblin scrauso, puzzone e nudo
-		std::list<std::shared_ptr<Oggetto>> inventario;
+		std::vector<std::shared_ptr<Oggetto>> inventario;
 		Attributi scarso(3, 4, 2, 2, 2, 1, 3, 1);
-		std::vector<std::shared_ptr<Oggetto>> equipaggiamento; //Picche, non hai nulla scemo puzzone
+		Equipaggiamento equipaggiamento; //Picche, non hai nulla scemo puzzone
 		appoggio = std::make_shared<Attore>("Goblin puzzone", inventario, scarso, equipaggiamento, 1.1);
 		break;
 	}
