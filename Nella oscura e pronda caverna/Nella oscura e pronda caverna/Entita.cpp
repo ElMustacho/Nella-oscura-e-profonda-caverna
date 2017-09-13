@@ -5,6 +5,7 @@
 #include <ctime>
 #include "Entita.h"
 #include "Danno.h"
+
 Entita::~Entita()
 {
 	//TODO ~Entita()

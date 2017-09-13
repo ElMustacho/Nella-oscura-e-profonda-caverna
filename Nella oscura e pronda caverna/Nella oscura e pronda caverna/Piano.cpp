@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <typeinfo>
 #include <deque>
+#include <time.h>
 #include "Piano.h"
 
 
@@ -120,7 +121,6 @@ bool Piano::placeEntita(std::shared_ptr<Entita> placeMe, cood coord)
 		return false;
 	}
 }
-
 
 
 Piano::Piano() {
@@ -286,21 +286,21 @@ double heuristic(coord pos, coord target)
 	return heuristic(pos.first, pos.second, target.first, target.second);
 }
 
-//TODO x e y sono invertiti
+//CHECK x e y sono invertiti
 int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi due sono quelli da dove parto, gli altri dove arrivo
 {
 	coord pos(posX, posY);
 	coord target(targetX, targetY);
 	//FIXME return -2 non può essere mai raggiunto perché tale caso rientra nel return -1
-	if (pavimento.at(posizione(pos)).getEntita() == nullptr)
+	if ( pavimento.at(posizione(pos)).getEntita() == nullptr )
 	{
 		return -1; //Qui non c'è nessuno
 	}
-	if (pos == target) //Questo significa non spostarsi per davvero
+	if ( pos == target ) //Questo significa non spostarsi per davvero
 	{
 		return -2;
 	}
-	if (!isCoodLegal(target))
+	if ( !isCoodLegal(target) )
 	{
 		return -3; //Posizione non valida per almeno una delle coordinate
 	}
@@ -308,7 +308,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	int distanza, metodo;
 	pavimento.at(posizione(pos)).getEntita()->muovi(distanza, metodo);
 
-	if (distanza == 0)
+	if ( distanza == 0 )
 	{
 		return -4; //Ho provato a muovermi ma sono immobile
 	}
@@ -319,51 +319,85 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 	//ma solo quella della casella in cui mi voglio spostare, una per volta.
 	//P.S. questo sistema funziona bene anche quando c'è solo una casella da percorrere.
 
-	if (typeid(*(pavimento.at(posizione(pos)).getEntita())) != typeid(Protagonista))
+	if ( typeid(*(pavimento.at(posizione(pos)).getEntita())) != typeid(Protagonista) )
 	{
-		/* TENTATIVO STIMA DISTANZA (con heuristic) */
-		//distanza = heuristic(pos, target);
+		auto ret = aStar(pos, target, distanza, metodo);
 
-		return aStar(pos, target, distanza, metodo);
+		while ( ret == 5 )
+		{
+			//CHECK Change target/behavior
+			srand(time(NULL));
+			
+			auto behave = rand() % 2 + 1;
+			coord newCoord(rand() % lunghezza - 1, rand() % larghezza - 1);
+
+			switch (behave)
+			{
+				case 1: // Patrol
+					while ( !isCoodLegal(newCoord) && pavimento.at(posizione(newCoord)).getEntita() != nullptr && pavimento.at(posizione(newCoord)).hasTrap() && pavimento.at(posizione(newCoord)).isMuro() )
+					{
+						newCoord.first = rand() % lunghezza - 1;
+						newCoord.second = rand() % larghezza - 1;
+					}
+					break;
+				case 2: // Go and wait near the stairs
+					for ( auto i = 0; i != pavimento.size(); i++ )
+					{
+						if ( pavimento.at(i).getEvento() == 1 )
+						{
+							newCoord = fromPosizioneToInt(i);
+						}
+					}
+					break;
+				case 3: // Freeze (never going to happen - see the rand value...)
+					newCoord = pos;
+					break;
+				default:
+					std::cout << "Something wrong, now I long for yesterday..." << std::endl;
+			}
+
+			ret = aStar(pos, newCoord, distanza, metodo);
+		}
+		return ret;
 	}
 	else
 	{
-		//FIXME da qui assumo che il movimento sia in linea retta
-		while (distanza != 0 && !(pos == target)) //Esco quando ho terminato i movimenti o quando sono arrivato.
+		//CHECK da qui assumo che il movimento sia in linea retta
+		while ( distanza != 0 && !(pos == target) ) //Esco quando ho terminato i movimenti o quando sono arrivato.
 		{
 			int moveX = 0, moveY = 0;
 
-			if (pos.first < target.first)
+			if ( pos.first < target.first )
 			{
 				moveX = 1;
 			}
-			else if (pos.first > target.first)
+			else if ( pos.first > target.first )
 			{
 				moveX = -1;
 			}
 			else {}
 
-			if (pos.second < target.second)
+			if ( pos.second < target.second )
 			{
 				moveY = 1;
 			}
-			else if (pos.second > target.second)
+			else if ( pos.second > target.second )
 			{
 				moveY = -1;
 			}
-			else
+			else //FIXME Not necessary?
 			{
 			}
 
 			coord updatePos(pos.first + moveX, pos.second + moveY);
 
 			//Qui l'unico controllo presente è che la casella non sia un muro e che nella casella non ci sia nessuno.
-			if (pavimento.at(posizione(updatePos)).isMuro()) //Qui c'è un muro
+			if ( pavimento.at(posizione(updatePos)).isMuro() ) //Qui c'è un muro
 			{
 				std::cout << "Sbam!" << std::endl;
 				return 1;
 			}
-			else if (pavimento.at(posizione(updatePos)).getEntita() != nullptr) //Qui c'è qualcun'altro
+			else if ( pavimento.at(posizione(updatePos)).getEntita() != nullptr ) //Qui c'è qualcun'altro
 			{
 				return 2;
 			}
@@ -378,11 +412,15 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 				cood coordinateDopo(pos.first, pos.second);
 				auto vPosizioni = getVectorPosizioni();
 				auto it = std::find(vPosizioni.begin(), vPosizioni.end(), coordinatePrima);
-				if (it != vPosizioni.end()) {
+				if ( it != vPosizioni.end() ) 
+				{
 					auto distanza = std::distance(vPosizioni.begin(), it);
 					entitaPresenti[distanza].second = coordinateDopo;
 				}
-				pavimento.at(posizione(pos)).doEvento();
+				if ( pavimento.at(posizione(pos)).getEvento() != 1 )
+				{
+					pavimento.at(posizione(pos)).doEvento();
+				}
 				distanza--;
 			}
 		}
@@ -420,7 +458,7 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 	auto diagonalCost = sqrt(2);
 	auto objectCost = 0.5;
 
-	if (!destination && !pavimento.at(posizione(check)).isMuro() && !pavimento.at(posizione(check)).hasTrap() && pavimento.at(posizione(check)).getEntita() == nullptr)
+	if (!destination && !pavimento.at(posizione(check)).isMuro() && !pavimento.at(posizione(check)).hasTrap() ) // && pavimento.at(posizione(check)).getEntita() == nullptr
 	{
 		double gNew = q.g;
 
@@ -459,15 +497,15 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 		else
 		{
 			bool found = false;
-			bool minus = false;
+			//bool minus = false;
 
 			// looking for this node in closedList
 			for (std::vector<node>::iterator i = closedList.begin(); i < closedList.end(); i++)
 			{
-				if (i->posX == direction.posX && i->posY == direction.posY) // && i->f < fNew v.1
+				if (i->posX == direction.posX && i->posY == direction.posY)
 				{
 					found = true;
-					break; // v.1 fuori if
+					break;
 				}
 			}
 
@@ -479,16 +517,16 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 					if (i->posX == direction.posX && i->posY == direction.posY)
 					{
 						found = true;
-						if (i->f > fNew)
+						if ( gNew < i->g )
 						{
-							minus = true;
-							*i = direction; // Non c'era v.1
+							//minus = true;
+							*i = direction; 
 						}
-						break; // v.1
+						break;
 					}
 				}
 
-				if (!found) // || (found && minus) v.1
+				if (!found)
 				{
 					openList.push_back(direction);
 				}
@@ -501,7 +539,9 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 	{
 		if (check == target)
 		{
-			//std::cout << "Non posso raggiungere la destinazione, solo andarci vicino" << std::endl;
+
+			std::cout << "Non posso raggiungere la destinazione, solo andarci vicino" << std::endl;
+			closedList.push_back(q);
 			destination = true;
 		}
 	}
@@ -513,6 +553,8 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 
 	std::vector<node> openList;
 	std::vector<node> closedList;
+	std::vector<node> path;
+
 	bool destination = false;
 	auto beginHeuristic = heuristic(pos, target);
 
@@ -521,16 +563,16 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 
 	while (!openList.empty() && !destination)
 	{
-		double min = DBL_MAX;
+		double minF = DBL_MAX;
 		std::vector<node>::iterator position;
 		struct node q;
 
 		// find the min 'f' node in openList
 		for (std::vector<node>::iterator i = openList.begin(); i < openList.end(); i++)
 		{
-			if (i->f < min)
+			if (i->f < minF)
 			{
-				min = i->f;
+				minF = i->f;
 				position = i;
 			}
 		}
@@ -543,65 +585,123 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 		//----------- 1st Successor North (x, y-1) ------------
 
 		coord nord(q.posX, q.posY - 1);
-		checkSuccessor(nord, target, "nord", destination, q, openList, closedList);
+		if (isCoodLegal(nord))
+		{
+			checkSuccessor(nord, target, "nord", destination, q, openList, closedList);
+		}
 
 		//----------- 2nd Successor South (x, y+1) ------------
 
 		coord sud(q.posX, q.posY + 1);
-		checkSuccessor(sud, target, "sud", destination, q, openList, closedList);
+		if (isCoodLegal(sud))
+		{
+			checkSuccessor(sud, target, "sud", destination, q, openList, closedList);
+		}
 
 		//----------- 3rd Successor East (x+1, y) ------------
 
 		coord est(q.posX + 1, q.posY);
-		checkSuccessor(est, target, "est", destination, q, openList, closedList);
+		if (isCoodLegal(est))
+		{
+			checkSuccessor(est, target, "est", destination, q, openList, closedList);
+		}
 
 		//----------- 4th Successor West (x-1, y) ------------
 
 		coord ovest(q.posX - 1, q.posY);
-		checkSuccessor(ovest, target, "ovest", destination, q, openList, closedList);
+		if (isCoodLegal(ovest))
+		{
+			checkSuccessor(ovest, target, "ovest", destination, q, openList, closedList);
+		}
 
 		//----------- 5th Successor North-East (x+1, y-1) ------------
 
 		coord nordEst(q.posX + 1, q.posY - 1);
-		checkSuccessor(nordEst, target, "nordEst", destination, q, openList, closedList);
+		if (isCoodLegal(nordEst))
+		{
+			checkSuccessor(nordEst, target, "nordEst", destination, q, openList, closedList);
+		}
 
 		//----------- 6th Successor North-West (x-1, y-1) ------------
 
 		coord nordOvest(q.posX - 1, q.posY - 1);
-		checkSuccessor(nordOvest, target, "nordOvest", destination, q, openList, closedList);
+		if (isCoodLegal(nordOvest))
+		{
+			checkSuccessor(nordOvest, target, "nordOvest", destination, q, openList, closedList);
+		}
 
 		//----------- 7th Successor South-East (x+1, y+1) ------------
 
 		coord sudEst(q.posX + 1, q.posY + 1);
-		checkSuccessor(sudEst, target, "sudEst", destination, q, openList, closedList);
+		if (isCoodLegal(sudEst))
+		{
+			checkSuccessor(sudEst, target, "sudEst", destination, q, openList, closedList);
+		}
 
 		//----------- 8th Successor South-West (x-1, y+1) ------------
 
 		coord sudOvest(q.posX - 1, q.posY + 1);
-		checkSuccessor(sudOvest, target, "sudOvest", destination, q, openList, closedList);
+		if (isCoodLegal(sudOvest))
+		{
+			checkSuccessor(sudOvest, target, "sudOvest", destination, q, openList, closedList);
+		}
 
 		if (!destination)
 		{
 			// Push q on the closedList
-			closedList.push_back(q);
+			closedList.push_back(q); //LOOKATME potrei aggiungerlo comunque prima dei successori ed evitare il controllo
 		}
 
 	}
 
-	for (std::vector<node>::iterator i = closedList.begin(); i < closedList.end() && distanza > 0; i++)
+	if (!destination)
+	{
+		return 5; // Non trovo una via per arrivare a destinazione
+	}
+
+	// BEGIN Path creation
+	path = closedList;
+	std::reverse(path.begin(), path.end());
+
+	for (std::vector<node>::iterator i = path.begin(); i < path.end()-1; )
+	{
+		if ( i->parentX != (i+1)->posX || i->parentY != (i+1)->posY )
+		{
+			path.erase(i + 1);
+			//i--;
+		}
+		else
+		{
+			i++;
+		}
+	}
+
+	std::reverse(path.begin(), path.end());
+	// END Path creation
+
+	for (std::vector<node>::iterator i = path.begin(); i+1 != path.end() && distanza > 0; i++)
 	{
 		//std::cout << "( " << i->posX << ", " << i->posY << " ) -> " << i->f << std::endl;
 		cood coordinatePrima(pos.first, pos.second);
-		//TODO muovi enita
+		//CHECK muovi enita
 		pos.first = i->posX;
 		pos.second = i->posY;
 		coord next((i + 1)->posX, (i + 1)->posY);
+
+		if (pavimento.at(posizione(next)).getEntita() != nullptr) // Qui c'è qualcun altro
+		{
+			std::cout << "Qualcuno osa sbarrarmi la strada!" << std::endl;
+			//TODO Combatto per liberar la via?
+			return 2;
+		}
 		std::shared_ptr<Entita> temp = pavimento.at(posizione(pos)).getEntita();
 		pavimento.at(posizione(pos)).setEntita(nullptr);
-		pavimento.at(posizione(next)).setEntita(temp); 
+		pavimento.at(posizione(next)).setEntita(temp);
+
 		auto vPosizioni = getVectorPosizioni();
 		auto it = std::find(vPosizioni.begin(), vPosizioni.end(), coordinatePrima);
-		if (it != vPosizioni.end()) {
+		if (it != vPosizioni.end())
+		{
 			auto distanza = std::distance(vPosizioni.begin(), it);
 			entitaPresenti[distanza].second = next;
 		}
@@ -609,9 +709,9 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 		//StampaChar();
 		pavimento.at(posizione(next)).doEvento();
 		distanza--;
+		
 	}
 
-	//CHECK Arrivato?
 	if (distanza == 0 && (pos == target))
 	{
 		return 0; //sono arrivato precisamente a destinazione
