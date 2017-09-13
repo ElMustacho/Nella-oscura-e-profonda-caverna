@@ -422,6 +422,7 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 					pavimento.at(posizione(pos)).doEvento();
 				}
 				distanza--;
+				pavimento.at(posizione(coordinateDopo)).doEvento();
 			}
 		}
 		if (distanza == 0 && (pos == target))
