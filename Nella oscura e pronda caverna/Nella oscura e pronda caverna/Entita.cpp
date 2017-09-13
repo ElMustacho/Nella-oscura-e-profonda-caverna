@@ -94,10 +94,11 @@ bool Entita::addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti)
 //TODO spostami in protagonista, visto che dovrebbe essere l'unico con l'UI
 bool Entita::equip(int posizioneOggetto)
 {
-	if (equipaggiamento.equipaggia(inventario.at(posizioneOggetto))) {
-		inventario.erase(inventario.begin()+posizioneOggetto);
-		return true;
-	}
+	if(posizioneOggetto>0&&posizioneOggetto<inventario.size())
+		if (equipaggiamento.equipaggia(inventario.at(posizioneOggetto))) {
+			inventario.erase(inventario.begin()+posizioneOggetto);
+			return true;
+		}
 	else 
 		return false;
 }
