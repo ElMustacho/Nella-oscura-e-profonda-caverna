@@ -18,5 +18,4 @@ void Dungeon::generaPiano(int lunghezza, int larghezza, std::vector<std::shared_
 {
 	std::shared_ptr<Piano> p( new Piano(lunghezza, larghezza, lootPossibile, entitaPossibili) );
 	this->piani.push_back( p );
-
 }

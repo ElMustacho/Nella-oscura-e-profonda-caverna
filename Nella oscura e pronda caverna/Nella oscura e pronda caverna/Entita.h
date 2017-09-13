@@ -12,29 +12,19 @@ class Entita
 
 public:
 
-	
+
 	virtual ~Entita();
-	std::string getNome() const
-	{
-		return nome;
-	}
+	std::string getNome() const { return nome; }
 
-	void setNome(std::string nome)
-	{
-		this->nome = nome;
-	}
-
-	void onDeath(); //cosa succede se muore
+	void setNome(std::string nome) { this->nome = nome; }
+	virtual void onDeath(); //cosa succede se muore
 	std::list<std::shared_ptr<Oggetto>> getInventario() const { return inventario; };
 	void setInventario(std::list<std::shared_ptr<Oggetto>> inventario) { this->inventario = inventario; };
 	std::vector<std::shared_ptr<Oggetto>> getEquipaggiamento() const { return equipaggiamento; };
 	void setEquipaggiamento(std::vector<std::shared_ptr<Oggetto>> equipaggiamento) { this->equipaggiamento = equipaggiamento; }
 	Entita(std::string nome, std::list<std::shared_ptr<Oggetto>> inventario, Attributi attributi, std::vector<std::shared_ptr<Oggetto>> equipaggiamento);
-
 	bool operator==(const Entita & rEntita)const;
-
 	void muovi(int &distanza, int &metodoTrasporto);
-
 	Danno attacca();
 	Entita(); //TODO vorrei evitare di mettere costruttori vuoti solo perché se no il compilatore si lamenta.
 	Attributi getAttributi() const;

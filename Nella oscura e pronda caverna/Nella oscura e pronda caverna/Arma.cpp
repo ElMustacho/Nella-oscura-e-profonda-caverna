@@ -26,7 +26,7 @@ Danno Arma::attacca()
 }
 
 void Arma::Incanta(){
-	dannoBase.setParteDanno("magico", dannoBase.getParteDanno("magico") + 5);
+ 	dannoBase.setParteDanno("magico", dannoBase.getParteDanno("magico") + 5);
 }
 
 void Arma::Deincanta() {

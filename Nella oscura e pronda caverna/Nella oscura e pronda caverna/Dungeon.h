@@ -20,5 +20,7 @@ private: //TODOFAR Estenderà la/e classe/i x, y, etc.
 	std::vector< std::shared_ptr<Piano> > piani;
 	//TODO Aggiungi posizioni / estendi
 
-	
+	short int goesWest;
+	short int goesNorth;
+	short int isUpward;
 };

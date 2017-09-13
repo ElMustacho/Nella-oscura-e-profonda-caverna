@@ -5,6 +5,7 @@
 #include <ctime>
 #include "Entita.h"
 #include "Danno.h"
+
 Entita::~Entita()
 {
 	//TODO ~Entita()
@@ -16,7 +17,7 @@ Entita::Entita(std::string nome, std::list<std::shared_ptr<Oggetto>> inventario,
 		this->equipaggiamento = equipaggiamento;
 		this->inventario = inventario;
 		this->attributi = attributi;
-		this->equipaggiamento.reserve(20);
+		this->equipaggiamento.resize(20);
 }
 bool Entita::operator==(const Entita & rEntita) const
 {
@@ -59,7 +60,7 @@ Danno Entita::attacca()
 			danno.magnifica(attributi.getDestrezza() / 4);
 		else										//arma grande no
 			danno.magnifica(attributi.getForza() / 4);
-		srand(time(nullptr));
+		srand((unsigned int)time(nullptr));
 		//FIXMe return sempre = 1
 		double random;
 		random = rand() % 6;
@@ -97,20 +98,20 @@ bool Entita::addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti)
 void Entita::equip(int posizioneFrom, int posiozioneTo) {
 	if (posiozioneTo > 40) //troppo in là nell'inventario
 		return;
-	if (posizioneFrom<0 || posizioneFrom>inventario.size())
+	if (posizioneFrom<0 ||(unsigned int) posizioneFrom>inventario.size())
 		return; //non è dentro
 	else {
 		auto it = inventario.begin();
 		std::advance(it, posizioneFrom);
 		auto moving = inventario;
 		//HACK funziona solo con le armi
-		equipaggiamento.push_back(*it);
+		equipaggiamento.at(0)=*it;
 		inventario.erase(it);
 	}	//TODOFAR carico massimo
 }
 
 void Entita::unequip(int posisioneFrom) {
-	if (posisioneFrom<0 || posisioneFrom>inventario.size())
+	if (posisioneFrom<0 ||(unsigned int) posisioneFrom>inventario.size())
 		return; //non è dentro
 	else {
 		auto moving = equipaggiamento.at(posisioneFrom);
