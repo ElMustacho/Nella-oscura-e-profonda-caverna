@@ -11,12 +11,13 @@ Entita::~Entita()
 	//TODO ~Entita()
 }
 
-Entita::Entita(std::string nome, std::vector<std::shared_ptr<Oggetto>> inventario, Attributi attributi, Equipaggiamento equipaggiamento): attributi(attributi) {
+Entita::Entita(std::string nome, std::vector<std::shared_ptr<Oggetto>> inventario, Attributi attributi, Equipaggiamento equipaggiamento, std::string posToFile): attributi(attributi) {
 	
 		this->nome = nome;
 		this->equipaggiamento = equipaggiamento;
 		this->inventario = inventario;
 		this->attributi = attributi;
+		this->pathToTile = posToFile;
 }
 bool Entita::operator==(const Entita & rEntita) const
 {
@@ -94,13 +95,12 @@ bool Entita::addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti)
 //TODO spostami in protagonista, visto che dovrebbe essere l'unico con l'UI
 bool Entita::equip(int posizioneOggetto)
 {
-	if(posizioneOggetto>0&&posizioneOggetto<inventario.size())
+	if(posizioneOggetto>0&&(unsigned int)posizioneOggetto<inventario.size())
 		if (equipaggiamento.equipaggia(inventario.at(posizioneOggetto))) {
 			inventario.erase(inventario.begin()+posizioneOggetto);
 			return true;
 		}
-	else 
-		return false;
+	return false;
 }
 //TODO spostami in protagonista, visto che dovrebbe essere l'unico con l'UI
 bool Entita::equip() 
@@ -115,7 +115,7 @@ bool Entita::equip()
 	std::cout << "Inserisci il numero dell'oggetto da inserire: ";
 	//FIXME funziono solo con numeri, non forzarmi please
 	std::cin >> numero;
-	if (numero >= 0 && numero < inventario.size())
+	if (numero >= 0 && (unsigned int)numero < inventario.size())
 		return equip(numero);
 	else {
 		std::cout << "Non ho potuto equipaggiare l'oggetto perche' non so come si fa." << std::endl;
@@ -131,6 +131,7 @@ bool Entita::addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere)
 	return true;
 	//CHECK posso fallire, cosa potrebbe andare male?
 }
+
 //return true se uccide, false altrimenti
 bool Entita::subisciDanno(Danno dannoSubito)
 {

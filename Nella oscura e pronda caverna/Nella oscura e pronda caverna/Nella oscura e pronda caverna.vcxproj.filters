@@ -39,9 +39,6 @@
     <ClInclude Include="Casella.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="Tileset.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
     <ClInclude Include="Entita.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
@@ -105,9 +102,6 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="Casella.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
-    <ClCompile Include="Tileset.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="Entita.cpp">

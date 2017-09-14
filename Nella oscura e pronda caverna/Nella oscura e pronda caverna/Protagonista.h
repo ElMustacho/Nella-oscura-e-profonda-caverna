@@ -5,7 +5,8 @@ class Protagonista : public Entita
 {
 
 public:
-	Protagonista(std::string nome, std::vector<std::shared_ptr<Oggetto>> inventario, Attributi attributi, Equipaggiamento equipaggiamento, unsigned int livello, double esperienza, long int fondiEconomici);
+	Protagonista(std::string nome, std::vector<std::shared_ptr<Oggetto>> inventario, Attributi attributi, Equipaggiamento equipaggiamento, unsigned int livello, double esperienza, long int fondiEconomici, std::string posToFile="");
+	
 	~Protagonista();
 	double getEsperienza() const { return esperienza; } ;
 	void setEsperienza(double esperienza) { this->esperienza = esperienza; };

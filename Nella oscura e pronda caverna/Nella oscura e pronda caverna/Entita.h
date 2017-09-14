@@ -6,7 +6,6 @@
 #include "Oggetto.h"
 #include "Attributi.h"
 #include "Equipaggiamento.h"
-
 class Entita
 {
 
@@ -15,14 +14,16 @@ public:
 
 	virtual ~Entita();
 	std::string getNome() const { return nome; }
-
+	std::string getPathToTile() const { return pathToTile; }
 	void setNome(std::string nome) { this->nome = nome; }
+	void setPathToTile(std::string pathToTile) { this->pathToTile = pathToTile; }
+
 	virtual void onDeath(); //cosa succede se muore
 	std::vector<std::shared_ptr<Oggetto>> getInventario() const { return inventario; };
 	void setInventario(std::vector<std::shared_ptr<Oggetto>> inventario) { this->inventario = inventario; };
 	Equipaggiamento getEquipaggiamento() const { return equipaggiamento; };
 	void setEquipaggiamento(Equipaggiamento equipaggiamento) { this->equipaggiamento = equipaggiamento; }
-	Entita(std::string nome, std::vector<std::shared_ptr<Oggetto>> inventario, Attributi attributi, Equipaggiamento equipaggiamento);
+	Entita(std::string nome, std::vector<std::shared_ptr<Oggetto>> inventario, Attributi attributi, Equipaggiamento equipaggiamento, std::string pathToFile = "");
 	bool operator==(const Entita & rEntita)const;
 	void muovi(int &distanza, int &metodoTrasporto);
 	Danno attacca();
@@ -32,38 +33,17 @@ public:
 	bool addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti);
 	bool equip(int posizioneOggetto);
 	bool equip();
-	void unequip(int posisioneFrom);
 	bool addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere);
 	//return true se uccide, false altrimenti
 	bool subisciDanno(Danno dannoSubito);
 	double carryWeight(); //calcolo peso trasportato
 	std::string describeInventario();
+	
 private:
+	//TODO finish this
+	std::string pathToTile;
 	std::string nome;
 	Attributi attributi;
-	//FIXME Sprite sprite;   manage Sprite
 	std::vector<std::shared_ptr<Oggetto>> inventario;
-	//LOOKATME i vector si shrinkano automaticamente quindi direi che in futuro equipaggiamento sarà una classe a sé stante
 	Equipaggiamento equipaggiamento;
-	/*
-	nella posizione X di equipaggiamento ci sarà:
-	0) mano primaria (arma)
-	1) mano secondaria (arma, arma2 o scudo)
-	2) torso
-	3) gambali
-	4) guanti
-	5) bracciali
-	6) stivali
-	7) elmo
-	8) collana
-	9) cintura
-	10) fascia
-	11) anello 1
-	12) anello 2
-	13) spazio munizioni
-	14) abiti
-	15) mantello
-	16) da qui in poi potranno esserci elementi che non si cumulano con i suddetti, come per esempio aureole,
-	maledizioni, benedizioni e simili.
-	*/
 };

@@ -7,7 +7,7 @@ void PianoFileGrafica::stampaPianoSuFinestra()
 {
 	sf::Texture tileTexture;
 	sf::Sprite tiles;
-	tileTexture.loadFromFile("SuperSimpleTileSet.png");
+	tileTexture.loadFromFile("Tileset/SuperSimpleTileSet.png");
 	tiles.setTexture(tileTexture);
 	sf::Vector2i loadcounter = sf::Vector2i(0, 0);
 	sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza, 32), "Cartografia della mappa");

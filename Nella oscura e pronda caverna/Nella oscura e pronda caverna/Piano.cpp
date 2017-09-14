@@ -924,7 +924,7 @@ std::shared_ptr<Entita> Piano::entityFactory(std::string)
 {
 	return nullptr;
 }
-//Lasciare vuoto per avere un personaggio principale, oppure mandare 0. Di default non rende nulla
+//Lasciare vuoto per avere un personaggio principale, oppure mandare 0. Valori non accettati restituiscono un nullptr
 std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
 {
 	std::shared_ptr<Entita> appoggio;

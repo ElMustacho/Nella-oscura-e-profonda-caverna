@@ -24,7 +24,7 @@ int pianoCavernaIsolaGrafica::playPiano()
 	sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza, 32), "Cartografia della mappa");
 	sf::Texture tileTexture;
 	sf::Sprite tiles;
-	tileTexture.loadFromFile("Tileset/SuperSimpleTileSet.png");
+	tileTexture.loadFromFile(pavimento.at(0).getPathToFile());
 	tiles.setTexture(tileTexture);
 	sf::Texture protTexture;
 	sf::Sprite prot;
@@ -54,34 +54,26 @@ int pianoCavernaIsolaGrafica::playPiano()
 		window.clear();
 		//OPTIMIZE
 		for (unsigned int i = 0; i < pavimento.size(); i++) {
-			if (pavimento.at(i).isMuro()) {
-				int a = i % larghezza, b = i / larghezza;
-				tiles.setPosition(a * 32, b * 32);
-				tiles.setTextureRect(sf::IntRect(0, 0, 32, 32));
-				window.draw(tiles);
-			}
-			else
-			{
-				int a = i % larghezza, b = i / larghezza;
-				tiles.setPosition(a * 32, b * 32);
-				tiles.setTextureRect(sf::IntRect(0, 32, 32, 32));
-				window.draw(tiles);
-			}
+			auto casella = pavimento.at(i);
+			int a = i % larghezza, b = i / larghezza;
+			tiles.setPosition((float)a * 32,(float) b * 32);
+			tiles.setTextureRect(casella.getRectSprite());
+			window.draw(tiles);
 
-			if (!pavimento.at(i).getOggetti().empty()) {
+			if (!casella.getOggetti().empty()) {
 				int a = i % larghezza, b = i / larghezza;
-				ogg.setPosition(a * 32, b * 32);
+				ogg.setPosition((float)a* 32,(float) b * 32);
 				ogg.setTextureRect(sf::IntRect(0, 0, 32, 32));
 				window.draw(ogg);
 			}
-			if (pavimento.at(i).getEntita() != nullptr) {
-				if (typeid(*(pavimento.at(i).getEntita())) == typeid(Protagonista)) {
+			if (casella.getEntita() != nullptr) {
+				if (typeid(*(casella.getEntita())) == typeid(Protagonista)) {
 					int a = i % larghezza, b = i / larghezza;
-					prot.setPosition(a * 32, b * 32);
+					prot.setPosition((float)a * 32, (float)b * 32);
 					prot.setTextureRect(sf::IntRect(0, 0, 32, 32));
 					window.draw(prot);
 				}
-				else if (typeid(*(pavimento.at(i).getEntita())) == typeid(Attore)) {
+				else if (typeid(*(casella.getEntita())) == typeid(Attore)) {
 					int a = i % larghezza, b = i / larghezza;
 					enem.setPosition(a * 32, b * 32);
 					enem.setTextureRect(sf::IntRect(0, 0, 32, 32));
@@ -256,7 +248,7 @@ void pianoCavernaIsolaGrafica::stampaPianoSuFinestra()
 {
 	sf::Texture tileTexture;
 	sf::Sprite tiles;
-	tileTexture.loadFromFile("Tileset/SuperSimpleTileSet.png");
+	tileTexture.loadFromFile(pavimento.at(0).getPathToFile());
 	tiles.setTexture(tileTexture);
 	sf::Texture protTexture;
 	sf::Sprite prot;
@@ -290,36 +282,28 @@ void pianoCavernaIsolaGrafica::stampaPianoSuFinestra()
 		window.clear();
 		//OPTIMIZE
 		for (unsigned int i = 0; i < pavimento.size(); i++) {
-			if (pavimento.at(i).isMuro()) {
-				int a = i % larghezza, b = i / larghezza;
-				tiles.setPosition(a * 32, b * 32);
-				tiles.setTextureRect(sf::IntRect(0, 0, 32, 32));
-				window.draw(tiles);
-			}
-			else
-			{
-				int a = i % larghezza, b = i / larghezza;
-				tiles.setPosition(a * 32, b * 32);
-				tiles.setTextureRect(sf::IntRect(0, 32, 32, 32));
-				window.draw(tiles);
-			}
-
+			auto casella = pavimento.at(i);
+			int a = i % larghezza, b = i / larghezza;
+			tiles.setPosition((float)a * 32, (float) b* 32);
+			tiles.setTextureRect(casella.getRectSprite());
+			window.draw(tiles);
+			
 			if (!pavimento.at(i).getOggetti().empty()) {
 				int a = i % larghezza, b = i / larghezza;
-				ogg.setPosition(a * 32, b * 32);
+				ogg.setPosition((float)a * 32, (float)b * 32);
 				ogg.setTextureRect(sf::IntRect(0, 0, 32, 32));
 				window.draw(ogg);
 			}
 			if (pavimento.at(i).getEntita() != nullptr) {
 				if (typeid(*(pavimento.at(i).getEntita())) == typeid(Protagonista)) {
 					int a = i % larghezza, b = i / larghezza;
-					prot.setPosition(a * 32, b * 32);
+					prot.setPosition((float)a * 32, (float)b * 32);
 					prot.setTextureRect(sf::IntRect(0, 0, 32, 32));
 					window.draw(prot);
 				}
 				else if (typeid(*(pavimento.at(i).getEntita())) == typeid(Attore)) {
 					int a = i % larghezza, b = i / larghezza;
-					enem.setPosition(a * 32, b * 32);
+					enem.setPosition((float)a * 32, (float)b * 32);
 					enem.setTextureRect(sf::IntRect(0, 0, 32, 32));
 					window.draw(enem);
 				}
