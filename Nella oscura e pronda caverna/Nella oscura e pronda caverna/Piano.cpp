@@ -5,7 +5,11 @@
 #include <typeinfo>
 #include <deque>
 #include <time.h>
+
+#include "pianoCavernaIsolaGrafica.h"
+#include "SFML\Graphics.hpp"
 #include "Piano.h"
+#include "TexTBox.h"
 
 
 Piano::~Piano()
