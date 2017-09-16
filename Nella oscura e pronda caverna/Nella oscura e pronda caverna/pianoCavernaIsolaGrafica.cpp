@@ -43,7 +43,6 @@ int pianoCavernaIsolaGrafica::playPiano()
 	sf::Event evento;
 	window.setFramerateLimit(60);
 
-	/* BEGIN TextBox*/
 	
 	sf::Font font;
 	if ( !font.loadFromFile("arial.ttf") )
@@ -52,7 +51,6 @@ int pianoCavernaIsolaGrafica::playPiano()
 	}
 	TextBox messages("Omae Wa Mou Shindeiru \n", font, larghezza*32, lunghezza*32);
 
-	/* END TextBox */
 
 	while (!turni.empty()) {
 		//Here begins trouble
@@ -95,7 +93,7 @@ int pianoCavernaIsolaGrafica::playPiano()
 				}
 				else {
 					std::cout << "WTF" << std::endl;
-					messages.text.setString("WTF \n"); // TextBox
+					messages.text.setString( messages.text.getString() + "WTF \n"); // TextBox
 				}
 			}
 		}
@@ -125,8 +123,9 @@ int pianoCavernaIsolaGrafica::playPiano()
 
 			continue;
 		}
-		std::cout << "Adesso sta a " << attivo->getNome() << std::endl;
-		messages.text.setString("Adesso sta a " + attivo->getNome() + " \n"); // TextBox
+		std::cout << "Adesso sta a " << attivo->getNome() << std::endl; // TextBox
+		messages.text.setString( messages.text.getString() + "Adesso sta a " + attivo->getNome() + " \n"); // TextBox
+		//TODO Find a way to refresh the window
 		auto posizioneAttivo = getPositionOfEntity(attivo);
 		if (getPositionOfPlayer() != posizioneAttivo) {
 			//HACK qui si muove e basta, ma poi dovrà decidere l'intelligenza artificiale dell'entità
@@ -135,7 +134,7 @@ int pianoCavernaIsolaGrafica::playPiano()
 		else {
 			int resultPlayer;
 			do {
-				resultPlayer = playerAct(a, window);
+				resultPlayer = playerAct(a, window, messages);
 			} while (resultPlayer < 0);
 			
 			if (resultPlayer == 2) {
@@ -156,10 +155,14 @@ pianoCavernaIsolaGrafica::pianoCavernaIsolaGrafica(int larghezza, int lunghezza)
 {
 }
 
-int pianoCavernaIsolaGrafica::playerAct(bool a, sf::Window &window)
+int pianoCavernaIsolaGrafica::playerAct(bool a, sf::Window &window, TextBox& messages)
 {
 	if (a)
+	{
 		std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ";
+		messages.text.setString( messages.text.getString() + "\nUsa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ");
+	} // TextBox
+	
 	char azione;
 	/*std::cin >> azione;
 	std::cout << std::endl;*/
@@ -181,6 +184,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::Window &window)
 		}
 	}
 	system("CLS");
+	messages.text.setString(""); // TextBox
 	switch (azione) {
 		case '1':
 			toPosizione.first--;
@@ -215,19 +219,30 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::Window &window)
 		{
 			result = muoviEntita(playerPos.first, playerPos.second, toPosizione.first, toPosizione.second);
 			if (result == 0) {
-				if (a)
+				if (a) 
+				{
 					std::cout << "Ho provato a muovermi con successo." << std::endl;
+					messages.text.setString(messages.text.getString() + "Ho provato a muovermi con successo.\n"); // TextBox
+				} // TextBox
 				return 0;
 			}
 			else if (result == 2) {
 				if (a)
+				{
 					std::cout << "Scontro!" << std::endl;
+					messages.text.setString(messages.text.getString() + "Scontro!\n"); // TextBox
+				}
+					
 				scontro(toPosizione, playerPos);
 				return 0;
 			}
 			else {
 				if (a)
+				{
 					std::cout << "Muoversi ha risposto " << result << std::endl;
+					messages.text.setString(messages.text.getString() + "Muoversi ha risposto" + std::to_string(result) + "\n");
+				} // TextBox
+					
 				return -1;
 			}
 		}
@@ -243,17 +258,20 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::Window &window)
 				break;
 			case '0':
 				std::cout << pavimento.at(posizione(getPositionOfPlayer())).descriviOggettiTerra();
-				return -1;
+				messages.text.setString(messages.text.getString() + pavimento.at(posizione(getPositionOfPlayer())).descriviOggettiTerra() );
+				return -1; // TextBox
 			case 'p':
 				pavimento.at(posizione(getPositionOfPlayer())).pickup();
 				break;
 			case 'i':
 				std::cout << pavimento.at(posizione(playerPos)).getEntita()->describeInventario() << std::endl;
-				return -1;
+				messages.text.setString(messages.text.getString() + pavimento.at(posizione(playerPos)).getEntita()->describeInventario() );
+				return -1; // TextBox
 			default:
 				if (a)
 				{
 					std::cout << "Input non valido" << std::endl;
+					messages.text.setString(messages.text.getString() + "Input non valido\n");
 				}
 				return -1;
 			}
