@@ -22,10 +22,8 @@ int pianoCavernaIsolaGrafica::playPiano()
 		turni.push_back(it.first);
 	}
 	sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza, 32), "Cartografia della mappa");
-	sf::Texture tileTexture;
 	sf::Sprite tiles;
-	tileTexture.loadFromFile(pavimento.at(0).getPathToFile());
-	tiles.setTexture(tileTexture);
+	tiles.setTexture(texturePavimento);
 	sf::Texture protTexture;
 	sf::Sprite prot;
 	protTexture.loadFromFile("Tileset/PdiPersonaggio.png");
@@ -38,6 +36,10 @@ int pianoCavernaIsolaGrafica::playPiano()
 	sf::Sprite ogg;
 	oggTexture.loadFromFile("Tileset/OdiOggetto.png");
 	ogg.setTexture(oggTexture);
+	sf::Texture scaleTexture;
+	sf::Sprite scale;
+	scaleTexture.loadFromFile("Tileset/Scale.png");
+	scale.setTexture(scaleTexture);
 	sf::Event evento;
 	window.setFramerateLimit(60);
 	while (!turni.empty()) {
@@ -59,7 +61,13 @@ int pianoCavernaIsolaGrafica::playPiano()
 			tiles.setPosition((float)a * 32,(float) b * 32);
 			tiles.setTextureRect(casella.getRectSprite());
 			window.draw(tiles);
-
+			if (casella.getEvento() == 1)//scale here
+			{
+				int a = i % larghezza, b = i / larghezza;
+				scale.setPosition(a * 32, b * 32);
+				scale.setTextureRect(sf::IntRect(0, 0, 32, 32));
+				window.draw(scale);
+			}
 			if (!casella.getOggetti().empty()) {
 				int a = i % larghezza, b = i / larghezza;
 				ogg.setPosition((float)a* 32,(float) b * 32);
@@ -83,6 +91,7 @@ int pianoCavernaIsolaGrafica::playPiano()
 					std::cout << "WTF" << std::endl;
 				}
 			}
+			
 		}
 		window.display();
 
@@ -118,8 +127,14 @@ int pianoCavernaIsolaGrafica::playPiano()
 				resultPlayer = playerAct(a, window);
 			} while (resultPlayer < 0);
 			
-			if (resultPlayer == 2) {
+			if (resultPlayer == 2) { //uscito dal piano con scale
 				turni.clear();
+				return 1;
+				break;
+			}
+			if (resultPlayer == 3) { //uscita con disonore
+				turni.clear();
+				return 0;
 				break;
 			}
 			spwTurni++;
@@ -132,8 +147,14 @@ int pianoCavernaIsolaGrafica::playPiano()
 }
 
 
-pianoCavernaIsolaGrafica::pianoCavernaIsolaGrafica(int larghezza, int lunghezza):pianoCavernaIsola(larghezza,lunghezza)
+pianoCavernaIsolaGrafica::pianoCavernaIsolaGrafica(int larghezza, int lunghezza, std::string posizioneFile):pianoCavernaIsola(larghezza,lunghezza)
 {
+	if (posizioneFile == "") {
+		this->posizioneFile = "Tileset/FirstSeriousTile.png";
+	}
+	else
+		this->posizioneFile = posizioneFile;
+	texturePavimento.loadFromFile(this->posizioneFile);
 }
 
 int pianoCavernaIsolaGrafica::playerAct(bool a, sf::Window &window)
@@ -205,6 +226,9 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::Window &window)
 				scontro(toPosizione, playerPos);
 				return 0;
 			}
+			else if (result == 100) {
+				return 2;
+			}
 			else {
 				if (a)
 					std::cout << "Muoversi ha risposto " << result << std::endl;
@@ -214,7 +238,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::Window &window)
 		else {
 			switch (azione) {
 			case '5':
-				return 2;
+				return 3; //uscita con disonore
 			case 's':
 				scontro(playerPos, Danno(std::vector<double>{1}, 4000));
 				break;
@@ -246,12 +270,11 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::Window &window)
 
 void pianoCavernaIsolaGrafica::stampaPianoSuFinestra()
 {
-	sf::Texture tileTexture;
 	sf::Sprite tiles;
-	tileTexture.loadFromFile(pavimento.at(0).getPathToFile());
-	tiles.setTexture(tileTexture);
+	tiles.setTexture(texturePavimento);
 	sf::Texture protTexture;
 	sf::Sprite prot;
+	//TODOFAR quando avremo tanti oggetti e nemici le texture andranno caricate dinamicamente, e magari una volta sola
 	protTexture.loadFromFile("Tileset/PdiPersonaggio.png");
 	prot.setTexture(protTexture);
 	sf::Texture enemTexture;
@@ -262,6 +285,10 @@ void pianoCavernaIsolaGrafica::stampaPianoSuFinestra()
 	sf::Sprite ogg;
 	oggTexture.loadFromFile("Tileset/OdiOggetto.png");
 	ogg.setTexture(oggTexture);
+	sf::Texture scaleTexture;
+	sf::Sprite scale;
+	scaleTexture.loadFromFile("Tileset/Scale.png");
+	scale.setTexture(scaleTexture);
 	sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza, 32), "Cartografia della mappa");
 	window.setFramerateLimit(60);
 	while (window.isOpen()) {
@@ -287,21 +314,27 @@ void pianoCavernaIsolaGrafica::stampaPianoSuFinestra()
 			tiles.setPosition((float)a * 32, (float) b* 32);
 			tiles.setTextureRect(casella.getRectSprite());
 			window.draw(tiles);
-			
-			if (!pavimento.at(i).getOggetti().empty()) {
+			if (casella.getEvento() == 1)//scale here
+			{
+				int a = i % larghezza, b = i / larghezza;
+				scale.setPosition(a * 32, b * 32);
+				scale.setTextureRect(sf::IntRect(0, 0, 32, 32));
+				window.draw(scale);
+			}
+			if (!casella.getOggetti().empty()) {
 				int a = i % larghezza, b = i / larghezza;
 				ogg.setPosition((float)a * 32, (float)b * 32);
 				ogg.setTextureRect(sf::IntRect(0, 0, 32, 32));
 				window.draw(ogg);
 			}
-			if (pavimento.at(i).getEntita() != nullptr) {
-				if (typeid(*(pavimento.at(i).getEntita())) == typeid(Protagonista)) {
+			if (casella.getEntita() != nullptr) {
+				if (typeid(*(casella.getEntita())) == typeid(Protagonista)) {
 					int a = i % larghezza, b = i / larghezza;
 					prot.setPosition((float)a * 32, (float)b * 32);
 					prot.setTextureRect(sf::IntRect(0, 0, 32, 32));
 					window.draw(prot);
 				}
-				else if (typeid(*(pavimento.at(i).getEntita())) == typeid(Attore)) {
+				else if (typeid(*(casella.getEntita())) == typeid(Attore)) {
 					int a = i % larghezza, b = i / larghezza;
 					enem.setPosition((float)a * 32, (float)b * 32);
 					enem.setTextureRect(sf::IntRect(0, 0, 32, 32));
@@ -311,6 +344,7 @@ void pianoCavernaIsolaGrafica::stampaPianoSuFinestra()
 					std::cout << "WTF" << std::endl;
 				}
 			}
+			
 			}
 		window.display();
 	}

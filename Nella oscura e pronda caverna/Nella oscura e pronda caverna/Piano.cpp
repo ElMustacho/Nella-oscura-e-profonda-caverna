@@ -422,7 +422,10 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 					pavimento.at(posizione(pos)).doEvento();
 				}
 				distanza--;
-				pavimento.at(posizione(coordinateDopo)).doEvento();
+				if (pavimento.at(posizione(coordinateDopo)).doEvento()==100) {
+					return 100; //Uscito dal piano
+				}
+				else;
 			}
 		}
 		if (distanza == 0 && (pos == target))
@@ -782,6 +785,10 @@ int Piano::playPiano()
 				turni.clear();
 				return 0;
 			}
+			if (resultPlayer == 100) {
+				turni.clear();
+				return 1;
+			}
 			spwTurni++;
 			totTurni++;
 		}
@@ -847,6 +854,11 @@ int Piano::playerAct(bool a)
 					std::cout << "Scontro!" << std::endl;
 				scontro(toPosizione, playerPos);
 				return 0;
+			}
+			else if (result == 100) {
+				if (a)
+					std::cout << "Uscito dal piano." << std::endl;
+				return 100;
 			}
 			else {
 				if (a)

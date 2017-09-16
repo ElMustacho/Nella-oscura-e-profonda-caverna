@@ -11,9 +11,18 @@
 #include "PianoFileGrafica.h"
 #include "pianoCavernaIsolaGrafica.h"
 #include "SFML\Graphics.hpp"
+#include "DungeonGraficaIsola.h"
 int main()
 {
 	
+	DungeonGraficaIsola primoDungeon(3, "Il primo dungeon", "Il primo dell'avventura");
+	auto result=primoDungeon.playDungeon();
+	if (result == 1)
+		std::cout << "Congratulazioni!" << std::endl;
+	else if (result == 0) {
+		std::cout << "Codardo!" << std::endl;
+	}
+
 	std::vector<std::shared_ptr<Oggetto>> tabellaLoot; //VUOTA
 	Equipaggiamento Equipaggiamento;
 	std::vector<Entita> tabellaEntita; //VUOTA
@@ -64,6 +73,13 @@ int main()
 	std::cout << Saitama.getAttributi().getDestrezza() << std::endl;
 	*/
 	pregen.spargiLoot(pregen.floodFill(cood(5, 5)));
-	pregen.playPiano();
+	auto g = pregen.playPiano();
+	if (g == 1) {
+		std::cout << "HHHHHHHHHMMMMMMMMM" << std::endl;
+	}
+	else if (g == 0)
+	{
+		std::cout << "Gunga Runga" << std::endl;
+	}
 	
 }

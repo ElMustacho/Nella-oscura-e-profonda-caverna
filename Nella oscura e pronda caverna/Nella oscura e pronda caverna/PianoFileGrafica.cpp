@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include "SFML\Graphics.hpp"
-
+//TODO vecchia versione
 void PianoFileGrafica::stampaPianoSuFinestra()
 {
 	sf::Texture tileTexture;
