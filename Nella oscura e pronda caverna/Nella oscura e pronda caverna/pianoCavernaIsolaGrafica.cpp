@@ -1,7 +1,9 @@
 #include "pianoCavernaIsolaGrafica.h"
 #include <iostream>
 
+
 #include "SFML\Graphics.hpp"
+#include "TextBox.h"
 
 int pianoCavernaIsolaGrafica::playPiano()
 {
@@ -40,6 +42,18 @@ int pianoCavernaIsolaGrafica::playPiano()
 	ogg.setTexture(oggTexture);
 	sf::Event evento;
 	window.setFramerateLimit(60);
+
+	/* BEGIN TextBox*/
+	
+	sf::Font font;
+	if ( !font.loadFromFile("arial.ttf") )
+	{
+		//sf::err() << "font error -> An error has occured during font loading from file"; //CHECK
+	}
+	TextBox messages("Omae Wa Mou Shindeiru \n", font, larghezza*32, lunghezza*32);
+
+	/* END TextBox */
+
 	while (!turni.empty()) {
 		//Here begins trouble
 		while (window.pollEvent(evento)) {
@@ -81,9 +95,14 @@ int pianoCavernaIsolaGrafica::playPiano()
 				}
 				else {
 					std::cout << "WTF" << std::endl;
+					messages.text.setString("WTF \n"); // TextBox
 				}
 			}
 		}
+
+		window.draw(messages.rect); // TextBox
+		window.draw(messages.text); // TextBox
+
 		window.display();
 
 
@@ -107,6 +126,7 @@ int pianoCavernaIsolaGrafica::playPiano()
 			continue;
 		}
 		std::cout << "Adesso sta a " << attivo->getNome() << std::endl;
+		messages.text.setString("Adesso sta a " + attivo->getNome() + " \n"); // TextBox
 		auto posizioneAttivo = getPositionOfEntity(attivo);
 		if (getPositionOfPlayer() != posizioneAttivo) {
 			//HACK qui si muove e basta, ma poi dovrà decidere l'intelligenza artificiale dell'entità
