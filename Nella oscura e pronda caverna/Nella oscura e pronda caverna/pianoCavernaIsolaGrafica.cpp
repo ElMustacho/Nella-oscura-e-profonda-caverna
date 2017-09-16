@@ -5,6 +5,49 @@
 #include "SFML\Graphics.hpp"
 #include "TextBox.h"
 
+void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int larghezza, int lunghezza, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox messages)
+{
+	window.clear();
+	//OPTIMIZE
+	for (unsigned int i = 0; i < pavimento.size(); i++) {
+		auto casella = pavimento.at(i);
+		int a = i % larghezza, b = i / larghezza;
+		tiles.setPosition((float)a * 32, (float)b * 32);
+		tiles.setTextureRect(casella.getRectSprite());
+		window.draw(tiles);
+
+		if (!casella.getOggetti().empty()) {
+			int a = i % larghezza, b = i / larghezza;
+			ogg.setPosition((float)a * 32, (float)b * 32);
+			ogg.setTextureRect(sf::IntRect(0, 0, 32, 32));
+			window.draw(ogg);
+		}
+		if (casella.getEntita() != nullptr) {
+			if (typeid(*(casella.getEntita())) == typeid(Protagonista)) {
+				int a = i % larghezza, b = i / larghezza;
+				prot.setPosition((float)a * 32, (float)b * 32);
+				prot.setTextureRect(sf::IntRect(0, 0, 32, 32));
+				window.draw(prot);
+			}
+			else if (typeid(*(casella.getEntita())) == typeid(Attore)) {
+				int a = i % larghezza, b = i / larghezza;
+				enem.setPosition(a * 32, b * 32);
+				enem.setTextureRect(sf::IntRect(0, 0, 32, 32));
+				window.draw(enem);
+			}
+			else {
+				std::cout << "WTF" << std::endl;
+				messages.text.setString(messages.text.getString() + "WTF \n"); // TextBox
+			}
+		}
+	}
+	auto look = messages.getText().getString().toAnsiString();
+	window.draw(messages.rect); // TextBox
+	window.draw(messages.text); // TextBox
+
+	window.display();
+}
+
 int pianoCavernaIsolaGrafica::playPiano()
 {
 	int spwTurni = 0;
@@ -49,8 +92,8 @@ int pianoCavernaIsolaGrafica::playPiano()
 	{
 		//sf::err() << "font error -> An error has occured during font loading from file"; //CHECK
 	}
-	TextBox messages("Omae Wa Mou Shindeiru \n", font, larghezza*32, lunghezza*32);
 
+	TextBox messages("Omae Wa Mou Shindeiru \n cucaracia\n", font, larghezza * 32, lunghezza * 32);
 
 	while (!turni.empty()) {
 		//Here begins trouble
@@ -97,12 +140,16 @@ int pianoCavernaIsolaGrafica::playPiano()
 				}
 			}
 		}
-
+		auto look = messages.getText().getString().toAnsiString();
 		window.draw(messages.rect); // TextBox
 		window.draw(messages.text); // TextBox
-
+		
 		window.display();
 
+		//CHECK Find a way to refresh the window (Potrebbe sostituire interamente il codice sopra)
+		/* Oi, funziona -ttebayo!*/
+		windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
+		/**/
 
 		if (spwTurni > 50 + rand() % 100) { //dopo ogni 50 turni arriva un ulteriore goblin puzzone, di sicuro dopo 150
 			auto caselleOk = floodFill(getPositionOfPlayer());
@@ -125,7 +172,12 @@ int pianoCavernaIsolaGrafica::playPiano()
 		}
 		std::cout << "Adesso sta a " << attivo->getNome() << std::endl; // TextBox
 		messages.text.setString( messages.text.getString() + "Adesso sta a " + attivo->getNome() + " \n"); // TextBox
-		//TODO Find a way to refresh the window
+		
+		/* Oi, funziona -ttebayo!*/
+		windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
+		/**/
+
+		
 		auto posizioneAttivo = getPositionOfEntity(attivo);
 		if (getPositionOfPlayer() != posizioneAttivo) {
 			//HACK qui si muove e basta, ma poi dovrà decidere l'intelligenza artificiale dell'entità
@@ -135,6 +187,9 @@ int pianoCavernaIsolaGrafica::playPiano()
 			int resultPlayer;
 			do {
 				resultPlayer = playerAct(a, window, messages);
+				/* Oi, funziona -ttebayo!*/
+				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
+				/**/
 			} while (resultPlayer < 0);
 			
 			if (resultPlayer == 2) {
@@ -155,7 +210,7 @@ pianoCavernaIsolaGrafica::pianoCavernaIsolaGrafica(int larghezza, int lunghezza)
 {
 }
 
-int pianoCavernaIsolaGrafica::playerAct(bool a, sf::Window &window, TextBox& messages)
+int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBox& messages)
 {
 	if (a)
 	{
@@ -272,8 +327,8 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::Window &window, TextBox& mes
 				{
 					std::cout << "Input non valido" << std::endl;
 					messages.text.setString(messages.text.getString() + "Input non valido\n");
-				}
-				return -1;
+				} 
+				return -1; // TextBox
 			}
 		}
 	

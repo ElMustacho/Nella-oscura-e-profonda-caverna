@@ -8,7 +8,7 @@ class pianoCavernaIsolaGrafica :
 {
 public:
 	int playPiano();
-	int playerAct(bool loquace, sf::Window &window, TextBox& messages);
+	int playerAct(bool loquace, sf::RenderWindow &window, TextBox& messages);
 	pianoCavernaIsolaGrafica(int larghezza, int lunghezza);
 	void stampaPianoSuFinestra();
 	~pianoCavernaIsolaGrafica();
