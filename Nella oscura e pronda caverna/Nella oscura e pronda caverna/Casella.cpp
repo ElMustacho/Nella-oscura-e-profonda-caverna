@@ -39,6 +39,7 @@ Casella::Casella(bool default, std::string pathToFile) {
 	xTexture = 0;
 	yTexture = 0;
 	if (pathToFile == "")
+		//pathToFile = "SuperSimpleTileSet.png";
 		pathToFile = "Tileset/FirstSeriousTile.png";
 	pathToTile = pathToFile;
 	sf::Image temp;

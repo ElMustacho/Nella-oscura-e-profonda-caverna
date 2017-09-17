@@ -129,11 +129,17 @@ Piano::Piano() {
 
 Piano::Piano(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> lootPossibile, std::vector<std::shared_ptr<Entita>> entitaPossibili)
 {
+	this->larghezza = larghezza;
+	this->lunghezza = lunghezza;
+	pavimento.reserve(larghezza*lunghezza);
+	for (int i = 0; i < larghezza*lunghezza; i++) {
+		pavimento.push_back(Casella(false));
+	}
 }
 
 bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY)
 {
-	if (posX + dimX  > lunghezza || posY + dimY > larghezza)
+	if (posX + dimX  > larghezza || posY + dimY > lunghezza)
 		return false; //Stanza prodotta fuori dal piano
 
 	for (int i = posX; i < dimX + posX; i++)

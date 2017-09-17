@@ -16,8 +16,6 @@
 #include "..\Nella oscura e pronda caverna\Sprite.cpp"
 #include "..\Nella oscura e pronda caverna\Attributi.h"
 #include "..\Nella oscura e pronda caverna\Attributi.cpp"
-#include "..\Nella oscura e pronda caverna\Tileset.h"
-#include "..\Nella oscura e pronda caverna\Tileset.cpp"
 #include "..\Nella oscura e pronda caverna\Protagonista.h"
 #include "..\Nella oscura e pronda caverna\Protagonista.cpp"
 #include "..\Nella oscura e pronda caverna\Attore.h"
@@ -34,6 +32,10 @@
 #include "..\Nella oscura e pronda caverna\noiseutils.h"
 #include "..\Nella oscura e pronda caverna\PianoFile.h"
 #include "..\Nella oscura e pronda caverna\PianoFile.cpp"
+#include "..\Nella oscura e pronda caverna\Equipaggiamento.h"
+#include "..\Nella oscura e pronda caverna\Equipaggiamento.cpp"
+#include "..\Nella oscura e pronda caverna\Armatura.h"
+#include "..\Nella oscura e pronda caverna\Armatura.cpp"
 
 #include "gtest\gtest.h"
 
