@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "UtilityGrafica.h"
 #include "sfml\Graphics.hpp"
 #include "TextBox.h"
 #include "Casella.h"
@@ -88,7 +89,7 @@ sf::String graphicInput(sf::RenderWindow& window, TextBox& messages)
 
 			case sf::Event::Closed:
 				window.close();
-				return ;
+				return sf::String();
 				break;
 			}
 

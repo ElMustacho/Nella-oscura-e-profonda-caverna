@@ -7,7 +7,7 @@
 #include "Entita.h"
 #include "Danno.h"
 #include "TextBox.h"
-#include "UtilityGrafica.cpp"
+#include "UtilityGrafica.h"
 
 Entita::~Entita()
 {
@@ -123,47 +123,7 @@ bool Entita::equip(sf::RenderWindow& window, TextBox& messages)
 	
 
 	//FIXME funziono solo con numeri, non forzarmi please
-	//std::cin >> numero; //TODO su grafica
-	/*bool input = false;
-	sf::String text;
-	sf::Event evento;
-	while (input == false && window.isOpen())
-	{
-		while (window.pollEvent(evento))
-		{
-			switch(evento.type)
-			{
-				case sf::Event::TextEntered:
-					if( sf::Keyboard::isKeyPressed(sf::Keyboard::Return) ) // evento.text.unicode == '\n' sf::Keyboard::Return
-					{
-						input = true;
-					}
-					else if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Delete) ) //
-					{
-						text.erase(text.getSize()-1);
-						auto  tempStr = messages.text.getString();
-						tempStr.erase(tempStr.getSize() - 1);
-						messages.text.setString(tempStr);
-						std::cout << (int)evento.text.unicode << std::endl;
-					}
-					else
-					{
-						if (evento.text.unicode >= '0' && evento.text.unicode <= '9')
-						{
-							text += (char)evento.text.unicode;
-							std::cout << (char)evento.text.unicode << std::endl;
-							messages.text.setString(messages.text.getString() + text);// Refresh
-						}
-					}
-					break;
-			
-				case sf::Event::Closed:
-					window.close();
-					break;
-			}
-			
-		}
-	}*/
+	//std::cin >> numero; 
 	
 	numero = atoi( graphicInput(window, messages).toAnsiString().c_str() );
 	if (numero >= 0 && (unsigned int)numero < inventario.size()) 

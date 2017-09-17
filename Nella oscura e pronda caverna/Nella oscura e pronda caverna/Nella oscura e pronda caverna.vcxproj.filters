@@ -78,6 +78,9 @@
     <ClInclude Include="TextBox.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="UtilityGrafica.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Oggetto.cpp">

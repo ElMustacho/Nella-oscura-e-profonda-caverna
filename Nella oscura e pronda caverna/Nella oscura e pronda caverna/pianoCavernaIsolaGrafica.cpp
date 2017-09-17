@@ -4,7 +4,7 @@
 
 #include "SFML\Graphics.hpp"
 #include "TextBox.h"
-#include "UtilityGrafica.cpp"
+#include "UtilityGrafica.h"
 
 int pianoCavernaIsolaGrafica::playPiano()
 {
@@ -64,50 +64,9 @@ int pianoCavernaIsolaGrafica::playPiano()
 				break;
 			}
 		}
-		window.clear();
-		//OPTIMIZE
-		for (unsigned int i = 0; i < pavimento.size(); i++) {
-			auto casella = pavimento.at(i);
-			int a = i % larghezza, b = i / larghezza;
-			tiles.setPosition((float)a * 32,(float) b * 32);
-			tiles.setTextureRect(casella.getRectSprite());
-			window.draw(tiles);
 
-			if (!casella.getOggetti().empty()) {
-				int a = i % larghezza, b = i / larghezza;
-				ogg.setPosition((float)a* 32,(float) b * 32);
-				ogg.setTextureRect(sf::IntRect(0, 0, 32, 32));
-				window.draw(ogg);
-			}
-			if (casella.getEntita() != nullptr) {
-				if (typeid(*(casella.getEntita())) == typeid(Protagonista)) {
-					int a = i % larghezza, b = i / larghezza;
-					prot.setPosition((float)a * 32, (float)b * 32);
-					prot.setTextureRect(sf::IntRect(0, 0, 32, 32));
-					window.draw(prot);
-				}
-				else if (typeid(*(casella.getEntita())) == typeid(Attore)) {
-					int a = i % larghezza, b = i / larghezza;
-					enem.setPosition(a * 32, b * 32);
-					enem.setTextureRect(sf::IntRect(0, 0, 32, 32));
-					window.draw(enem);
-				}
-				else {
-					std::cout << "WTF" << std::endl;
-					messages.text.setString( messages.text.getString() + "WTF \n"); // TextBox
-				}
-			}
-		}
-		auto look = messages.getText().getString().toAnsiString();
-		window.draw(messages.rect); // TextBox
-		window.draw(messages.text); // TextBox
-		
-		window.display();
-
-		//CHECK Find a way to refresh the window (Potrebbe sostituire interamente il codice sopra)
-		/* Oi, funziona -ttebayo!*/
 		windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
-		/**/
+		
 
 		if (spwTurni > 50 + rand() % 100) { //dopo ogni 50 turni arriva un ulteriore goblin puzzone, di sicuro dopo 150
 			auto caselleOk = floodFill(getPositionOfPlayer());
@@ -364,6 +323,9 @@ void pianoCavernaIsolaGrafica::stampaPianoSuFinestra()
 			}
 			}
 		window.display();
+
+		//CHECK no messages?
+		//windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
 	}
 }
 

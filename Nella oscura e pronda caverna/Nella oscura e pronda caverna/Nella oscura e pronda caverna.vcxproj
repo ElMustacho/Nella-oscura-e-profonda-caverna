@@ -144,6 +144,7 @@
     <ClInclude Include="Scrigno.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="TextBox.h" />
+    <ClInclude Include="UtilityGrafica.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arma.cpp" />
