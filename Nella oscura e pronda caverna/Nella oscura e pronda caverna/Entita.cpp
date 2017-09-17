@@ -7,6 +7,7 @@
 #include "Entita.h"
 #include "Danno.h"
 #include "TextBox.h"
+#include "UtilityGrafica.cpp"
 
 Entita::~Entita()
 {
@@ -116,28 +117,58 @@ bool Entita::equip(sf::RenderWindow& window, TextBox& messages)
 		messages.text.setString(messages.text.getString() + std::to_string(numero) + ") " + oggetto->getNome() + " --> " + oggetto->getDescrizione() + "\n");
 		numero++;
 	}
-	std::cout << "Inserisci il numero dell'oggetto da inserire: ";
-	messages.text.setString(messages.text.getString() + "Inserisci il numero dell'oggetto da inserire: ");
+	std::cout << "Inserisci il numero dell'oggetto da inserire (Invio per confermare): ";
+	messages.text.setString(messages.text.getString() + "Inserisci il numero dell'oggetto da inserire (Invio per confermare): ");
+
+	
 
 	//FIXME funziono solo con numeri, non forzarmi please
-	std::cin >> numero; //TODO su grafica
-	bool input = false;
+	//std::cin >> numero; //TODO su grafica
+	/*bool input = false;
 	sf::String text;
-	/*while (input == false && window.isOpen())
+	sf::Event evento;
+	while (input == false && window.isOpen())
 	{
-		sf::Event evento;
-		switch (window.pollEvent(evento))
+		while (window.pollEvent(evento))
 		{
-			case sf::Event::TextEntered:
-				if( (char)evento.text.unicode != "\n" )
-				text += (char)evento.text.unicode;
-				break;
-			default:
+			switch(evento.type)
+			{
+				case sf::Event::TextEntered:
+					if( sf::Keyboard::isKeyPressed(sf::Keyboard::Return) ) // evento.text.unicode == '\n' sf::Keyboard::Return
+					{
+						input = true;
+					}
+					else if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Delete) ) //
+					{
+						text.erase(text.getSize()-1);
+						auto  tempStr = messages.text.getString();
+						tempStr.erase(tempStr.getSize() - 1);
+						messages.text.setString(tempStr);
+						std::cout << (int)evento.text.unicode << std::endl;
+					}
+					else
+					{
+						if (evento.text.unicode >= '0' && evento.text.unicode <= '9')
+						{
+							text += (char)evento.text.unicode;
+							std::cout << (char)evento.text.unicode << std::endl;
+							messages.text.setString(messages.text.getString() + text);// Refresh
+						}
+					}
+					break;
+			
+				case sf::Event::Closed:
+					window.close();
+					break;
+			}
+			
 		}
 	}*/
+	
+	numero = atoi( graphicInput(window, messages).toAnsiString().c_str() );
 	if (numero >= 0 && (unsigned int)numero < inventario.size()) 
 	{
-		messages.text.setString(messages.text.getString() + std::to_string(numero) + "\n");
+		messages.text.setString(messages.text.getString() + "\n");
 		return equip(numero);
 	}
 	else 

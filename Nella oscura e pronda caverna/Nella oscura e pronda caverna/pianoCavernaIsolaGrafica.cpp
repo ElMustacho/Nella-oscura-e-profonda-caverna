@@ -4,49 +4,7 @@
 
 #include "SFML\Graphics.hpp"
 #include "TextBox.h"
-
-void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int larghezza, int lunghezza, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox messages)
-{
-	window.clear();
-	//OPTIMIZE
-	for (unsigned int i = 0; i < pavimento.size(); i++) {
-		auto casella = pavimento.at(i);
-		int a = i % larghezza, b = i / larghezza;
-		tiles.setPosition((float)a * 32, (float)b * 32);
-		tiles.setTextureRect(casella.getRectSprite());
-		window.draw(tiles);
-
-		if (!casella.getOggetti().empty()) {
-			int a = i % larghezza, b = i / larghezza;
-			ogg.setPosition((float)a * 32, (float)b * 32);
-			ogg.setTextureRect(sf::IntRect(0, 0, 32, 32));
-			window.draw(ogg);
-		}
-		if (casella.getEntita() != nullptr) {
-			if (typeid(*(casella.getEntita())) == typeid(Protagonista)) {
-				int a = i % larghezza, b = i / larghezza;
-				prot.setPosition((float)a * 32, (float)b * 32);
-				prot.setTextureRect(sf::IntRect(0, 0, 32, 32));
-				window.draw(prot);
-			}
-			else if (typeid(*(casella.getEntita())) == typeid(Attore)) {
-				int a = i % larghezza, b = i / larghezza;
-				enem.setPosition(a * 32, b * 32);
-				enem.setTextureRect(sf::IntRect(0, 0, 32, 32));
-				window.draw(enem);
-			}
-			else {
-				std::cout << "WTF" << std::endl;
-				messages.text.setString(messages.text.getString() + "WTF \n"); // TextBox
-			}
-		}
-	}
-	auto look = messages.getText().getString().toAnsiString();
-	window.draw(messages.rect); // TextBox
-	window.draw(messages.text); // TextBox
-
-	window.display();
-}
+#include "UtilityGrafica.cpp"
 
 int pianoCavernaIsolaGrafica::playPiano()
 {
