@@ -14,20 +14,7 @@ void PianoFileGrafica::stampaPianoSuFinestra()
 	window.setFramerateLimit(60);
 	while (window.isOpen()) {
 		sf::Event evento;
-		while (window.pollEvent(evento)) {
-			switch (evento.type) {
-			case sf::Event::Closed:
-				window.close();
-				break;
-			case sf::Event::TextEntered:
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-				{
-					window.close();
-				}
-				break;
-			}
-		}
-		window.clear();
+		
 		for (unsigned int i = 0; i < pavimento.size(); i++) {
 			if (pavimento.at(i).isMuro()) {
 				int a = i % larghezza, b = i/larghezza;
@@ -44,6 +31,20 @@ void PianoFileGrafica::stampaPianoSuFinestra()
 			}
 		}
 		window.display();
+		while (window.waitEvent(evento)) {
+			switch (evento.type) {
+			case sf::Event::Closed:
+				window.close();
+				break;
+			case sf::Event::TextEntered:
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+				{
+					window.close();
+				}
+				break;
+			}
+		}
+		window.clear();
 	}
 }
 

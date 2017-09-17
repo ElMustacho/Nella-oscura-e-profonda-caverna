@@ -171,14 +171,16 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::Window &window)
 	sf::Event evento;
 	bool go = true;
 	while (go) {
-		sf::sleep(sf::milliseconds(20));
-		window.pollEvent(evento);
+		
+		window.waitEvent(evento);
 		switch (evento.type) {
 		case sf::Event::TextEntered: {
 			azione = (char)evento.text.unicode;
 			go=false;
 			break;
 		}
+		case sf::Event::Closed:
+			return 3;
 		}
 	}
 	system("CLS");
@@ -293,20 +295,7 @@ void pianoCavernaIsolaGrafica::stampaPianoSuFinestra()
 	window.setFramerateLimit(60);
 	while (window.isOpen()) {
 		sf::Event evento;
-		while (window.pollEvent(evento)) {
-			switch (evento.type) {
-			case sf::Event::Closed:
-				window.close();
-				break;
-			case sf::Event::TextEntered:
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-				{
-					window.close();
-				}
-				break;
-			}
-		}
-		window.clear();
+		
 		//OPTIMIZE
 		for (unsigned int i = 0; i < pavimento.size(); i++) {
 			auto casella = pavimento.at(i);
@@ -347,6 +336,20 @@ void pianoCavernaIsolaGrafica::stampaPianoSuFinestra()
 			
 			}
 		window.display();
+		while (window.waitEvent(evento)) {
+			switch (evento.type) {
+			case sf::Event::Closed:
+				window.close();
+				break;
+			case sf::Event::TextEntered:
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+				{
+					window.close();
+				}
+				break;
+			}
+		}
+		window.clear();
 	}
 }
 
