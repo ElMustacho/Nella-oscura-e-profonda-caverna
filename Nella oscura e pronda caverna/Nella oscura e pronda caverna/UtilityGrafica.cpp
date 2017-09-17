@@ -59,7 +59,7 @@ sf::String graphicInput(sf::RenderWindow& window, TextBox& messages)
 	sf::Event evento;
 	while (input == false && window.isOpen())
 	{
-		while (window.pollEvent(evento))
+		while (window.waitEvent(evento) && input == false )
 		{
 			switch (evento.type)
 			{
