@@ -6,6 +6,8 @@
 #include "Oggetto.h"
 #include "Attributi.h"
 #include "Equipaggiamento.h"
+#include "TextBox.h"
+
 class Entita
 {
 
@@ -32,7 +34,7 @@ public:
 	void setAttributi(Attributi attr);
 	bool addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti);
 	bool equip(int posizioneOggetto);
-	bool equip();
+	bool equip(sf::RenderWindow& window,TextBox& messages);
 	bool addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere);
 	//return true se uccide, false altrimenti
 	bool subisciDanno(Danno dannoSubito);

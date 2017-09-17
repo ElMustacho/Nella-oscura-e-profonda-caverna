@@ -309,7 +309,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 				scontro(playerPos, Danno(std::vector<double>{1}, 4000));
 				break;
 			case 'e':
-				pavimento.at(posizione(playerPos)).getEntita()->equip();
+				pavimento.at(posizione(playerPos)).getEntita()->equip(window, messages);
 				break;
 			case '0':
 				std::cout << pavimento.at(posizione(getPositionOfPlayer())).descriviOggettiTerra();

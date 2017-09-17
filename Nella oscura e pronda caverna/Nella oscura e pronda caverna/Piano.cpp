@@ -732,7 +732,7 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 
 }
 
-int Piano::playPiano()
+int Piano::playPiano(sf::RenderWindow& window, TextBox& messages)
 {
 	int spwTurni = 0;
 	int totTurni = 0;
@@ -777,10 +777,10 @@ int Piano::playPiano()
 			auto resultMovement=muoviEntita(posizioneAttivo, getPositionOfPlayer());
 		}
 		else {
-			auto resultPlayer = playerAct(a);
+			auto resultPlayer = playerAct(a, window, messages);
 			while(resultPlayer<0)
 			{ 
-				resultPlayer = playerAct(a);
+				resultPlayer = playerAct(a, window, messages);
 			}
 			if (resultPlayer == 2) {
 				turni.clear();
@@ -795,7 +795,7 @@ int Piano::playPiano()
 }
 //LOOKATME questa è la versione del terminale, quella grafica dovrà lavorare in altri modi.
 //return -1 significa che non è passato un turno, per esempio guardando il proprio inventario o per terra
-int Piano::playerAct(bool a)
+int Piano::playerAct(bool a, sf::RenderWindow& window, TextBox& messages)
 {
 		StampaChar();
 		if(a)
@@ -866,7 +866,7 @@ int Piano::playerAct(bool a)
 					scontro(playerPos, Danno(std::vector<double>{1}, 4000));
 					break;
 				case 'e':
-					pavimento.at(posizione(playerPos)).getEntita()->equip();
+					pavimento.at(posizione(playerPos)).getEntita()->equip(window, messages);
 					break;
 				case '0':
 					std::cout << pavimento.at(posizione(getPositionOfPlayer())).descriviOggettiTerra();

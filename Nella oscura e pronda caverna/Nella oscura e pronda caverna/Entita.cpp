@@ -3,8 +3,10 @@
 #include <memory>
 #include <cstdlib>
 #include <ctime>
+
 #include "Entita.h"
 #include "Danno.h"
+#include "TextBox.h"
 
 Entita::~Entita()
 {
@@ -102,23 +104,46 @@ bool Entita::equip(int posizioneOggetto)
 		}
 	return false;
 }
+
 //TODO spostami in protagonista, visto che dovrebbe essere l'unico con l'UI
-bool Entita::equip() 
+bool Entita::equip(sf::RenderWindow& window, TextBox& messages) 
 {
 	int numero = 0;
 	std::cout << std::endl;
 	for each (auto oggetto in inventario)
 	{
 		std::cout << numero << ") " << oggetto->getNome() << " --> " << oggetto->getDescrizione() << std::endl;
+		messages.text.setString(messages.text.getString() + std::to_string(numero) + ") " + oggetto->getNome() + " --> " + oggetto->getDescrizione() + "\n");
 		numero++;
 	}
 	std::cout << "Inserisci il numero dell'oggetto da inserire: ";
+	messages.text.setString(messages.text.getString() + "Inserisci il numero dell'oggetto da inserire: ");
+
 	//FIXME funziono solo con numeri, non forzarmi please
-	std::cin >> numero;
-	if (numero >= 0 && (unsigned int)numero < inventario.size())
+	std::cin >> numero; //TODO su grafica
+	bool input = false;
+	sf::String text;
+	/*while (input == false && window.isOpen())
+	{
+		sf::Event evento;
+		switch (window.pollEvent(evento))
+		{
+			case sf::Event::TextEntered:
+				if( (char)evento.text.unicode != "\n" )
+				text += (char)evento.text.unicode;
+				break;
+			default:
+		}
+	}*/
+	if (numero >= 0 && (unsigned int)numero < inventario.size()) 
+	{
+		messages.text.setString(messages.text.getString() + std::to_string(numero) + "\n");
 		return equip(numero);
-	else {
+	}
+	else 
+	{
 		std::cout << "Non ho potuto equipaggiare l'oggetto perche' non so come si fa." << std::endl;
+		messages.text.setString(messages.text.getString() + "Non ho potuto equipaggiare l'oggetto perche' non so come si fa.\n");
 		return false;
 	}
 }

@@ -11,6 +11,8 @@
 #include "PianoFileGrafica.h"
 #include "pianoCavernaIsolaGrafica.h"
 #include "SFML\Graphics.hpp"
+#include "TextBox.h"
+
 int main()
 {
 	
@@ -64,6 +66,13 @@ int main()
 	std::cout << Saitama.getAttributi().getDestrezza() << std::endl;
 	*/
 	pregen.spargiLoot(pregen.floodFill(cood(5, 5)));
-	pregen.playPiano();
+	sf::Font font;
+	if (!font.loadFromFile("arial.ttf"))
+	{
+		//err...
+	}
+	TextBox messages("Omae Wa Mou Shindeiru \n cucaracia\n", font, 1 * 32, 1 * 32);
+	sf::RenderWindow window;
+	pregen.playPiano(window, messages); //TODO just temporary
 	
 }
