@@ -99,7 +99,7 @@ bool Piano::popolaPiano()
 	return false;
 }
 
-bool Piano::spargiLoot()
+bool Piano::rSpargiLoot()
 {
 	return false;
 }

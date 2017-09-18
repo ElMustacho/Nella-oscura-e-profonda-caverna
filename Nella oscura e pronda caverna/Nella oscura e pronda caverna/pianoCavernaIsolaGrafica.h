@@ -8,7 +8,7 @@ class pianoCavernaIsolaGrafica :
 public:
 	int playPiano();
 	int playerAct(bool loquace, sf::Window &window);
-	pianoCavernaIsolaGrafica(int larghezza, int lunghezza, std::string posizioneFile="");
+	pianoCavernaIsolaGrafica(int larghezza, int lunghezza, std::string posizioneFile = "", std::vector<std::shared_ptr<Oggetto>> oggettiPossibili = {});
 	void stampaPianoSuFinestra();
 	~pianoCavernaIsolaGrafica();
 private:

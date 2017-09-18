@@ -72,7 +72,7 @@ int main()
 	Saitama.setAttributi(dexAlta);
 	std::cout << Saitama.getAttributi().getDestrezza() << std::endl;
 	*/
-	pregen.spargiLoot(pregen.floodFill(cood(5, 5)));
+	pregen.rSpargiLoot(pregen.floodFill(cood(5, 5)));
 	auto g = pregen.playPiano();
 	if (g == 1) {
 		std::cout << "HHHHHHHHHMMMMMMMMM" << std::endl;

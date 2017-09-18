@@ -4,10 +4,11 @@
 #include <ctime>
 #include <iostream>
 #include <algorithm>
-pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza)
+pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> oggettiPossibili)
 {
 	this->larghezza = larghezza;
 	this->lunghezza = lunghezza;
+	oggettiGenerabili = oggettiPossibili;
 	noise::module::Perlin perlin;
 	std::srand((unsigned int)time(nullptr));
 	double random = (double)(rand() % 50) / 2;
@@ -44,7 +45,7 @@ do {
 		std::cout << "D'oh" << std::endl;
 	else
 		placeEntita(prot, placeProtagonista);
-	spargiLoot(caselleOk);
+	rSpargiLoot(caselleOk);
 	caselleOk.erase(std::remove(caselleOk.begin(), caselleOk.end(), getPositionOfPlayer()), caselleOk.end());
 	placeEntita(entityFactory(1),caselleOk[rand()%caselleOk.size()]);
 	auto smh = caselleOk[rand() % caselleOk.size()];
@@ -57,10 +58,16 @@ pianoCavernaIsola::~pianoCavernaIsola()
 	
 }
 
-bool pianoCavernaIsola::spargiLoot(std::vector<cood> posizioniValide) {
+bool pianoCavernaIsola::rSpargiLoot(std::vector<cood> posizioniValide) {
+	if(oggettiGenerabili.size()==0)
 	for (int i = (lunghezza + larghezza) / 4; i >= 0; i--) {
 		auto oggettoInserito = objectFactory(rand()%5);
 		pavimento.at(posizione(posizioniValide[rand() % posizioniValide.size()])).addOggetto(oggettoInserito);
 	}
+	else
+		for (int i = (lunghezza + larghezza) / 4; i >= 0; i--) {
+			auto oggettoInserito = oggettiGenerabili.at(rand()%oggettiGenerabili.size());
+			pavimento.at(posizione(posizioniValide[rand() % posizioniValide.size()])).addOggetto(oggettoInserito);
+		}
 	return true;
 }

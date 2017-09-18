@@ -32,7 +32,7 @@ PianoFile::PianoFile(std::string posizione, bool &successo) : Piano()
 	//TODO addobjects
 }
 
-bool PianoFile::spargiLoot(std::vector<cood> posizioniValide) {
+bool PianoFile::rSpargiLoot(std::vector<cood> posizioniValide) {
 	for (int i = (lunghezza + larghezza) / 10; i >= 0; i--) {
 		auto oggettoInserito = objectFactory(rand() % 5);
 		auto coordinate = posizioniValide[rand() % posizioniValide.size()];

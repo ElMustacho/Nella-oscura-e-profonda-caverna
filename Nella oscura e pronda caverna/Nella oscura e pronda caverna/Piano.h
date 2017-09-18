@@ -87,7 +87,7 @@ public:
 	int playerAct(bool loquace);
 	void StampaFileChar();
 	bool popolaPiano();
-	bool spargiLoot();
+	bool rSpargiLoot();
 	bool placeEntita(std::shared_ptr<Entita> placeMe, cood coord);
 	Piano();
 	Piano(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> lootPossibile, std::vector<std::shared_ptr<Entita>> entitaPossibili);
