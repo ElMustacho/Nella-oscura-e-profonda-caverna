@@ -147,7 +147,7 @@ int pianoCavernaIsolaGrafica::playPiano()
 }
 
 
-pianoCavernaIsolaGrafica::pianoCavernaIsolaGrafica(int larghezza, int lunghezza, std::string posizioneFile, std::vector<std::shared_ptr<Oggetto>> oggettiPossibili):pianoCavernaIsola(larghezza,lunghezza,oggettiPossibili)
+pianoCavernaIsolaGrafica::pianoCavernaIsolaGrafica(int larghezza, int lunghezza, std::string posizioneFile, std::vector<std::shared_ptr<Oggetto>> oggettiPossibili, std::shared_ptr<Entita> player):pianoCavernaIsola(larghezza,lunghezza,oggettiPossibili,player)
 {
 	sf::Image immagineDim;
 	if (posizioneFile == "") {

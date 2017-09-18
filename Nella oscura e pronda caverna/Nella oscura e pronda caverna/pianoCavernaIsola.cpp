@@ -4,7 +4,7 @@
 #include <ctime>
 #include <iostream>
 #include <algorithm>
-pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> oggettiPossibili)
+pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> oggettiPossibili, std::shared_ptr<Entita> player)
 {
 	this->larghezza = larghezza;
 	this->lunghezza = lunghezza;
@@ -32,7 +32,11 @@ pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza, std::vector<s
 	}
 	cood placeProtagonista(0,0);
 	int counter=0;
-	std::shared_ptr<Entita> prot = entityFactory();
+	std::shared_ptr<Entita> prot;
+	if (player != nullptr)
+		prot = player;
+	else
+		prot = entityFactory();
 	std::vector<cood> caselleOk;
 do {
 		

@@ -15,9 +15,10 @@ int DungeonGraficaIsola::playDungeon()
 	oggettiInseribili.push_back(oggetto2);
 	oggettiInseribili.push_back(oggetto3);
 	oggettiInseribili.push_back(oggetto4);
-
+	std::shared_ptr<Entita> player=nullptr;
 	while (pianiPercorsi < getNumPiani()) {
-		piani.push_back(pianoCavernaIsolaGrafica(30,18,"",oggettiInseribili));
+		piani.push_back(pianoCavernaIsolaGrafica(30,18,"",oggettiInseribili,player));
+		player = piani.back().getVectorEntita().at(0);
 		result = piani.back().playPiano();
 		if (result == 1) {
 			pianiPercorsi++;
