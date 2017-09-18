@@ -18,7 +18,7 @@ TEST(TestPiano, TestCostruzioneGenericaMultiplaGeneratore1) { //Prova tante volt
 	std::vector<std::shared_ptr<Entita>> tabellaEntita; //VUOTA
 	Protagonista player("Personaggio", inventario, Attributi(), Equipaggiamento(), 4, 15, 400);
 	//Protagonista player("Personaggio", Equipaggiamento(), Attributi(), Equipaggiamento(), 1, 5., 40);
-	for (int k = 0; k < 5; k++)
+	for (int k = 0; k < 200; k++)
 	{
 		Piano primoLivello(50, 50, inventario, tabellaEntita);
 		int stanzeCostruite = 0;
@@ -37,7 +37,7 @@ TEST(TestPiano, TestCostruzioneGenericaMultiplaGeneratore1) { //Prova tante volt
 				stanzeCostruite++;
 		}
 		while (!primoLivello.at((int)rand() % 50, (int)rand() % 50).setEntita(std::make_shared<Protagonista>(player))) {}
-		if (k % 5 == 0)
+		if (k % 50 == 0)
 			std::cout << "Piano numero " << k << std::endl;
 	}
 	ASSERT_TRUE(true);

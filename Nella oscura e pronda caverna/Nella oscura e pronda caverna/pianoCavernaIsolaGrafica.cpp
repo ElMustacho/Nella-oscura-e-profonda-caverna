@@ -149,12 +149,22 @@ int pianoCavernaIsolaGrafica::playPiano()
 
 pianoCavernaIsolaGrafica::pianoCavernaIsolaGrafica(int larghezza, int lunghezza, std::string posizioneFile):pianoCavernaIsola(larghezza,lunghezza)
 {
+	sf::Image immagineDim;
 	if (posizioneFile == "") {
 		this->posizioneFile = "Tileset/FirstSeriousTile.png";
 	}
 	else
 		this->posizioneFile = posizioneFile;
 	texturePavimento.loadFromFile(this->posizioneFile);
+	auto maxX = texturePavimento.getSize().x;
+	auto maxY = texturePavimento.getSize().y;
+	
+	for (int i = 0; i < pavimento.size(); i++) {
+		pavimento.at(i).setMaxxTexture(maxX);
+		pavimento.at(i).setMaxyTexture(maxY);
+		pavimento.at(i).chooseTile();
+	}
+	
 }
 
 int pianoCavernaIsolaGrafica::playerAct(bool a, sf::Window &window)

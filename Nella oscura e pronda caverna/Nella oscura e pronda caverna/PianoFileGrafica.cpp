@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "SFML\Graphics.hpp"
+#include <random>
 //TODO vecchia versione
 void PianoFileGrafica::stampaPianoSuFinestra()
 {
@@ -48,11 +49,24 @@ void PianoFileGrafica::stampaPianoSuFinestra()
 	}
 }
 
-PianoFileGrafica::PianoFileGrafica(std::string posizione, bool successo):PianoFile(posizione, successo)
+PianoFileGrafica::PianoFileGrafica(std::string posizione, bool successo, std::string pathToFile):PianoFile(posizione, successo)
 {
+	sf::Image immagineDim;
+	if (pathToFile == "")
+		pathToFile = "Tileset/SuperSimpleTileSet.png";
+	immagineDim.loadFromFile(pathToFile);
+	auto maxX = immagineDim.getSize().x;
+	auto maxY = immagineDim.getSize().y;
+	for (int i = 0; i < pavimento.size(); i++) {
+		pavimento.at(i).setMaxxTexture(maxX);
+		pavimento.at(i).setMaxyTexture(maxY);
+		pavimento.at(i).chooseTile();
+	}
+
 }
 
 
 PianoFileGrafica::~PianoFileGrafica()
 {
+	
 }
