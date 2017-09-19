@@ -69,13 +69,16 @@ sf::String graphicInput(sf::RenderWindow& window, TextBox& messages)
 				{
 					input = true;
 				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete)) //
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
 				{
-					text.erase(text.getSize() - 1);
-					auto  tempStr = messages.text.getString();
-					tempStr.erase(tempStr.getSize() - 1);
-					messages.text.setString(tempStr);
-					std::cout << (int)evento.text.unicode << std::endl;
+					if (text.getSize() > 0)
+					{
+						text.erase(text.getSize() - 1);
+						auto  tempStr = messages.text.getString();
+						tempStr.erase(tempStr.getSize() - 1);
+						messages.text.setString(tempStr);
+						std::cout << (int)evento.text.unicode << std::endl;
+					}
 				}
 				else
 				{
@@ -165,17 +168,21 @@ sf::String graphicInput2( sf::String text )
 						windowRefresh2(window, messages);
 					}
 				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete)) // CHECK Non prende il delete
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) // CHECK Non prende il delete
 				{
-					text.erase(text.getSize() - 1);
+					if (text.getSize() > 0)
+					{
+						text.erase(text.getSize() - 1);
 
-					auto  tempStr = messages.text.getString();
-					tempStr.erase(tempStr.getSize() - 1);
+						auto  tempStr = messages.text.getString();
+						tempStr.erase(tempStr.getSize() - 1);
 
-					messages.text.setString(tempStr);
-					std::cout << (int)evento.text.unicode << std::endl;
-					// Refresh
-					windowRefresh2(window, messages);
+						messages.text.setString(tempStr);
+						std::cout << (int)evento.text.unicode << std::endl;
+						// Refresh
+						windowRefresh2(window, messages);
+					}
+					
 				}
 				else
 				{
