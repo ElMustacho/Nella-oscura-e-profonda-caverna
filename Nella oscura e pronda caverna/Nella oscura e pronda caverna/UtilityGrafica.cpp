@@ -99,3 +99,92 @@ sf::String graphicInput(sf::RenderWindow& window, TextBox& messages)
 	}
 	return text;
 }
+
+void windowRefresh2(sf::RenderWindow& window, TextBox messages)
+{
+	window.clear();
+
+	window.draw(messages.rect); // TextBox
+	window.draw(messages.text); // TextBox
+
+	window.display();
+}
+
+sf::String graphicInput2( sf::String text ) //"Digita l'input richiesto (Invio per confermare): "
+{
+	int larghezza = 20;
+	int lunghezza = 10;
+
+	sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza, 32), "Input here", sf::Style::None);
+	window.setFramerateLimit(60);
+
+	sf::Event evento;
+	
+	sf::Font font;
+	if (!font.loadFromFile("arial.ttf"))
+	{
+		//err...
+	}
+	//sf::Text messages( text, font, 18 );
+	TextBox messages(text, font, larghezza * 32 -5, lunghezza * 32 -5);
+
+	windowRefresh2(window, messages);
+
+	text = "";
+
+	bool input = false;
+	while (input == false && window.isOpen())
+	{
+		while (window.waitEvent(evento) && input == false)
+		{
+			switch (evento.type)
+			{
+			case sf::Event::TextEntered:
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+				{
+					if (text.getSize() > 0)
+					{
+						input = true;
+						window.close();
+					}
+					else
+					{
+						messages.text.setString(messages.text.getString() + "\n Inserisci un valore prima di premere Invio: ");
+						windowRefresh2(window, messages);
+					}
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete)) // CHECK Non prende il delete
+				{
+					text.erase(text.getSize() - 1);
+
+					auto  tempStr = messages.text.getString();
+					tempStr.erase(tempStr.getSize() - 1);
+
+					messages.text.setString(tempStr);
+					std::cout << (int)evento.text.unicode << std::endl;
+					// Refresh
+					windowRefresh2(window, messages);
+				}
+				else
+				{
+					if (evento.text.unicode >= '0' && evento.text.unicode <= '9')
+					{
+						text += (char)evento.text.unicode;
+						std::cout << (char)evento.text.unicode << std::endl;
+						messages.text.setString(messages.text.getString() + text); 
+						// Refresh
+						windowRefresh2(window, messages);
+					}
+				}
+				break;
+
+			case sf::Event::Closed:
+				window.close();
+				return sf::String();
+			}
+
+		}
+	}
+	std::cout << "->" << text.toAnsiString() <<std::endl;
+	return text;
+}

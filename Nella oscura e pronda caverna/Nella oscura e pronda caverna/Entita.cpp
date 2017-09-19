@@ -125,7 +125,10 @@ bool Entita::equip(sf::RenderWindow& window, TextBox& messages)
 	//FIXME funziono solo con numeri, non forzarmi please
 	//std::cin >> numero; 
 	
-	numero = atoi( graphicInput(window, messages).toAnsiString().c_str() );
+	//numero = atoi( graphicInput(window, messages).toAnsiString().c_str() );
+	auto convert = graphicInput2( messages.text.getString() );
+	numero = std::stoi(convert.toAnsiString(), nullptr);
+
 	if (numero >= 0 && (unsigned int)numero < inventario.size()) 
 	{
 		messages.text.setString(messages.text.getString() + "\n");

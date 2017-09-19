@@ -51,7 +51,7 @@ int pianoCavernaIsolaGrafica::playPiano()
 		//sf::err() << "font error -> An error has occured during font loading from file"; //CHECK
 	}
 
-	TextBox messages("Omae Wa Mou Shindeiru \n cucaracia\n", font, larghezza * 32, lunghezza * 32);
+	TextBox messages("Omae Wa Mou Shindeiru \n cucaracia\n", font, larghezza * 32, lunghezza * 32, true);
 
 	while (!turni.empty()) {
 		//Here begins trouble
