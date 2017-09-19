@@ -3,19 +3,25 @@
 
 #include "SFML\Graphics.hpp"
 
-int pianoCavernaIsolaGrafica::playPiano()
+int pianoCavernaIsolaGrafica::playPiano(char bloat)
 {
 	int spwTurni = 0;
 	int totTurni = 0;
 	bool a;
-	char input = '1';
-	std::cout << "Bloat text? y/n: ";
-	while (input != 'y'&&input != 'n')
-		std::cin >> input;
-	if (input == 'y')
+	if (bloat == 'y')
 		a = true;
-	else
+	else if (bloat == 'n')
 		a = false;
+	else {
+		std::cout << "Bloat text? y/n: ";
+		while (bloat != 'y'&&bloat != 'n')
+			std::cin >> bloat;
+		if (bloat == 'y')
+			a = true;
+		else
+			a = false;
+	}
+	
 	std::deque<std::shared_ptr<Entita>> turni;
 	for each (auto it in entitaPresenti)
 	{
@@ -115,6 +121,7 @@ int pianoCavernaIsolaGrafica::playPiano()
 
 			continue;
 		}
+		if (a)
 		std::cout << "Adesso sta a " << attivo->getNome() << std::endl;
 		auto posizioneAttivo = getPositionOfEntity(attivo);
 		if (getPositionOfPlayer() != posizioneAttivo) {
@@ -147,7 +154,7 @@ int pianoCavernaIsolaGrafica::playPiano()
 }
 
 
-pianoCavernaIsolaGrafica::pianoCavernaIsolaGrafica(int larghezza, int lunghezza, std::string posizioneFile, std::vector<std::shared_ptr<Oggetto>> oggettiPossibili, std::shared_ptr<Entita> player):pianoCavernaIsola(larghezza,lunghezza,oggettiPossibili,player)
+pianoCavernaIsolaGrafica::pianoCavernaIsolaGrafica(int larghezza, int lunghezza, std::string posizioneFile, std::vector<std::shared_ptr<Oggetto>> oggettiPossibili, std::shared_ptr<Entita> player, std::vector<std::shared_ptr<Entita>> entitaGenerabili):pianoCavernaIsola(larghezza,lunghezza,oggettiPossibili,player, entitaGenerabili)
 {
 	sf::Image immagineDim;
 	if (posizioneFile == "") {

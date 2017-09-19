@@ -4,11 +4,12 @@
 #include <ctime>
 #include <iostream>
 #include <algorithm>
-pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> oggettiPossibili, std::shared_ptr<Entita> player)
+pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> oggettiPossibili, std::shared_ptr<Entita> player, std::vector<std::shared_ptr<Entita>> entitaGenerabili)
 {
 	this->larghezza = larghezza;
 	this->lunghezza = lunghezza;
 	oggettiGenerabili = oggettiPossibili;
+	this->entitaGenerabili = entitaGenerabili;
 	noise::module::Perlin perlin;
 	std::srand((unsigned int)time(nullptr));
 	double random = (double)(rand() % 50) / 2;
@@ -20,7 +21,7 @@ pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza, std::vector<s
 			double dx = (double)abs(i - lunghezza / 2) / (lunghezza / 2); //Posizione relativa dal centro
 			double dy = (double)abs(k - larghezza / 2) / (larghezza / 2); //Idem
 			double d = sqrt(pow(dx, 2) + pow(dy, 2)) / sqrt(2); //Distanza relativa dal centro
-			double valueAfter = value + 0.8 - 10 * pow(d, 7); //Trasfroma la poltiglia di caselle in qualcosa che sembra un isola
+			double valueAfter = value + 0.8 - 7 * pow(d, 7); //Trasfroma la poltiglia di caselle in qualcosa che sembra un isola
 			if (valueAfter > 0.4) {
 				pavimento.push_back(Casella(true));
 			}
@@ -51,9 +52,17 @@ do {
 		placeEntita(prot, placeProtagonista);
 	rSpargiLoot(caselleOk);
 	caselleOk.erase(std::remove(caselleOk.begin(), caselleOk.end(), getPositionOfPlayer()), caselleOk.end());
-	placeEntita(entityFactory(1),caselleOk[rand()%caselleOk.size()]);
-	auto smh = caselleOk[rand() % caselleOk.size()];
-	pavimento.at(posizione(smh)).setEvento(1);
+	std::shared_ptr<Entita> entitaToPlace;
+	entitaToPlace = entityFactory(1);
+	if(entitaToPlace!=nullptr)
+		placeEntita(entitaToPlace, caselleOk[rand() % caselleOk.size()]);
+	entitaToPlace = entityFactory(1);
+	if (entitaToPlace != nullptr)
+		placeEntita(entitaToPlace, caselleOk[rand() % caselleOk.size()]);
+	entitaToPlace = entityFactory(3);
+	if (entitaToPlace != nullptr)
+		placeEntita(entitaToPlace, caselleOk[rand() % caselleOk.size()]);
+	pavimento.at(posizione(caselleOk[rand() % caselleOk.size()])).setEvento(1);
 }
 
 

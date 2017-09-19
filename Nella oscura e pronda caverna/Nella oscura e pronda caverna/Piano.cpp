@@ -946,15 +946,20 @@ std::shared_ptr<Entita> Piano::entityFactory(std::string)
 std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
 {
 	std::shared_ptr<Entita> appoggio;
-	switch (codiceID) {
-	case 0: {
-		//TODO qui ovviamente dovrà esserci il modo di caricare un personaggio preesistente o di invocare il creatore di personaggi, per ora lo tratto come un qualunque idiota
+	if (codiceID == 0) {
 		std::vector<std::shared_ptr<Oggetto>> inventario{ std::shared_ptr<Oggetto>(new Oggetto(0.5, "Una pietra", "Terra condensata.", 0)) };
 		Attributi nellaMedia(4, 4, 4, 4, 4, 4, 4, 4);
 		Equipaggiamento equipaggiamento; //Picche, non hai nulla scemo
 		appoggio = std::make_shared<Protagonista>(Protagonista("Medioman", inventario, nellaMedia, equipaggiamento, 1, 0, 0));
-		break;
+		return appoggio;
 	}
+	if (entitaGenerabili.size() != 0) {
+		auto movement = *entitaGenerabili.at(codiceID%entitaGenerabili.size());
+		appoggio = std::make_shared<Attore>(movement.getNome(),movement.getInventario(),movement.getAttributi(),movement.getEquipaggiamento(), std::dynamic_pointer_cast<Attore>(entitaGenerabili.at(codiceID%entitaGenerabili.size()))->getExperienceDrop());
+		return appoggio;
+	}
+	switch (codiceID) {
+	
 	case 1:
 	{// Goblin scrauso, puzzone e nudo
 		std::vector<std::shared_ptr<Oggetto>> inventario;
