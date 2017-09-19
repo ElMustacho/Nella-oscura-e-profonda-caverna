@@ -52,6 +52,7 @@ void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int
 	window.display();
 }
 
+//TODO Introduce refresh here (catena di eventi disastrosa)
 sf::String graphicInput(sf::RenderWindow& window, TextBox& messages)
 {
 	bool input = false;
@@ -83,6 +84,7 @@ sf::String graphicInput(sf::RenderWindow& window, TextBox& messages)
 						text += (char)evento.text.unicode;
 						std::cout << (char)evento.text.unicode << std::endl;
 						messages.text.setString(messages.text.getString() + text); // Refresh
+						//windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
 					}
 				}
 				break;
