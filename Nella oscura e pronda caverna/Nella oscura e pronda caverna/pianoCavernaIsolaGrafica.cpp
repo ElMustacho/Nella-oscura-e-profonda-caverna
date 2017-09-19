@@ -27,7 +27,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 	{
 		turni.push_back(it.first);
 	}
-	sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza, 32), "Cartografia della mappa");
+	sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza, 32), "Cartografia della mappa", !sf::Style::Resize|sf::Style::Close);
 	sf::Sprite tiles;
 	tiles.setTexture(texturePavimento);
 	sf::Texture protTexture;
