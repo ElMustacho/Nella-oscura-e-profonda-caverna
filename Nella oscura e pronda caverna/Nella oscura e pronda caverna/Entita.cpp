@@ -120,7 +120,7 @@ bool Entita::equip(sf::RenderWindow& window, TextBox& messages)
 	std::cout << "Inserisci il numero dell'oggetto da inserire (Invio per confermare): ";
 	messages.text.setString(messages.text.getString() + "Inserisci il numero dell'oggetto da inserire (Invio per confermare): ");
 
-	
+	//windowMessageRefresh(window, messages);
 
 	//FIXME funziono solo con numeri, non forzarmi please
 	//std::cin >> numero; 

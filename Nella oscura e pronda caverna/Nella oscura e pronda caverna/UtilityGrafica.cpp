@@ -110,7 +110,20 @@ void windowRefresh2(sf::RenderWindow& window, TextBox messages)
 	window.display();
 }
 
-sf::String graphicInput2( sf::String text ) //"Digita l'input richiesto (Invio per confermare): "
+void windowMessageRefresh(sf::RenderWindow& window, TextBox messages)
+{
+	window.draw(messages.rect);
+	auto strTemp = messages.text.getString();
+
+	messages.text.setString("");
+	window.draw(messages.text);
+
+	messages.text.setString(strTemp);
+	window.draw(messages.text);
+	window.display();
+}
+
+sf::String graphicInput2( sf::String text )
 {
 	int larghezza = 20;
 	int lunghezza = 10;
@@ -125,7 +138,6 @@ sf::String graphicInput2( sf::String text ) //"Digita l'input richiesto (Invio p
 	{
 		//err...
 	}
-	//sf::Text messages( text, font, 18 );
 	TextBox messages(text, font, larghezza * 32 -5, lunghezza * 32 -5);
 
 	windowRefresh2(window, messages);
