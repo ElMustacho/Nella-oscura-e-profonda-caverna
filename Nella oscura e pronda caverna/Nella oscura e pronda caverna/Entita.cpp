@@ -120,24 +120,23 @@ bool Entita::equip(sf::RenderWindow& window, TextBox& messages)
 	std::cout << "Inserisci il numero dell'oggetto da inserire (Invio per confermare): ";
 	messages.text.setString(messages.text.getString() + "Inserisci il numero dell'oggetto da inserire (Invio per confermare): ");
 
-	//windowMessageRefresh(window, messages);
 
 	//FIXME funziono solo con numeri, non forzarmi please
 	//std::cin >> numero; 
 	
-	//numero = atoi( graphicInput(window, messages).toAnsiString().c_str() );
 	auto convert = graphicInput2( messages.text.getString() );
 	numero = std::stoi(convert.toAnsiString(), nullptr);
 
 	if (numero >= 0 && (unsigned int)numero < inventario.size()) 
 	{
-		messages.text.setString(messages.text.getString() + "\n");
+		messages.text.setString("");
+		
 		return equip(numero);
 	}
 	else 
 	{
 		std::cout << "Non ho potuto equipaggiare l'oggetto perche' non so come si fa." << std::endl;
-		messages.text.setString(messages.text.getString() + "Non ho potuto equipaggiare l'oggetto perche' non so come si fa.\n");
+		messages.text.setString("Non ho potuto equipaggiare l'oggetto perche' non so come si fa.\n");
 		return false;
 	}
 }
@@ -152,7 +151,7 @@ bool Entita::addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere)
 }
 
 //return true se uccide, false altrimenti
-bool Entita::subisciDanno(Danno dannoSubito)
+bool Entita::subisciDanno(Danno dannoSubito, TextBox& messages)
 {
 	double totalehp = 0;
 	//LOOKATME potremmo per esempio lasciare che alcuni tipi di danno abbiano altri effetti, tipo il danno mentale infligge danni alla barra delle magia
@@ -162,10 +161,11 @@ bool Entita::subisciDanno(Danno dannoSubito)
 	}
 	attributi.setHp((int)(attributi.getHp()-totalehp));
 	if (attributi.getHp() < 0) { //dead
-		onDeath();
+		onDeath(messages);
 		return true;
 	}
 	std::cout << nome << " ha sofferto " << totalehp << " danni!" << std::endl;
+	messages.text.setString(messages.text.getString() + nome + " ha sofferto " + std::to_string(totalehp) + " danni!\n");
 	return false;
 }
 
@@ -182,13 +182,15 @@ double Entita::carryWeight()
 }
 
 
-void Entita::onDeath()
+void Entita::onDeath(TextBox& messages)
 {
 	auto peso = attributi.getForza() * 10 + attributi.getTempra() * 10 + attributi.getDestrezza() * 2 + attributi.getIntelligenza()*0.25; //L'intelligenza significa la dimensione del cervello. L'intelligenza non dipende dalla quantità di cervello nel mondo reale (dipende dalle sinapsi), ma questo è un gioco.
 	auto object = std::make_shared<Oggetto>(Oggetto(peso, "Cadavere di " + nome, "La carcassa di " + nome + " oramai esanime.", 0));
 	addInventario(object);
 	std::cout << nome << " e' morto!" << std::endl; //TODOFAR implementa sesso
+	messages.text.setString(messages.text.getString() + nome + " e' morto!\n" );
 }
+
 std::string Entita::describeInventario() {
 	std::string returnStringa;
 	for (auto i = inventario.begin(); i != inventario.end(); i++) {

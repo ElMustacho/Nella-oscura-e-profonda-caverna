@@ -205,7 +205,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 					messages.text.setString(messages.text.getString() + "Scontro!\n"); // TextBox
 				}
 					
-				scontro(toPosizione, playerPos);
+				scontro(toPosizione, playerPos, messages);
 				return 0;
 			}
 			else {
@@ -223,7 +223,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 			case '5':
 				return 2;
 			case 's':
-				scontro(playerPos, Danno(std::vector<double>{1}, 4000));
+				scontro(playerPos, Danno(std::vector<double>{1}, 4000), messages);
 				break;
 			case 'e':
 				pavimento.at(posizione(playerPos)).getEntita()->equip(window, messages);

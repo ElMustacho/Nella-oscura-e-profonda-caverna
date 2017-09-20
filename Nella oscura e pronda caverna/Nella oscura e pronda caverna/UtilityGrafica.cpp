@@ -103,16 +103,6 @@ sf::String graphicInput(sf::RenderWindow& window, TextBox& messages)
 	return text;
 }
 
-void windowRefresh2(sf::RenderWindow& window, TextBox messages)
-{
-	window.clear();
-
-	window.draw(messages.rect); // TextBox
-	window.draw(messages.text); // TextBox
-
-	window.display();
-}
-
 void windowMessageRefresh(sf::RenderWindow& window, TextBox messages)
 {
 	window.draw(messages.rect);
@@ -123,6 +113,16 @@ void windowMessageRefresh(sf::RenderWindow& window, TextBox messages)
 
 	messages.text.setString(strTemp);
 	window.draw(messages.text);
+	window.display();
+}
+
+void windowRefresh2(sf::RenderWindow& window, TextBox messages)
+{
+	window.clear();
+
+	window.draw(messages.rect);
+	window.draw(messages.text);
+
 	window.display();
 }
 
@@ -162,27 +162,26 @@ sf::String graphicInput2( sf::String text )
 						input = true;
 						window.close();
 					}
-					else
+					/*else
 					{
 						messages.text.setString(messages.text.getString() + "\n Inserisci un valore prima di premere Invio: ");
 						windowRefresh2(window, messages);
-					}
+					}*/
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) // CHECK Non prende il delete
 				{
 					if (text.getSize() > 0)
 					{
+						
 						text.erase(text.getSize() - 1);
 
 						auto  tempStr = messages.text.getString();
 						tempStr.erase(tempStr.getSize() - 1);
-
 						messages.text.setString(tempStr);
+
 						std::cout << (int)evento.text.unicode << std::endl;
-						// Refresh
 						windowRefresh2(window, messages);
 					}
-					
 				}
 				else
 				{
@@ -190,8 +189,7 @@ sf::String graphicInput2( sf::String text )
 					{
 						text += (char)evento.text.unicode;
 						std::cout << (char)evento.text.unicode << std::endl;
-						messages.text.setString(messages.text.getString() + text); 
-						// Refresh
+						messages.text.setString(messages.text.getString() + (char)evento.text.unicode);
 						windowRefresh2(window, messages);
 					}
 				}
