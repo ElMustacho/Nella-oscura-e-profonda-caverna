@@ -39,9 +39,6 @@
     <ClInclude Include="Casella.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="Tileset.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
     <ClInclude Include="Entita.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
@@ -78,6 +75,12 @@
     <ClInclude Include="pianoCavernaIsolaGrafica.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="TextBox.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilityGrafica.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Oggetto.cpp">
@@ -105,9 +108,6 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="Casella.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
-    <ClCompile Include="Tileset.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="Entita.cpp">
@@ -144,6 +144,12 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="pianoCavernaIsolaGrafica.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="TextBox.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilityGrafica.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>

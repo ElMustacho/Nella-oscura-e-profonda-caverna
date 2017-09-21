@@ -143,7 +143,8 @@
     <ClInclude Include="Protagonista.h" />
     <ClInclude Include="Scrigno.h" />
     <ClInclude Include="Sprite.h" />
-    <ClInclude Include="Tileset.h" />
+    <ClInclude Include="TextBox.h" />
+    <ClInclude Include="UtilityGrafica.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arma.cpp" />
@@ -167,7 +168,8 @@
     <ClCompile Include="Protagonista.cpp" />
     <ClCompile Include="Scrigno.cpp" />
     <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="Tileset.cpp" />
+    <ClCompile Include="TextBox.cpp" />
+    <ClCompile Include="UtilityGrafica.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libnoise.dll" />

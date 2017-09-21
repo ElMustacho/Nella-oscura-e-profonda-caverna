@@ -58,7 +58,7 @@ pianoCavernaIsola::~pianoCavernaIsola()
 bool pianoCavernaIsola::spargiLoot(std::vector<cood> posizioniValide) {
 	for (int i = (lunghezza + larghezza) / 4; i >= 0; i--) {
 		auto oggettoInserito = objectFactory(rand()%5);
-		pavimento.at(rand() % posizioniValide.size()).addOggetto(oggettoInserito);
+		pavimento.at(posizione(posizioniValide[rand() % posizioniValide.size()])).addOggetto(oggettoInserito);
 	}
 	return true;
 }

@@ -1,24 +1,51 @@
 #include "Casella.h"
 #include "Scrigno.h"
 #include <iostream>
-#include <cstdlib>
 #include <algorithm>
-Casella::Casella(Tileset tileset, std::list<std::shared_ptr<Oggetto>> oggetti, std::shared_ptr<Entita> entita, bool trasparenza, bool attraversabile, int evento)
+#include <ctime>
+#include <random>
+Casella::Casella(std::list<std::shared_ptr<Oggetto>> oggetti, std::shared_ptr<Entita> entita, bool trasparenza, bool attraversabile, int evento, std::string pathToFile, int x, int y)
 {
-	this->tileset = tileset;
 	this->oggetti = oggetti;
 	this->entita = entita;
 	this->trasparenza = trasparenza;
 	this->attraversabile = attraversabile;
 	this->evento = evento;
+	this->pathToTile = pathToFile;
+	if (x < 0)
+		x = 0;
+	else
+	xTexture = x;
+	if (y < 0)
+		y = 0;
+	else
+	yTexture = y;
+	if (pathToFile == "")
+		pathToFile = "Tileset/Test.png";
+	sf::Image temp;
+	temp.loadFromFile(pathToFile);
+	maxxTexture = temp.getSize().x;
+	maxyTexture = temp.getSize().y;
+	chooseTile();
 }
 
 //Costruttore rapido e semplice, passare false per parete, passare true per terreno attraversabile
-Casella::Casella(bool default) {
-	tileset = Tileset(); //FIX ME quando Tileset avrà senso questo dovrà essere qualcosa di concreto.
+Casella::Casella(bool default, std::string pathToFile) {
+	srand((unsigned int)time(nullptr));
 	trasparenza = default; //Se è una parete non è trasparente
 	attraversabile = default; //Se è una parete non è attraversabile
 	evento = 0; //Di default non accade nulla
+	pathToTile = pathToFile;
+	xTexture = 0;
+	yTexture = 0;
+	if (pathToFile == "")
+		pathToFile = "Tileset/FirstSeriousTile.png";
+	pathToTile = pathToFile;
+	sf::Image temp;
+	temp.loadFromFile(pathToFile);
+	maxxTexture = temp.getSize().x;
+	maxyTexture = temp.getSize().y;
+	chooseTile();
 }
 
 bool Casella::isMuro()
@@ -27,6 +54,25 @@ bool Casella::isMuro()
 		if(!trasparenza)
 			return true;
 	return false;
+}
+
+	
+void Casella::chooseTile()
+{
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_real_distribution<double> dist(0., (double)maxxTexture / 32);
+	xTexture =(int) dist(mt); //sceglie tra una possibile variante della stessa categoria di casella.
+	//Decide la categoria di casella, ad esempio parete, pavimento, corridoio etc.
+	if (isMuro())
+		yTexture = 0;
+	else
+		yTexture = 1;
+}
+
+sf::IntRect Casella::getRectSprite() const
+{
+	return sf::IntRect(xTexture*32,yTexture*32,xTexture*32+32,yTexture*32+32);
 }
 //Cancella tutto e ripopola con quelli dati
 void Casella::setOggetti(std::list<std::shared_ptr<Oggetto>> oggetti) 
@@ -39,13 +85,14 @@ void Casella::pickup() {
 		std::list<std::shared_ptr<Oggetto>> moving;
 		moving.splice(moving.end(), oggetti);
 		entita->addInventario(moving);
+		chooseTile();
 	}
 }
 //TODO raccoglie solo qualche oggetto
 void Casella::pickup(std::vector<unsigned int> posizioni) {
-
+	chooseTile();
 }
-
+//Drop all
 void Casella::drop()
 {
 	for each (std::shared_ptr<Oggetto> oggettoMoving in entita->getInventario())
@@ -53,11 +100,9 @@ void Casella::drop()
 		oggetti.push_back(oggettoMoving);
 	}
 	entita->getInventario().clear();
+	chooseTile();
 }
-//TODO abbandona solo quanche oggetto
-void Casella::drop(std::vector<unsigned int> posizioni)
-{
-}
+
 
 std::string Casella::descriviOggettiTerra()
 {
@@ -71,10 +116,16 @@ std::string Casella::descriviOggettiTerra()
 
 void Casella::addOggetto(std::shared_ptr<Oggetto> oggetto) {
 	oggetti.push_back(oggetto);
+	chooseTile();
 }
 //TODO
 void Casella::addOggetti(std::vector<std::shared_ptr<Oggetto>> oggetti)
 {
+	for each (auto obj in oggetti)
+	{
+		this->oggetti.push_back(obj);
+	}
+	chooseTile();
 }
 
 bool Casella::setEntita(std::shared_ptr<Entita> entity) //TODO gestire la sovrapposizione delle entità, avremo memory leak se cancelliamo la precedente!
@@ -82,6 +133,7 @@ bool Casella::setEntita(std::shared_ptr<Entita> entity) //TODO gestire la sovrap
 	if (this->isMuro()) //Quando avremo entità incorporee questo if dovrà essere alterato
 		return false;
 	this->entita = entity;
+	chooseTile();
 	return true;
 }
 
@@ -106,9 +158,9 @@ Casella::~Casella() //Se non libero questi puntatori non lo farà nessuno, PERÒ
 }
 
 void Casella::Scava() { //per scavare un muro in modo rapido
-	tileset = Tileset(); //Da muro a pavimento
-	trasparenza = true;
+	trasparenza = true; //Da muro a pavimento
 	attraversabile = true;
+	chooseTile();
 }
 
 bool Casella::hasTrap()

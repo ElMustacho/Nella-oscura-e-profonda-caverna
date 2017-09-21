@@ -11,6 +11,8 @@
 #include "PianoFileGrafica.h"
 #include "pianoCavernaIsolaGrafica.h"
 #include "SFML\Graphics.hpp"
+#include "TextBox.h"
+
 int main()
 {
 	
@@ -34,18 +36,19 @@ int main()
 	//else
 	//pregen.StampaChar();
 	
-
+	/*
 	PianoFileGrafica mappaGrafica("testPreload.txt", ok);
 	mappaGrafica.StampaChar();
 	mappaGrafica.stampaPianoSuFinestra();
 
 	Attore JimBob("JimBob", tabellaLoot, dexAlta, Equipaggiamento, 4.);
 	Attore Orco("Orco", tabellaLoot, dexAlta, Equipaggiamento, 4.);
-
+	*/
 	/*
 	pregen.at(5, 5).setEntita(std::make_shared<Protagonista>(Saitama));
 	pregen.at(6, 2).setEntita(std::make_shared<Attore>(JimBob));
 	*/
+	/*
 	Attore Perseo("Perseo", tabellaLoot, dexAlta, Equipaggiamento, 9.);
 	auto controllo = pregen.floodFill(coord);
 	pregen.placeEntita(std::make_shared<Protagonista>(Saitama), cood(5, 5));
@@ -58,12 +61,22 @@ int main()
 	Saitama.addInventario(std::make_shared<Oggetto>(oggettoDebug));
 	pregen.at(5, 5).getEntita()->addInventario(std::make_shared<Oggetto>(oggettoDebug2)); //FIXME sballo se non ho valori validi
 	std::cout << std::endl << pregen.at(5, 5).getEntita()->describeInventario() << std::endl; //FIXME same
+	*/
 	/*
 	Attributi dexAlta(4, 14, 4, 4, 4, 4, 4, 1);
 	Saitama.setAttributi(dexAlta);
 	std::cout << Saitama.getAttributi().getDestrezza() << std::endl;
 	*/
+	/*
 	pregen.spargiLoot(pregen.floodFill(cood(5, 5)));
-	pregen.playPiano();
+	sf::Font font;
+	if (!font.loadFromFile("arial.ttf"))
+	{
+		//err...
+	}
+	TextBox messages("Omae Wa Mou Shindeiru \n cucaracia\n", font, 1 * 32, 1 * 32);
+	sf::RenderWindow window;
+	pregen.playPiano(window, messages); //TODO just temporary
+	*/
 	
 }

@@ -3,20 +3,24 @@
 #include <memory>
 #include <cstdlib>
 #include <ctime>
+
 #include "Entita.h"
 #include "Danno.h"
+#include "TextBox.h"
+#include "UtilityGrafica.h"
 
 Entita::~Entita()
 {
 	//TODO ~Entita()
 }
 
-Entita::Entita(std::string nome, std::vector<std::shared_ptr<Oggetto>> inventario, Attributi attributi, Equipaggiamento equipaggiamento): attributi(attributi) {
+Entita::Entita(std::string nome, std::vector<std::shared_ptr<Oggetto>> inventario, Attributi attributi, Equipaggiamento equipaggiamento, std::string posToFile): attributi(attributi) {
 	
 		this->nome = nome;
 		this->equipaggiamento = equipaggiamento;
 		this->inventario = inventario;
 		this->attributi = attributi;
+		this->pathToTile = posToFile;
 }
 bool Entita::operator==(const Entita & rEntita) const
 {
@@ -94,30 +98,45 @@ bool Entita::addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti)
 //TODO spostami in protagonista, visto che dovrebbe essere l'unico con l'UI
 bool Entita::equip(int posizioneOggetto)
 {
-	if (equipaggiamento.equipaggia(inventario.at(posizioneOggetto))) {
-		inventario.erase(inventario.begin()+posizioneOggetto);
-		return true;
-	}
-	else 
-		return false;
+	if(posizioneOggetto>0&&(unsigned int)posizioneOggetto<inventario.size())
+		if (equipaggiamento.equipaggia(inventario.at(posizioneOggetto))) {
+			inventario.erase(inventario.begin()+posizioneOggetto);
+			return true;
+		}
+	return false;
 }
+
 //TODO spostami in protagonista, visto che dovrebbe essere l'unico con l'UI
-bool Entita::equip() 
+bool Entita::equip(sf::RenderWindow& window, TextBox& messages) 
 {
 	int numero = 0;
 	std::cout << std::endl;
 	for each (auto oggetto in inventario)
 	{
 		std::cout << numero << ") " << oggetto->getNome() << " --> " << oggetto->getDescrizione() << std::endl;
+		messages.text.setString(messages.text.getString() + std::to_string(numero) + ") " + oggetto->getNome() + " --> " + oggetto->getDescrizione() + "\n");
 		numero++;
 	}
-	std::cout << "Inserisci il numero dell'oggetto da inserire: ";
+	std::cout << "Inserisci il numero dell'oggetto da inserire (Invio per confermare): ";
+	messages.text.setString(messages.text.getString() + "Inserisci il numero dell'oggetto da inserire (Invio per confermare): ");
+
+
 	//FIXME funziono solo con numeri, non forzarmi please
-	std::cin >> numero;
-	if (numero >= 0 && numero < inventario.size())
+	//std::cin >> numero; 
+	
+	auto convert = graphicInput2( messages.text.getString() );
+	numero = std::stoi(convert.toAnsiString(), nullptr);
+
+	if (numero >= 0 && (unsigned int)numero < inventario.size()) 
+	{
+		messages.text.setString("");
+		
 		return equip(numero);
-	else {
+	}
+	else 
+	{
 		std::cout << "Non ho potuto equipaggiare l'oggetto perche' non so come si fa." << std::endl;
+		messages.text.setString("Non ho potuto equipaggiare l'oggetto perche' non so come si fa.\n");
 		return false;
 	}
 }
@@ -130,8 +149,9 @@ bool Entita::addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere)
 	return true;
 	//CHECK posso fallire, cosa potrebbe andare male?
 }
+
 //return true se uccide, false altrimenti
-bool Entita::subisciDanno(Danno dannoSubito)
+bool Entita::subisciDanno(Danno dannoSubito, TextBox& messages)
 {
 	double totalehp = 0;
 	//LOOKATME potremmo per esempio lasciare che alcuni tipi di danno abbiano altri effetti, tipo il danno mentale infligge danni alla barra delle magia
@@ -141,10 +161,11 @@ bool Entita::subisciDanno(Danno dannoSubito)
 	}
 	attributi.setHp((int)(attributi.getHp()-totalehp));
 	if (attributi.getHp() < 0) { //dead
-		onDeath();
+		onDeath(messages);
 		return true;
 	}
 	std::cout << nome << " ha sofferto " << totalehp << " danni!" << std::endl;
+	messages.text.setString(messages.text.getString() + nome + " ha sofferto " + std::to_string(totalehp) + " danni!\n");
 	return false;
 }
 
@@ -161,13 +182,15 @@ double Entita::carryWeight()
 }
 
 
-void Entita::onDeath()
+void Entita::onDeath(TextBox& messages)
 {
 	auto peso = attributi.getForza() * 10 + attributi.getTempra() * 10 + attributi.getDestrezza() * 2 + attributi.getIntelligenza()*0.25; //L'intelligenza significa la dimensione del cervello. L'intelligenza non dipende dalla quantità di cervello nel mondo reale (dipende dalle sinapsi), ma questo è un gioco.
 	auto object = std::make_shared<Oggetto>(Oggetto(peso, "Cadavere di " + nome, "La carcassa di " + nome + " oramai esanime.", 0));
 	addInventario(object);
 	std::cout << nome << " e' morto!" << std::endl; //TODOFAR implementa sesso
+	messages.text.setString(messages.text.getString() + nome + " e' morto!\n" );
 }
+
 std::string Entita::describeInventario() {
 	std::string returnStringa;
 	for (auto i = inventario.begin(); i != inventario.end(); i++) {
