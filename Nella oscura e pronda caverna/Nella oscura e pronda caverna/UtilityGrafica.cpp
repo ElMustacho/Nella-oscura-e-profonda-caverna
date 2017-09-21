@@ -191,12 +191,12 @@ sf::String graphicInput2( sf::String text )
 				}
 				else
 				{
-					
-					text += (char)evento.text.unicode;
-					std::cout << (char)evento.text.unicode << std::endl;
-					messages.text.setString(messages.text.getString() + (char)evento.text.unicode);
-					windowRefresh2(window, messages);
-					
+					if (evento.text.unicode > 32 && evento.text.unicode < 126) {
+						text += (char)evento.text.unicode;
+						std::cout << (char)evento.text.unicode << std::endl;
+						messages.text.setString(messages.text.getString() + (char)evento.text.unicode);
+						windowRefresh2(window, messages);
+					}
 				}
 				break;
 
