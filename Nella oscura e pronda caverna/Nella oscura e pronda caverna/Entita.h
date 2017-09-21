@@ -6,6 +6,8 @@
 #include "Oggetto.h"
 #include "Attributi.h"
 #include "Equipaggiamento.h"
+#include "TextBox.h"
+
 class Entita
 {
 
@@ -18,7 +20,7 @@ public:
 	void setNome(std::string nome) { this->nome = nome; }
 	void setPathToTile(std::string pathToTile) { this->pathToTile = pathToTile; }
 
-	virtual void onDeath(); //cosa succede se muore
+	virtual void onDeath(TextBox& messages); //cosa succede se muore
 	std::vector<std::shared_ptr<Oggetto>> getInventario() const { return inventario; };
 	void setInventario(std::vector<std::shared_ptr<Oggetto>> inventario) { this->inventario = inventario; };
 	Equipaggiamento getEquipaggiamento() const { return equipaggiamento; };
@@ -32,10 +34,10 @@ public:
 	void setAttributi(Attributi attr);
 	bool addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti);
 	bool equip(int posizioneOggetto);
-	bool equip();
+	bool equip(sf::RenderWindow& window,TextBox& messages);
 	bool addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere);
 	//return true se uccide, false altrimenti
-	bool subisciDanno(Danno dannoSubito);
+	bool subisciDanno(Danno dannoSubito, TextBox& messages);
 	double carryWeight(); //calcolo peso trasportato
 	std::string describeInventario();
 	

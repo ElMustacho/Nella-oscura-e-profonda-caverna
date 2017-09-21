@@ -2,6 +2,7 @@
 #include <ctime>
 #include <memory>
 #include <deque>
+
 #include "Oggetto.h"
 #include "Entita.h"
 #include "Piano.h"
@@ -12,6 +13,8 @@
 #include "pianoCavernaIsolaGrafica.h"
 #include "SFML\Graphics.hpp"
 #include "DungeonGraficaIsola.h"
+#include "TextBox.h"
+
 int main()
 {
 	
@@ -40,53 +43,6 @@ int main()
 	//{
 	//	std::cout << "Medda";
 	//	return -1;
-	//}
-	////else
-	////pregen.StampaChar();
-	//int s = 0;
-	//std::cout << s++;
-
-	//PianoFileGrafica mappaGrafica("testPreload.txt", ok);
-	//mappaGrafica.StampaChar();
-	////mappaGrafica.stampaPianoSuFinestra();
-	//std::cout << s++;
-	//Attore JimBob("JimBob", tabellaLoot, dexAlta, Equipaggiamento, 4.);
-	//Attore Orco("Orco", tabellaLoot, dexAlta, Equipaggiamento, 4.);
-	//std::cout << s++;
-	///*
-	//pregen.at(5, 5).setEntita(std::make_shared<Protagonista>(Saitama));
-	//pregen.at(6, 2).setEntita(std::make_shared<Attore>(JimBob));
-	//*/
-	//std::cout << s++;
-	//Attore Perseo("Perseo", tabellaLoot, dexAlta, Equipaggiamento, 9.);
-	//std::cout << s++;
-	//auto controllo = pregen.floodFill(coord);
-	//std::cout << s++;
-	//pregen.placeEntita(std::make_shared<Protagonista>(Saitama), cood(5, 5));
-	//pregen.placeEntita(std::make_shared<Attore>(Orco), cood(24, 9));
-	//std::cout << s++;
-	//pregen.placeEntita(std::make_shared<Attore>(JimBob), cood(31, 7));
-	//pregen.placeEntita(std::make_shared<Attore>(Perseo), cood(22, 9));
-	//Oggetto oggettoDebug(10., "Cosa", "Qualcosa di fantastico", 40);
-	//Oggetto oggettoDebug2(5., "Altra cosa", "Qualcosa di altrettanto fantastico", 15);
-	//Saitama.addInventario(std::make_shared<Oggetto>(oggettoDebug));
-	//std::cout << s++;
-	//pregen.at(5, 5).getEntita()->addInventario(std::make_shared<Oggetto>(oggettoDebug2)); //FIXME sballo se non ho valori validi
-	//std::cout << std::endl << pregen.at(5, 5).getEntita()->describeInventario() << std::endl; //FIXME same
-	///*
-	//Attributi dexAlta(4, 14, 4, 4, 4, 4, 4, 1);
-	//Saitama.setAttributi(dexAlta);
-	//std::cout << Saitama.getAttributi().getDestrezza() << std::endl;
-	//*/
-	//pregen.rSpargiLoot(pregen.floodFill(cood(5, 5)));
-	//return 0;
-	///*auto g = pregen.playPiano();
-	//if (g == 1) {
-	//	std::cout << "HHHHHHHHHMMMMMMMMM" << std::endl;
-	//}
-	//else if (g == 0)
-	//{
-	//	std::cout << "Gunga Runga" << std::endl;
-	//}*/
+	//}	
 	
 }

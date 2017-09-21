@@ -8,6 +8,8 @@
 #include "Protagonista.h"
 #include "Attore.h"
 #include "Arma.h"
+#include "TextBox.h"
+
 typedef std::pair<int, int> cood;
 /*
 LOOKATME
@@ -60,8 +62,8 @@ public:
 	int posizione(int x, int y);
 
 	bool removeEntita(cood coodElimina);
-	int scontro(cood posizioneVittima, cood posizioneAttaccante);
-	int scontro(cood posizioneVittima, Danno dannoInflitto); //gestisce danno ad area e fulmini da divinità furiose
+	int scontro(cood posizioneVittima, cood posizioneAttaccante, TextBox& messages);
+	int scontro(cood posizioneVittima, Danno dannoInflitto, TextBox& messages); //gestisce danno ad area e fulmini da divinità furiose
 
 	Casella& at(int x, int y);
 	Casella& at(cood coord);
@@ -83,8 +85,8 @@ public:
 	int muoviEntita(coord pos, coord target);
 	void checkSuccessor(coord check, coord target, std::string direct, bool &destination, node &q, std::vector<node> &openList, std::vector<node> &closedList);
 	int aStar(coord pos, coord target, int distanza, int metodo);
-	int playPiano();
-	int playerAct(bool loquace);
+	int playPiano(sf::RenderWindow& window, TextBox& messages);
+	int playerAct(bool loquace,sf::RenderWindow& window, TextBox& messages);
 	void StampaFileChar();
 	bool popolaPiano();
 	bool rSpargiLoot();

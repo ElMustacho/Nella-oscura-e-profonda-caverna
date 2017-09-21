@@ -5,7 +5,11 @@
 #include <typeinfo>
 #include <deque>
 #include <time.h>
+
+#include "pianoCavernaIsolaGrafica.h"
+#include "SFML\Graphics.hpp"
 #include "Piano.h"
+#include "TexTBox.h"
 
 
 Piano::~Piano()
@@ -30,7 +34,7 @@ bool Piano::removeEntita(cood coodElimina) {
 	return false;
 }
 
-int Piano::scontro(cood posizioneVittima, cood posizioneAttaccante)
+int Piano::scontro(cood posizioneVittima, cood posizioneAttaccante, TextBox& messages)
 {
 	if (pavimento.at(posizione(posizioneAttaccante)).getEntita() == nullptr)
 		return -1; //nessun attaccante
@@ -38,14 +42,14 @@ int Piano::scontro(cood posizioneVittima, cood posizioneAttaccante)
 	if (danno.getAmmontare() < 0)
 		return -2; //nessun danno
 	else
-		return scontro(posizioneVittima, danno);
+		return scontro(posizioneVittima, danno, messages );//
 }
-int Piano::scontro(cood posizioneVittima, Danno dannoInflitto)
+int Piano::scontro(cood posizioneVittima, Danno dannoInflitto, TextBox& messages)
 {
 	if (pavimento.at(posizione(posizioneVittima)).getEntita().get() == nullptr)
 		return -3; //nessun bersaglio
 	else {
-		auto morteAvvenuta = pavimento.at(posizione(posizioneVittima)).getEntita()->subisciDanno(dannoInflitto);
+		auto morteAvvenuta = pavimento.at(posizione(posizioneVittima)).getEntita()->subisciDanno(dannoInflitto, messages);
 		if (morteAvvenuta) {
 			//TODOFAR lascia equipaggiamento per terra.
 			auto vPosizioni = getVectorPosizioni();
@@ -319,7 +323,6 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 		return -4; //Ho provato a muovermi ma sono immobile
 	}
 
-	// CHECK A* (Dijkstra + heuristic) per determinare la direzione da percorrere (qualora sia necessario usarlo).
 	//Qui sotto il sistema di spostamento è stupido, ma potrebbe funzionare per gestire entità prive di intelligenza
 	//tipo qualche golem, melma, zombie o goblin ubriaco fradicio. In pratica non verifico la validità finale del percorso,
 	//ma solo quella della casella in cui mi voglio spostare, una per volta.
@@ -521,7 +524,7 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 
 			if (!found)
 			{
-				//CHECK looking for this node in openList
+				// looking for this node in openList
 				for (std::vector<node>::iterator i = openList.begin(); i < openList.end(); i++)
 				{
 					if (i->posX == direction.posX && i->posY == direction.posY)
@@ -701,7 +704,7 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 		if (pavimento.at(posizione(next)).getEntita() != nullptr) // Qui c'è qualcun altro
 		{
 			std::cout << "Qualcuno osa sbarrarmi la strada!" << std::endl;
-			//TODO Combatto per liberar la via?
+			//TODOFAR Combatto per liberar la via?
 			return 2;
 		}
 		std::shared_ptr<Entita> temp = pavimento.at(posizione(pos)).getEntita();
@@ -737,7 +740,7 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 
 }
 
-int Piano::playPiano()
+int Piano::playPiano(sf::RenderWindow& window, TextBox& messages)
 {
 	int spwTurni = 0;
 	int totTurni = 0;
@@ -782,10 +785,10 @@ int Piano::playPiano()
 			auto resultMovement=muoviEntita(posizioneAttivo, getPositionOfPlayer());
 		}
 		else {
-			auto resultPlayer = playerAct(a);
+			auto resultPlayer = playerAct(a, window, messages);
 			while(resultPlayer<0)
 			{ 
-				resultPlayer = playerAct(a);
+				resultPlayer = playerAct(a, window, messages);
 			}
 			if (resultPlayer == 2) {
 				turni.clear();
@@ -804,15 +807,19 @@ int Piano::playPiano()
 }
 //LOOKATME questa è la versione del terminale, quella grafica dovrà lavorare in altri modi.
 //return -1 significa che non è passato un turno, per esempio guardando il proprio inventario o per terra
-int Piano::playerAct(bool a)
+int Piano::playerAct(bool a, sf::RenderWindow& window, TextBox& messages)
 {
 		StampaChar();
-		if(a)
+		if (a)
+		{
 			std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ";
+			messages.text.setString(messages.text.getString() + "\nUsa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ");
+		}
 		char azione;
 		std::cin >> azione;
 		std::cout << std::endl;
 		system("CLS");
+		messages.text.setString("");
 		auto playerPos = getPositionOfPlayer();
 		auto toPosizione = playerPos;
 		int result;
@@ -852,13 +859,19 @@ int Piano::playerAct(bool a)
 			result = muoviEntita(playerPos.first, playerPos.second, toPosizione.first, toPosizione.second);
 			if (result == 0) {
 				if (a)
+				{
 					std::cout << "Ho provato a muovermi con successo." << std::endl;
+					messages.text.setString(messages.text.getString() + "Ho provato a muovermi con successo.\n");
+				}
 				return 0;
 			}
 			else if (result==2) {
 				if (a)
+				{
 					std::cout << "Scontro!" << std::endl;
-				scontro(toPosizione, playerPos);
+					messages.text.setString( messages.text.getString() + "Scontro!\n");
+				}
+				scontro(toPosizione, playerPos, messages);
 				return 0;
 			}
 			else if (result == 100) {
@@ -868,7 +881,10 @@ int Piano::playerAct(bool a)
 			}
 			else {
 				if (a)
+				{
 					std::cout << "Muoversi ha risposto " << result << std::endl;
+					messages.text.setString( messages.text.getString() + "Muoversi ha risposto " + std::to_string(result) + "\n");
+				}
 				return -1;
 			}
 		}
@@ -877,10 +893,10 @@ int Piano::playerAct(bool a)
 				case '5':
 					return 2;
 				case 's':
-					scontro(playerPos, Danno(std::vector<double>{1}, 4000));
+					scontro(playerPos, Danno(std::vector<double>{1}, 4000), messages);
 					break;
 				case 'e':
-					pavimento.at(posizione(playerPos)).getEntita()->equip();
+					pavimento.at(posizione(playerPos)).getEntita()->equip(window, messages);
 					break;
 				case '0':
 					std::cout << pavimento.at(posizione(getPositionOfPlayer())).descriviOggettiTerra();
@@ -895,6 +911,7 @@ int Piano::playerAct(bool a)
 					if (a)
 					{
 						std::cout << "Input non valido" << std::endl;
+						messages.text.setString(messages.text.getString() + "Input non valido\n");
 					}
 					return -1;
 				}

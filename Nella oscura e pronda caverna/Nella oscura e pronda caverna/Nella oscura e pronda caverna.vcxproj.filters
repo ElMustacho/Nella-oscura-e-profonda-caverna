@@ -78,6 +78,12 @@
     <ClInclude Include="DungeonGraficaIsola.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="TextBox.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilityGrafica.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Oggetto.cpp">
@@ -143,7 +149,15 @@
     <ClCompile Include="pianoCavernaIsolaGrafica.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
+
     <ClCompile Include="DungeonGraficaIsola.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+
+    <ClCompile Include="TextBox.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilityGrafica.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>
