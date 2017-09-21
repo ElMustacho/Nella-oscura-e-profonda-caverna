@@ -2,7 +2,8 @@
 #include <string>
 #include <vector>
 #include "SFML\Graphics.hpp"
-
+#include <random>
+//TODO vecchia versione
 void PianoFileGrafica::stampaPianoSuFinestra()
 {
 	sf::Texture tileTexture;
@@ -14,20 +15,7 @@ void PianoFileGrafica::stampaPianoSuFinestra()
 	window.setFramerateLimit(60);
 	while (window.isOpen()) {
 		sf::Event evento;
-		while (window.pollEvent(evento)) {
-			switch (evento.type) {
-			case sf::Event::Closed:
-				window.close();
-				break;
-			case sf::Event::TextEntered:
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-				{
-					window.close();
-				}
-				break;
-			}
-		}
-		window.clear();
+		
 		for (unsigned int i = 0; i < pavimento.size(); i++) {
 			if (pavimento.at(i).isMuro()) {
 				int a = i % larghezza, b = i/larghezza;
@@ -44,14 +32,41 @@ void PianoFileGrafica::stampaPianoSuFinestra()
 			}
 		}
 		window.display();
+		while (window.waitEvent(evento)) {
+			switch (evento.type) {
+			case sf::Event::Closed:
+				window.close();
+				break;
+			case sf::Event::TextEntered:
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+				{
+					window.close();
+				}
+				break;
+			}
+		}
+		window.clear();
 	}
 }
 
-PianoFileGrafica::PianoFileGrafica(std::string posizione, bool successo):PianoFile(posizione, successo)
+PianoFileGrafica::PianoFileGrafica(std::string posizione, bool successo, std::string pathToFile):PianoFile(posizione, successo)
 {
+	sf::Image immagineDim;
+	if (pathToFile == "")
+		pathToFile = "Tileset/SuperSimpleTileSet.png";
+	immagineDim.loadFromFile(pathToFile);
+	auto maxX = immagineDim.getSize().x;
+	auto maxY = immagineDim.getSize().y;
+	for (int i = 0; i < pavimento.size(); i++) {
+		pavimento.at(i).setMaxxTexture(maxX);
+		pavimento.at(i).setMaxyTexture(maxY);
+		pavimento.at(i).chooseTile();
+	}
+
 }
 
 
 PianoFileGrafica::~PianoFileGrafica()
 {
+	
 }

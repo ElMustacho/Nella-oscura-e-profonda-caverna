@@ -8,10 +8,10 @@ class Casella
 {
 
 public:
-	Casella(std::list<std::shared_ptr<Oggetto>> oggetti, std::shared_ptr<Entita> entita, bool trasparenza, bool attraversabile, int evento, std::string pathToFile="", int x = -1, int y = -1); //CHECK quando vuoi dare valori di default, devono essere messi nel .cpp, non nel .h, altrimenti è un casino!
+	Casella(std::list<std::shared_ptr<Oggetto>> oggetti, std::shared_ptr<Entita> entita, bool trasparenza, bool attraversabile, int evento, int x = -1, int y = -1); //CHECK quando vuoi dare valori di default, devono essere messi nel .cpp, non nel .h, altrimenti è un casino!
 	~Casella();
 	void Scava();
-	Casella(bool default, std::string pathToFile=""); //Default
+	Casella(bool default); //Default
 	bool isMuro();
 	void setTrasparenza(bool trasparenza) { this->trasparenza = trasparenza; }
 	bool isTrasparente() { return this->trasparenza; }
@@ -37,9 +37,12 @@ public:
 	int getyTexture()const { return yTexture; };
 	void setxTexture(int xTexture) { this->xTexture = xTexture; };
 	void setyTexture(int yTexture) { this->yTexture = yTexture; };
-	std::string getPathToFile()const { return pathToTile; };
+	int getMaxxTexture()const { return maxxTexture; };
+	int getMaxyTexture()const { return maxyTexture; };
+	void setMaxxTexture(int value) { maxxTexture = value; };
+	void setMaxyTexture(int value) { maxyTexture = value; };
+
 private:
-	std::string pathToTile;
 	std::list<std::shared_ptr<Oggetto>> oggetti;
 	std::shared_ptr<Entita> entita;
 	bool trasparenza;

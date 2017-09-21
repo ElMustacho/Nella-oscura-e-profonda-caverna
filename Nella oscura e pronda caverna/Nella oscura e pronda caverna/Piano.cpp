@@ -103,7 +103,7 @@ bool Piano::popolaPiano()
 	return false;
 }
 
-bool Piano::spargiLoot()
+bool Piano::rSpargiLoot()
 {
 	return false;
 }
@@ -133,11 +133,17 @@ Piano::Piano() {
 
 Piano::Piano(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> lootPossibile, std::vector<std::shared_ptr<Entita>> entitaPossibili)
 {
+	this->larghezza = larghezza;
+	this->lunghezza = lunghezza;
+	pavimento.reserve(larghezza*lunghezza);
+	for (int i = 0; i < larghezza*lunghezza; i++) {
+		pavimento.push_back(Casella(false));
+	}
 }
 
 bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY)
 {
-	if (posX + dimX  > lunghezza || posY + dimY > larghezza)
+	if (posX + dimX  > larghezza || posY + dimY > lunghezza)
 		return false; //Stanza prodotta fuori dal piano
 
 	for (int i = posX; i < dimX + posX; i++)
@@ -425,7 +431,10 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 					pavimento.at(posizione(pos)).doEvento();
 				}
 				distanza--;
-				pavimento.at(posizione(coordinateDopo)).doEvento();
+				if (pavimento.at(posizione(coordinateDopo)).doEvento()==100) {
+					return 100; //Uscito dal piano
+				}
+				else;
 			}
 		}
 		if (distanza == 0 && (pos == target))
@@ -785,6 +794,10 @@ int Piano::playPiano(sf::RenderWindow& window, TextBox& messages)
 				turni.clear();
 				return 0;
 			}
+			if (resultPlayer == 100) {
+				turni.clear();
+				return 1;
+			}
 			spwTurni++;
 			totTurni++;
 		}
@@ -860,6 +873,11 @@ int Piano::playerAct(bool a, sf::RenderWindow& window, TextBox& messages)
 				}
 				scontro(toPosizione, playerPos, messages);
 				return 0;
+			}
+			else if (result == 100) {
+				if (a)
+					std::cout << "Uscito dal piano." << std::endl;
+				return 100;
 			}
 			else {
 				if (a)
@@ -945,15 +963,20 @@ std::shared_ptr<Entita> Piano::entityFactory(std::string)
 std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
 {
 	std::shared_ptr<Entita> appoggio;
-	switch (codiceID) {
-	case 0: {
-		//TODO qui ovviamente dovrà esserci il modo di caricare un personaggio preesistente o di invocare il creatore di personaggi, per ora lo tratto come un qualunque idiota
+	if (codiceID == 0) {
 		std::vector<std::shared_ptr<Oggetto>> inventario{ std::shared_ptr<Oggetto>(new Oggetto(0.5, "Una pietra", "Terra condensata.", 0)) };
 		Attributi nellaMedia(4, 4, 4, 4, 4, 4, 4, 4);
 		Equipaggiamento equipaggiamento; //Picche, non hai nulla scemo
 		appoggio = std::make_shared<Protagonista>(Protagonista("Medioman", inventario, nellaMedia, equipaggiamento, 1, 0, 0));
-		break;
+		return appoggio;
 	}
+	if (entitaGenerabili.size() != 0) {
+		auto movement = *entitaGenerabili.at(codiceID%entitaGenerabili.size());
+		appoggio = std::make_shared<Attore>(movement.getNome(),movement.getInventario(),movement.getAttributi(),movement.getEquipaggiamento(), std::dynamic_pointer_cast<Attore>(entitaGenerabili.at(codiceID%entitaGenerabili.size()))->getExperienceDrop());
+		return appoggio;
+	}
+	switch (codiceID) {
+	
 	case 1:
 	{// Goblin scrauso, puzzone e nudo
 		std::vector<std::shared_ptr<Oggetto>> inventario;

@@ -4,14 +4,13 @@
 #include <algorithm>
 #include <ctime>
 #include <random>
-Casella::Casella(std::list<std::shared_ptr<Oggetto>> oggetti, std::shared_ptr<Entita> entita, bool trasparenza, bool attraversabile, int evento, std::string pathToFile, int x, int y)
+Casella::Casella(std::list<std::shared_ptr<Oggetto>> oggetti, std::shared_ptr<Entita> entita, bool trasparenza, bool attraversabile, int evento, int x, int y)
 {
 	this->oggetti = oggetti;
 	this->entita = entita;
 	this->trasparenza = trasparenza;
 	this->attraversabile = attraversabile;
 	this->evento = evento;
-	this->pathToTile = pathToFile;
 	if (x < 0)
 		x = 0;
 	else
@@ -20,32 +19,22 @@ Casella::Casella(std::list<std::shared_ptr<Oggetto>> oggetti, std::shared_ptr<En
 		y = 0;
 	else
 	yTexture = y;
-	if (pathToFile == "")
-		pathToFile = "Tileset/Test.png";
-	sf::Image temp;
-	temp.loadFromFile(pathToFile);
-	maxxTexture = temp.getSize().x;
-	maxyTexture = temp.getSize().y;
-	chooseTile();
+	maxxTexture = 1;
+	maxyTexture = 1;
 }
 
 //Costruttore rapido e semplice, passare false per parete, passare true per terreno attraversabile
-Casella::Casella(bool default, std::string pathToFile) {
+Casella::Casella(bool default) {
 	srand((unsigned int)time(nullptr));
 	trasparenza = default; //Se è una parete non è trasparente
 	attraversabile = default; //Se è una parete non è attraversabile
 	evento = 0; //Di default non accade nulla
-	pathToTile = pathToFile;
 	xTexture = 0;
 	yTexture = 0;
-	if (pathToFile == "")
-		pathToFile = "Tileset/FirstSeriousTile.png";
-	pathToTile = pathToFile;
-	sf::Image temp;
-	temp.loadFromFile(pathToFile);
-	maxxTexture = temp.getSize().x;
-	maxyTexture = temp.getSize().y;
-	chooseTile();
+	maxxTexture = 1;
+	maxyTexture = 1;
+	xTexture = 0;
+	yTexture = 0;
 }
 
 bool Casella::isMuro()
@@ -59,11 +48,17 @@ bool Casella::isMuro()
 	
 void Casella::chooseTile()
 {
+	//LOOKATME sono un gigantilione di volte migliore di srand(time(nullptr))
+
 	std::random_device rd;
 	std::mt19937 mt(rd());
+
+	//sceglie tra una possibile variante della stessa categoria di casella.
 	std::uniform_real_distribution<double> dist(0., (double)maxxTexture / 32);
-	xTexture =(int) dist(mt); //sceglie tra una possibile variante della stessa categoria di casella.
+	xTexture =(int) dist(mt); 
+
 	//Decide la categoria di casella, ad esempio parete, pavimento, corridoio etc.
+	//Per ora c'è solo muro on non muro (questo è il dilemma) cit.
 	if (isMuro())
 		yTexture = 0;
 	else
@@ -140,11 +135,14 @@ bool Casella::setEntita(std::shared_ptr<Entita> entity) //TODO gestire la sovrap
 int Casella::doEvento()//FIXME sono un segnaposto
 {
 	if (evento == 1 && dynamic_cast<Protagonista*>((&entita)->get())!=nullptr) {
-		std::cout << "Hai vinto!";
-		char a;
-		std::cin >> a;
-		exit(EXIT_SUCCESS);
-		return 0;
+		std::cout << "Vuoi salire sulle scale(y/n): ";
+		char input='4';
+		while (input != 'y'&&input != 'n')
+			std::cin >> input;
+		if (input == 'y')
+			return 100;
+		else
+			return 0;
 	}
 	//FIXME beh per ora l'unico evento sono le scale ma immagino che ci sarà una lunga fila di case in uno switch
 	return 0;

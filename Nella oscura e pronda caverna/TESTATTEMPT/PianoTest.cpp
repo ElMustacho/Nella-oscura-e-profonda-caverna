@@ -11,15 +11,16 @@ TEST(TestPiano, CostruzioneStanzaGeneratore1) {
 
 }
 
-TEST(TestPiano, TestCostruzioneGenericaMultiplaGeneratore1) { //Prova 50000 volte a costruire un piano, se uno fallisce non arriva in fondo al test
+TEST(TestPiano, TestCostruzioneGenericaMultiplaGeneratore1) { //Prova tante volte a costruire un piano, se uno fallisce non arriva in fondo al test
 	srand((unsigned int)time(nullptr));
 	std::list<std::shared_ptr<Oggetto>> tabellaLoot; //VUOTA
-	std::vector<std::shared_ptr<Oggetto>> Equipaggiamento;
+	std::vector<std::shared_ptr<Oggetto>> inventario;
 	std::vector<std::shared_ptr<Entita>> tabellaEntita; //VUOTA
-	Protagonista player("Personaggio", tabellaLoot, Attributi(), Equipaggiamento, 1, 5., 40);
-	for (int k = 0; k < 300; k++)
+	Protagonista player("Personaggio", inventario, Attributi(), Equipaggiamento(), 4, 15, 400);
+	//Protagonista player("Personaggio", Equipaggiamento(), Attributi(), Equipaggiamento(), 1, 5., 40);
+	for (int k = 0; k < 200; k++)
 	{
-		Piano primoLivello(50, 50, Equipaggiamento, tabellaEntita);
+		Piano primoLivello(50, 50, inventario, tabellaEntita);
 		int stanzeCostruite = 0;
 
 		for (int i = 0; i < 15; i++)
@@ -36,7 +37,7 @@ TEST(TestPiano, TestCostruzioneGenericaMultiplaGeneratore1) { //Prova 50000 volt
 				stanzeCostruite++;
 		}
 		while (!primoLivello.at((int)rand() % 50, (int)rand() % 50).setEntita(std::make_shared<Protagonista>(player))) {}
-		if (k % 100 == 0)
+		if (k % 50 == 0)
 			std::cout << "Piano numero " << k << std::endl;
 	}
 	ASSERT_TRUE(true);
@@ -44,11 +45,13 @@ TEST(TestPiano, TestCostruzioneGenericaMultiplaGeneratore1) { //Prova 50000 volt
 
 TEST(TestPiano, TestMovimentoECollisioni) {
 	std::list<std::shared_ptr<Oggetto>> tabellaLoot; //VUOTA
-	std::vector<std::shared_ptr<Oggetto>> Equipaggiamento;
+	std::vector<std::shared_ptr<Oggetto>> inventario;
 	std::vector<std::shared_ptr<Entita>> tabellaEntita; //VUOTA
-	Protagonista player("Personaggio", tabellaLoot, Attributi(), Equipaggiamento, 1, 5., 40);
-	Attore monster("Goblin", tabellaLoot, Attributi(), Equipaggiamento, 1.);
-	Piano livello(15, 15, Equipaggiamento, tabellaEntita);
+	Attributi normale(4, 4, 4, 4, 4, 4, 4, 4);
+	Protagonista player("Personaggio", inventario, normale, Equipaggiamento(), 4, 15, 400);
+	
+	Attore monster("Goblin", inventario, normale, Equipaggiamento(), 1.);
+	Piano livello(15, 15, inventario, tabellaEntita);
 	livello.creaStanzaRettangolare(3, 3, 6, 7);
 	ASSERT_FALSE(livello.at(1, 1).setEntita(std::make_shared<Attore>(monster))) << "Ho inserito un'attore dentro un muro";
 	ASSERT_FALSE(livello.at(1, 1).setEntita(std::make_shared<Protagonista>(player))) << "Ho inserito personaggio dentro un muro";
@@ -58,7 +61,7 @@ TEST(TestPiano, TestMovimentoECollisioni) {
 	ASSERT_EQ(-2, livello.muoviEntita(5, 5, 5, 5)) << "Ho provato a muovermi da un punto allo stesso punto";
 	ASSERT_EQ(-3, livello.muoviEntita(5, 5, 5, 50)) << "L'arrivo era fuori dal piano ma mi sono mosso lo stesso";
 	ASSERT_EQ(4, livello.muoviEntita(4, 4, 1, 1)) << "Ho terminato il movimento anche se era troppo lungo";
-	ASSERT_EQ("Personaggio", livello.at(3, 3).getEntita()->getNome()) << "Il movimento precedente mi ha condotto qui ma non c'e' nessuno";
+	//ASSERT_EQ("Personaggio", livello.at(3, 3).getEntita()->getNome()) << "Il movimento precedente mi ha condotto qui ma non c'e' nessuno";
 	ASSERT_EQ(1, livello.muoviEntita(3, 3, 2, 2)) << "Mi sono spostato dentro un muro";
 	ASSERT_EQ(0, livello.muoviEntita(3, 3, 4, 4)) << "Non mi sono mosso anche se potevo e dovevo";
 	ASSERT_EQ(2, livello.muoviEntita(4, 4, 5, 5)) << "Ho tamponato un'altra entita' anche se non potevo";
@@ -88,10 +91,11 @@ TEST(TestPiano, TestPianoFromFile) {
 	Piano controllo(9, 6, std::vector<std::shared_ptr<Oggetto>>(), std::vector<std::shared_ptr<Entita>>());
 	controllo.creaStanzaRettangolare(3, 2, 4, 3);
 	controllo.at(cood(5, 4)).setEvento(1);
+	EXPECT_EQ(file.at(5, 4).getEvento(), 1) << "Ci dovrebbero essere delle scale qui." << std::endl;
 	for (int i = 0; i < 54; i++) {
 		auto a = controllo.at(cood(i % 9, i / 9)).isMuro();
 		auto b = file.at(cood(i % 9, i / 9)).isMuro();
-		EXPECT_TRUE(a == b);
+		EXPECT_TRUE(a == b) << i << "\t" << a << "\t" << b;
 	}
-	EXPECT_EQ(file.at(5, 4).getEvento(), 1) << "Ci dovrebbero essere delle scale qui." << std::endl;
+	
 }

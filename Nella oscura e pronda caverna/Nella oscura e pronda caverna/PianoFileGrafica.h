@@ -6,7 +6,7 @@ class PianoFileGrafica :
 	
 public:
 	void stampaPianoSuFinestra();
-	PianoFileGrafica(std::string posizione, bool success);
+	PianoFileGrafica(std::string posizione, bool success, std::string pathToFile="");
 	~PianoFileGrafica();
 };
 

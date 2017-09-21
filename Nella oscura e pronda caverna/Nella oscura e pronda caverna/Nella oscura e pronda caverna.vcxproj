@@ -130,6 +130,7 @@
     <ClInclude Include="Casella.h" />
     <ClInclude Include="Danno.h" />
     <ClInclude Include="Dungeon.h" />
+    <ClInclude Include="DungeonGraficaIsola.h" />
     <ClInclude Include="Entita.h" />
     <ClInclude Include="Equipaggiamento.h" />
     <ClInclude Include="noiseutils.h" />
@@ -154,6 +155,7 @@
     <ClCompile Include="Casella.cpp" />
     <ClCompile Include="Danno.cpp" />
     <ClCompile Include="Dungeon.cpp" />
+    <ClCompile Include="DungeonGraficaIsola.cpp" />
     <ClCompile Include="Entita.cpp" />
     <ClCompile Include="Equipaggiamento.cpp" />
     <ClCompile Include="noiseutils.cpp" />

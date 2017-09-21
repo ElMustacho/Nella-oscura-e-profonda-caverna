@@ -89,7 +89,7 @@ public:
 	int playerAct(bool loquace,sf::RenderWindow& window, TextBox& messages);
 	void StampaFileChar();
 	bool popolaPiano();
-	bool spargiLoot();
+	bool rSpargiLoot();
 	bool placeEntita(std::shared_ptr<Entita> placeMe, cood coord);
 	Piano();
 	Piano(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> lootPossibile, std::vector<std::shared_ptr<Entita>> entitaPossibili);
@@ -109,6 +109,7 @@ protected:
 	std::vector<std::shared_ptr<Oggetto>> oggettiGenerabili;
 	//Il personaggio deve essere sempre nella prima posizione
 	std::vector<std::pair<std::shared_ptr<Entita>, cood>> entitaPresenti;
-
+	std::string pathToFile;
 	std::deque<Entita> turni;
+	int maxxTexture, maxyTexture;
 };
