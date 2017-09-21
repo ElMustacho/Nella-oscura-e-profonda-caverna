@@ -125,8 +125,14 @@ bool Entita::equip(sf::RenderWindow& window, TextBox& messages)
 	//std::cin >> numero; 
 	
 	auto convert = graphicInput2( messages.text.getString() );
-	numero = std::stoi(convert.toAnsiString(), nullptr);
-
+	try {
+		numero = std::stoi(convert.toAnsiString(), nullptr);
+	}
+	catch (std::exception const & e){
+		std::cout << "Input invalido" << std::endl;
+		messages.text.setString("Input invalido\n");
+		return false;
+	}
 	if (numero >= 0 && (unsigned int)numero < inventario.size()) 
 	{
 		messages.text.setString("");

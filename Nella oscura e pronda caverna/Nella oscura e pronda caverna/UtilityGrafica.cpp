@@ -9,7 +9,7 @@
 #include "Attore.h"
 
 
-void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int larghezza, int lunghezza, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox messages)
+void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int larghezza, int lunghezza, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox messages, sf::Sprite scale)
 {
 	window.clear();
 	//OPTIMIZE
@@ -19,7 +19,13 @@ void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int
 		tiles.setPosition((float)a * 32, (float)b * 32);
 		tiles.setTextureRect(casella.getRectSprite());
 		window.draw(tiles);
-
+		if (casella.getEvento() == 1)//scale here
+		{
+			int a = i % larghezza, b = i / larghezza;
+			scale.setPosition(a * 32, b * 32);
+			scale.setTextureRect(sf::IntRect(0, 0, 32, 32));
+			window.draw(scale);
+		}
 		if (!casella.getOggetti().empty()) {
 			int a = i % larghezza, b = i / larghezza;
 			ogg.setPosition((float)a * 32, (float)b * 32);
@@ -185,13 +191,12 @@ sf::String graphicInput2( sf::String text )
 				}
 				else
 				{
-					if (evento.text.unicode >= '0' && evento.text.unicode <= '9')
-					{
-						text += (char)evento.text.unicode;
-						std::cout << (char)evento.text.unicode << std::endl;
-						messages.text.setString(messages.text.getString() + (char)evento.text.unicode);
-						windowRefresh2(window, messages);
-					}
+					
+					text += (char)evento.text.unicode;
+					std::cout << (char)evento.text.unicode << std::endl;
+					messages.text.setString(messages.text.getString() + (char)evento.text.unicode);
+					windowRefresh2(window, messages);
+					
 				}
 				break;
 

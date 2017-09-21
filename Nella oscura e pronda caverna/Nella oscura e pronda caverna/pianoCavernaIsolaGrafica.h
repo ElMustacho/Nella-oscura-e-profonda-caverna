@@ -13,7 +13,7 @@ public:
 	pianoCavernaIsolaGrafica(int larghezza, int lunghezza, std::string posizioneFile = "", std::vector<std::shared_ptr<Oggetto>> oggettiPossibili = {}, std::shared_ptr<Entita> player=nullptr, std::vector<std::shared_ptr<Entita>> entitaGenerabili = {});
 
 	//int playPiano();
-	int playerAct(bool loquace, sf::RenderWindow &window, std::vector<Casella> pavimento, int larghezza, int lunghezza, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox& messages);
+	int playerAct(bool loquace, sf::RenderWindow &window, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox& messages, sf::Sprite scale);
 	//pianoCavernaIsolaGrafica(int larghezza, int lunghezza);
 
 	void stampaPianoSuFinestra();

@@ -59,7 +59,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 		//sf::err() << "font error -> An error has occured during font loading from file"; //CHECK
 	}
 
-	TextBox messages("Omae Wa Mou Shindeiru \n cucaracia\n", font, larghezza * 32, lunghezza * 32, true);
+	TextBox messages("", font, larghezza * 32, lunghezza * 32, true);
 
 	while (!turni.empty()) {
 		//Here begins trouble
@@ -74,48 +74,8 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 		}
 
 		window.clear();
-		//OPTIMIZE
-		for (unsigned int i = 0; i < pavimento.size(); i++) {
-			auto casella = pavimento.at(i);
-			int a = i % larghezza, b = i / larghezza;
-			tiles.setPosition((float)a * 32,(float) b * 32);
-			tiles.setTextureRect(casella.getRectSprite());
-			window.draw(tiles);
-			if (casella.getEvento() == 1)//scale here
-			{
-				int a = i % larghezza, b = i / larghezza;
-				scale.setPosition(a * 32, b * 32);
-				scale.setTextureRect(sf::IntRect(0, 0, 32, 32));
-				window.draw(scale);
-			}
-			if (!casella.getOggetti().empty()) {
-				int a = i % larghezza, b = i / larghezza;
-				ogg.setPosition((float)a* 32,(float) b * 32);
-				ogg.setTextureRect(sf::IntRect(0, 0, 32, 32));
-				window.draw(ogg);
-			}
-			if (casella.getEntita() != nullptr) {
-				if (typeid(*(casella.getEntita())) == typeid(Protagonista)) {
-					int a = i % larghezza, b = i / larghezza;
-					prot.setPosition((float)a * 32, (float)b * 32);
-					prot.setTextureRect(sf::IntRect(0, 0, 32, 32));
-					window.draw(prot);
-				}
-				else if (typeid(*(casella.getEntita())) == typeid(Attore)) {
-					int a = i % larghezza, b = i / larghezza;
-					enem.setPosition(a * 32, b * 32);
-					enem.setTextureRect(sf::IntRect(0, 0, 32, 32));
-					window.draw(enem);
-				}
-				else {
-					std::cout << "WTF" << std::endl;
-				}
-			}
-			
-		}
-		window.display();
 
-		windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
+		windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 		
 
 		if (spwTurni > 50 + rand() % 100) { //dopo ogni 50 turni arriva un ulteriore goblin puzzone, di sicuro dopo 150
@@ -143,7 +103,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 		  std::cout << "Adesso sta a " << attivo->getNome() << std::endl;
 		  messages.text.setString( messages.text.getString() + "Adesso sta a " + attivo->getNome() + " \n"); // TextBox
 		  /* Oi, funziona -ttebayo!*/
-		  windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
+		  windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 		  /**/
     }
 		
@@ -156,9 +116,9 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 		else {
 			int resultPlayer;
 			do {
-				resultPlayer = playerAct(a, window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
+				resultPlayer = playerAct(a, window, tiles, ogg, prot, enem, messages, scale);
 				/* Oi, funziona -ttebayo!*/
-				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
+				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 				/**/
 			} while (resultPlayer < 0);
 			
@@ -202,31 +162,31 @@ pianoCavernaIsolaGrafica::pianoCavernaIsolaGrafica(int larghezza, int lunghezza,
 	
 }
 
-int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, std::vector<Casella> pavimento, int larghezza, int lunghezza, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox& messages)
+int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox& messages, sf::Sprite scale)
 {
 	if (a)
 	{
 		std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ";
-		messages.text.setString( messages.text.getString() + "\nUsa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ");
-		windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
+		messages.text.setString(messages.text.getString() + "\nUsa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ");
+		windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 	} // TextBox
-	
+
 	char azione;
 	/*std::cin >> azione;
 	std::cout << std::endl;*/
-	
+
 	auto playerPos = getPositionOfPlayer();
 	auto toPosizione = playerPos;
 	int result;
 	sf::Event evento;
 	bool go = true;
 	while (go) {
-		
+
 		window.waitEvent(evento);
 		switch (evento.type) {
 		case sf::Event::TextEntered: {
 			azione = (char)evento.text.unicode;
-			go=false;
+			go = false;
 			break;
 		}
 		case sf::Event::Closed:
@@ -235,115 +195,117 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, std::v
 	}
 	system("CLS");
 	messages.text.setString(""); // TextBox
-	windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
+	windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 	switch (azione) {
-		case '1':
-			toPosizione.first--;
-			toPosizione.second++;
-			break;
-		case '2':
-			toPosizione.second++;
-			break;
-		case '3':
-			toPosizione.first++;
-			toPosizione.second++;
-			break;
-		case '4':
-			toPosizione.first--;
-			break;
-		case '6':
-			toPosizione.first++;
-			break;
-		case '7':
-			toPosizione.first--;
-			toPosizione.second--;
-			break;
-		case '8':
-			toPosizione.second--;
-			break;
-		case '9':
-			toPosizione.first++;
-			toPosizione.second--;
-			break;
-		}
-		if (playerPos != toPosizione) //L'azione scelta è un movimento
-		{
-			result = muoviEntita(playerPos.first, playerPos.second, toPosizione.first, toPosizione.second);
-			if (result == 0) {
-				if (a) 
-				{
-					std::cout << "Ho provato a muovermi con successo." << std::endl;
-					messages.text.setString(messages.text.getString() + "Ho provato a muovermi con successo.\n"); // TextBox
-					windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
-				}
-				return 0;
+	case '1':
+		toPosizione.first--;
+		toPosizione.second++;
+		break;
+	case '2':
+		toPosizione.second++;
+		break;
+	case '3':
+		toPosizione.first++;
+		toPosizione.second++;
+		break;
+	case '4':
+		toPosizione.first--;
+		break;
+	case '6':
+		toPosizione.first++;
+		break;
+	case '7':
+		toPosizione.first--;
+		toPosizione.second--;
+		break;
+	case '8':
+		toPosizione.second--;
+		break;
+	case '9':
+		toPosizione.first++;
+		toPosizione.second--;
+		break;
+	}
+	if (playerPos != toPosizione) //L'azione scelta è un movimento
+	{
+		result = muoviEntita(playerPos.first, playerPos.second, toPosizione.first, toPosizione.second);
+		if (result == 0) {
+			if (a)
+			{
+				std::cout << "Ho provato a muovermi con successo." << std::endl;
+				messages.text.setString(messages.text.getString() + "Ho provato a muovermi con successo.\n"); // TextBox
+				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 			}
-			else if (result == 2) {
-				if (a)
-				{
-					std::cout << "Scontro!" << std::endl;
-					messages.text.setString(messages.text.getString() + "Scontro!\n");
-					windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
-				}
-				
+			return 0;
+		}
+		else if (result == 2) {
+			if (a)
+			{
+				std::cout << "Scontro!" << std::endl;
+				messages.text.setString(messages.text.getString() + "Scontro!\n");
+				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+
 				scontro(toPosizione, playerPos, messages);
 				return 0;
 			}
-			else if (result == 100) {
+			
+			
+		}
+		else if (result == 100) {
+			auto string = graphicInput2("Vuoi prendere le scale (y/n)? ");
+			if (string == "y")
 				return 2;
-			}
-			else {
-				if (a)
-				{
-					std::cout << "Muoversi ha risposto " << result << std::endl;
-					messages.text.setString(messages.text.getString() + "Muoversi ha risposto" + std::to_string(result) + "\n");
-					windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
-				}
-				return -1;
-			}
+			else return 0;
 		}
 		else {
-			switch (azione) {
-			case '5':
-				return 3; //uscita con disonore
-			case 's':
-				scontro(playerPos, Danno(std::vector<double>{1}, 4000), messages);
-				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
-				break;
-			case 'e':
-				pavimento.at(posizione(playerPos)).getEntita()->equip(window, messages);
-				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
-				break;
-			case '0':
-				std::cout << pavimento.at(posizione(getPositionOfPlayer())).descriviOggettiTerra();
-				messages.text.setString(messages.text.getString() + pavimento.at(posizione(getPositionOfPlayer())).descriviOggettiTerra() );
-				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
-				return -1; // TextBox
-			case 'p':
-				pavimento.at(posizione(getPositionOfPlayer())).pickup();
-				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
-				break;
-			case 'i':
-				std::cout << pavimento.at(posizione(playerPos)).getEntita()->describeInventario() << std::endl;
-				messages.text.setString(messages.text.getString() + pavimento.at(posizione(playerPos)).getEntita()->describeInventario() );
-				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
-				return -1; // TextBox
-			default:
-				if (a)
-				{
-					std::cout << "Input non valido" << std::endl;
-					messages.text.setString(messages.text.getString() + "Input non valido\n");
-					windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
-				}
-				return -1; // TextBox
+			if (a)
+			{
+				std::cout << "Muoversi ha risposto " << result << std::endl;
+				messages.text.setString(messages.text.getString() + "Muoversi ha risposto" + std::to_string(result) + "\n");
+				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 			}
+			return -1;
 		}
-	
-	return 0;
+		return 0;
 
+	}
+	else {
+		switch (azione) {
+		case '5':
+			return 3; //uscita con disonore
+		case 's':
+			scontro(playerPos, Danno(std::vector<double>{1}, 4000), messages);
+			windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+			break;
+		case 'e':
+			pavimento.at(posizione(playerPos)).getEntita()->equip(window, messages);
+			windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+			break;
+		case '0':
+			std::cout << pavimento.at(posizione(getPositionOfPlayer())).descriviOggettiTerra();
+			messages.text.setString(messages.text.getString() + pavimento.at(posizione(getPositionOfPlayer())).descriviOggettiTerra());
+			windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+			return -1; // TextBox
+		case 'p':
+			pavimento.at(posizione(getPositionOfPlayer())).pickup();
+			windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+			break;
+		case 'i':
+			std::cout << pavimento.at(posizione(playerPos)).getEntita()->describeInventario() << std::endl;
+			messages.text.setString(messages.text.getString() + pavimento.at(posizione(playerPos)).getEntita()->describeInventario());
+			windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+			return -1; // TextBox
+		default:
+			if (a)
+			{
+				std::cout << "Input non valido" << std::endl;
+				messages.text.setString(messages.text.getString() + "Input non valido\n");
+				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+			}
+			return -1; // TextBox
+		}
+	}
 }
-
-
 void pianoCavernaIsolaGrafica::stampaPianoSuFinestra()
 {
 	sf::Sprite tiles;

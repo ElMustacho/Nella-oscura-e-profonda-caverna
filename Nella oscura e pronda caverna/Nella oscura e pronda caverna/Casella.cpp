@@ -135,14 +135,7 @@ bool Casella::setEntita(std::shared_ptr<Entita> entity) //TODO gestire la sovrap
 int Casella::doEvento()//FIXME sono un segnaposto
 {
 	if (evento == 1 && dynamic_cast<Protagonista*>((&entita)->get())!=nullptr) {
-		std::cout << "Vuoi salire sulle scale(y/n): ";
-		char input='4';
-		while (input != 'y'&&input != 'n')
-			std::cin >> input;
-		if (input == 'y')
-			return 100;
-		else
-			return 0;
+		return 100;
 	}
 	//FIXME beh per ora l'unico evento sono le scale ma immagino che ci sarà una lunga fila di case in uno switch
 	return 0;
