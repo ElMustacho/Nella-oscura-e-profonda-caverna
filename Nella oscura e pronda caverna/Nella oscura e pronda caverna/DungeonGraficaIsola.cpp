@@ -12,8 +12,8 @@ int DungeonGraficaIsola::playDungeon()
 	std::vector<std::shared_ptr<Oggetto>> inventario;
 	Attributi scarso(3, 4, 2, 2, 2, 1, 3, 1);
 	Equipaggiamento equipaggiamento; //Picche, non hai nulla scemo puzzone
-	auto pugnaleScarso = std::make_shared<Arma> (0.25, "Mazza poco dura", "Probabilmente è meglio usare i pugni", 2, Danno({ 0,0,1 }, 4));
-	equipaggiamento.equipaggia(pugnaleScarso);
+	auto mazzaDiStagno = std::make_shared<Arma> (0.25, "Mazza poco dura", "Probabilmente è meglio usare i pugni", 2, Danno({ 0,0,1 }, 4));
+	equipaggiamento.equipaggia(mazzaDiStagno);
 	auto appoggio1 = std::make_shared<Attore>("Goblin scansafatiche", inventario, scarso, equipaggiamento, 1.1);
 	auto appoggio2 = std::make_shared<Attore>("Goblin indecente", inventario, scarso, equipaggiamento, 1.1);
 	auto appoggio3 = std::make_shared<Attore>("Goblin ammazzatopi", inventario, scarso, equipaggiamento, 1.1);
