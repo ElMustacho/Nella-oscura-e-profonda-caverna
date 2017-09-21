@@ -61,6 +61,8 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 
 	TextBox messages("", font, larghezza * 32, lunghezza * 32, true);
 
+	windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+
 	while (!turni.empty()) {
 		//Here begins trouble
 		while (window.pollEvent(evento)) {
@@ -72,11 +74,6 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 				break;
 			}
 		}
-
-		window.clear();
-
-		windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
-		
 
 		if (spwTurni > 50 + rand() % 100) { //dopo ogni 50 turni arriva un ulteriore goblin puzzone, di sicuro dopo 150
 			auto caselleOk = floodFill(getPositionOfPlayer());
@@ -243,19 +240,25 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, sf::Sp
 			{
 				std::cout << "Scontro!" << std::endl;
 				messages.text.setString(messages.text.getString() + "Scontro!\n");
-				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
-
-				scontro(toPosizione, playerPos, messages);
-				return 0;
 			}
-			
+			scontro(toPosizione, playerPos, messages);
+			return 0;
 			
 		}
 		else if (result == 100) {
-			auto string = graphicInput2("Vuoi prendere le scale (y/n)? ");
-			if (string == "y")
-				return 2;
-			else return 0;
+			sf::Event premiY;
+			std::cout << "Premi y per scalire le scale" << std::endl;
+			messages.text.setString(messages.text.getString() + "Premi y per scalire le scale\n");
+			windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+			while (window.waitEvent(premiY)) {
+				if (premiY.type == sf::Event::TextEntered) {
+					if ((char)premiY.text.unicode=='y') {
+						return 2;
+					}
+					else
+						return 0;
+				}
+			}
 		}
 		else {
 			if (a)
