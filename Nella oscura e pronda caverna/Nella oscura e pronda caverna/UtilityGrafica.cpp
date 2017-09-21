@@ -52,7 +52,7 @@ void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int
 	window.display();
 }
 
-//TODO Introduce refresh here (catena di eventi disastrosa)
+//CHECK Introduce refresh here (catena di eventi disastrosa)
 sf::String graphicInput(sf::RenderWindow& window, TextBox& messages)
 {
 	bool input = false;

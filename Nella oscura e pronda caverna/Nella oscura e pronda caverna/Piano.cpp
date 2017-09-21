@@ -317,7 +317,6 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 		return -4; //Ho provato a muovermi ma sono immobile
 	}
 
-	// CHECK A* (Dijkstra + heuristic) per determinare la direzione da percorrere (qualora sia necessario usarlo).
 	//Qui sotto il sistema di spostamento è stupido, ma potrebbe funzionare per gestire entità prive di intelligenza
 	//tipo qualche golem, melma, zombie o goblin ubriaco fradicio. In pratica non verifico la validità finale del percorso,
 	//ma solo quella della casella in cui mi voglio spostare, una per volta.
@@ -516,7 +515,7 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 
 			if (!found)
 			{
-				//CHECK looking for this node in openList
+				// looking for this node in openList
 				for (std::vector<node>::iterator i = openList.begin(); i < openList.end(); i++)
 				{
 					if (i->posX == direction.posX && i->posY == direction.posY)
@@ -696,7 +695,7 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 		if (pavimento.at(posizione(next)).getEntita() != nullptr) // Qui c'è qualcun altro
 		{
 			std::cout << "Qualcuno osa sbarrarmi la strada!" << std::endl;
-			//TODO Combatto per liberar la via?
+			//TODOFAR Combatto per liberar la via?
 			return 2;
 		}
 		std::shared_ptr<Entita> temp = pavimento.at(posizione(pos)).getEntita();
