@@ -109,13 +109,39 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 		if (getPositionOfPlayer() != posizioneAttivo) {
 			//HACK qui si muove e basta, ma poi dovrà decidere l'intelligenza artificiale dell'entità
 			auto resultMovement = muoviEntita(posizioneAttivo, getPositionOfPlayer());
+			if (resultMovement == 10) { //adiacente a personaggio
+				cood lookAround(posizioneAttivo.first, posizioneAttivo.second);
+				std::vector<cood> aroundMe;
+				aroundMe.push_back(cood(lookAround.first++, lookAround.second++));
+				aroundMe.push_back(cood(lookAround.first--, lookAround.second));
+				aroundMe.push_back(cood(lookAround.first--, lookAround.second));
+				aroundMe.push_back(cood(lookAround.first, lookAround.second--));
+				aroundMe.push_back(cood(lookAround.first, lookAround.second--));
+				aroundMe.push_back(cood(lookAround.first++, lookAround.second));
+				aroundMe.push_back(cood(lookAround.first++, lookAround.second));
+				aroundMe.push_back(cood(lookAround.first, lookAround.second++));
+				for each (auto adj in aroundMe)
+				{
+					if (std::dynamic_pointer_cast<Protagonista>(pavimento.at(posizione(adj)).getEntita()) !=nullptr) //questa casella contiene un pg
+					{
+						auto value=scontro(adj, posizioneAttivo, messages);
+						if (value == 2) {//ucciso il giocatore
+							graphicInput2("Sei morto, cosa vuoi che sia scritto sulla tua lapide? \n");
+							popUp("Sei morto, come puoi dire a qualcuno cosa vuoi sulla lapide adesso?");
+							exit(EXIT_SUCCESS);
+							break;
+						}
+					}
+				}
+			}
 		}
 		else {
 			int resultPlayer;
 			do {
+				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 				resultPlayer = playerAct(a, window, tiles, ogg, prot, enem, messages, scale);
 				/* Oi, funziona -ttebayo!*/
-				windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+				
 				/**/
 			} while (resultPlayer < 0);
 			
@@ -158,6 +184,7 @@ pianoCavernaIsolaGrafica::pianoCavernaIsolaGrafica(int larghezza, int lunghezza,
 	}
 	
 }
+
 
 int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox& messages, sf::Sprite scale)
 {
@@ -279,6 +306,9 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, sf::Sp
 		case 's':
 			scontro(playerPos, Danno(std::vector<double>{1}, 4000), messages);
 			windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+			graphicInput2("Sei morto, cosa vuoi che sia scritto sulla tua lapide? \n");
+			popUp("Sei morto, come puoi dire a qualcuno cosa vuoi sulla lapide adesso?");
+			exit(EXIT_SUCCESS);
 			break;
 		case 'e':
 			pavimento.at(posizione(playerPos)).getEntita()->equip(window, messages);

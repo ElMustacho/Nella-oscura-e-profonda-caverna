@@ -191,7 +191,7 @@ sf::String graphicInput2( sf::String text )
 				}
 				else
 				{
-					if (evento.text.unicode > 32 && evento.text.unicode < 126) {
+					if ((evento.text.unicode > 31 && evento.text.unicode < 128) ) {
 						text += (char)evento.text.unicode;
 						std::cout << (char)evento.text.unicode << std::endl;
 						messages.text.setString(messages.text.getString() + (char)evento.text.unicode);
@@ -209,4 +209,32 @@ sf::String graphicInput2( sf::String text )
 	}
 	std::cout << "->" << text.toAnsiString() <<std::endl;
 	return text;
+}
+
+void popUp(sf::String text) {
+	int larghezza = 20;
+	int lunghezza = 10;
+
+	sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza, 32), "Input here", sf::Style::None);
+	window.setFramerateLimit(60);
+
+	sf::Event evento;
+
+	sf::Font font;
+	if (!font.loadFromFile("arial.ttf"))
+	{
+		//err...
+	}
+	TextBox messages(text, font, larghezza * 32 - 5, lunghezza * 32 - 5);
+	windowRefresh2(window, messages);
+
+	bool input = false;
+	while (input == false && window.isOpen())
+	{
+		while (window.waitEvent(evento))
+		{
+			if (evento.type == sf::Event::TextEntered)
+				return;
+		}
+	}
 }
