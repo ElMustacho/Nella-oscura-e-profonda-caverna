@@ -126,8 +126,8 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 					{
 						auto value=scontro(adj, posizioneAttivo, messages);
 						if (value == 2) {//ucciso il giocatore
-							graphicInput2("Sei morto, cosa vuoi che sia scritto sulla tua lapide? \n");
-							popUp("Sei morto, come puoi dire a qualcuno cosa vuoi sulla lapide adesso?");
+							graphicInput2("Sei morto, cosa vuoi che sia scritto sulla tua lapide? Adesso mettero' una stringa luuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuunga\n");
+							popUp("Sei morto, come puoi dire a qualcuno cosa vuoi sulla lapide adesso? stringa luuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuunga");
 							exit(EXIT_SUCCESS);
 							break;
 						}
@@ -191,7 +191,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, sf::Sp
 	if (a)
 	{
 		std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ";
-		messages.text.setString(messages.text.getString() + "\nUsa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ");
+		messages.text.setString(messages.text.getString() + "\nUsa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra, p per raccogliere cio' che e' a terra, e per equipaggiare, k per suicidarsi, i per descrivere il proprio inventario: ");
 		windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 	} // TextBox
 
@@ -306,7 +306,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, sf::Sp
 		case 's':
 			scontro(playerPos, Danno(std::vector<double>{1}, 4000), messages);
 			windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
-			graphicInput2("Sei morto, cosa vuoi che sia scritto sulla tua lapide? \n");
+			graphicInput2("Sei morto, cosa vuoi che sia scritto sulla tua lapide?\n");
 			popUp("Sei morto, come puoi dire a qualcuno cosa vuoi sulla lapide adesso?");
 			exit(EXIT_SUCCESS);
 			break;

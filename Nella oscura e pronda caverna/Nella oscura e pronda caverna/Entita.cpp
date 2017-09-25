@@ -193,6 +193,7 @@ void Entita::onDeath(TextBox& messages)
 	auto peso = attributi.getForza() * 10 + attributi.getTempra() * 10 + attributi.getDestrezza() * 2 + attributi.getIntelligenza()*0.25; //L'intelligenza significa la dimensione del cervello. L'intelligenza non dipende dalla quantità di cervello nel mondo reale (dipende dalle sinapsi), ma questo è un gioco.
 	auto object = std::make_shared<Oggetto>(Oggetto(peso, "Cadavere di " + nome, "La carcassa di " + nome + " oramai esanime.", 0));
 	addInventario(object);
+	
 	std::cout << nome << " e' morto!" << std::endl; //TODOFAR implementa sesso
 	messages.text.setString(messages.text.getString() + nome + " e' morto!\n" );
 }

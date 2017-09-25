@@ -52,9 +52,19 @@ void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int
 		}
 	}
 	auto look = messages.getText().getString().toAnsiString();
+	//HACK non so' perché ma deve essere 1.05, mettici le mani te poi.
+	const int containerWidth = messages.rect.getSize().x*1.05;
+	for (auto i = 0; i < messages.text.getString().getSize(); ++i)
+	{
+		if (messages.text.findCharacterPos(i).x > containerWidth)
+		{
+			auto str = messages.text.getString();
+			str.insert(i, "\n");
+			messages.text.setString(str);
+		}
+	}
 	window.draw(messages.rect); // TextBox
 	window.draw(messages.text); // TextBox
-
 	window.display();
 }
 
@@ -92,7 +102,7 @@ sf::String graphicInput(sf::RenderWindow& window, TextBox& messages)
 					{
 						text += (char)evento.text.unicode;
 						std::cout << (char)evento.text.unicode << std::endl;
-						messages.text.setString(messages.text.getString() + text); // Refresh
+						
 						//windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
 					}
 				}
@@ -131,12 +141,12 @@ void windowRefresh2(sf::RenderWindow& window, TextBox messages)
 
 	window.display();
 }
-
+//TODO in tutte le funzioni modificate c'è da ottimizzare: guardare tutta la stringa ogni volta è costoso, inutile e lento
 sf::String graphicInput2( sf::String text )
 {
 	int larghezza = 20;
 	int lunghezza = 10;
-
+	int firstText = text.getSize();
 	sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza, 32), "Input here", sf::Style::None);
 	window.setFramerateLimit(60);
 
@@ -147,8 +157,18 @@ sf::String graphicInput2( sf::String text )
 	{
 		//err...
 	}
-	TextBox messages(text, font, larghezza * 32 -5, lunghezza * 32 -5);
 
+	TextBox messages(text, font, larghezza * 32 -5, lunghezza * 32 -5);
+	const int containerWidth = window.getSize().x*0.98;
+	for (auto i = 0; i < text.getSize(); ++i)
+	{
+		if (messages.text.findCharacterPos(i).x > containerWidth)
+		{
+			auto str = messages.text.getString();
+			str.insert(i, "\n");
+			messages.text.setString(str);
+		}
+	}
 	windowRefresh2(window, messages);
 
 	text = "";
@@ -183,6 +203,18 @@ sf::String graphicInput2( sf::String text )
 
 						auto  tempStr = messages.text.getString();
 						tempStr.erase(tempStr.getSize() - 1);
+						const int containerWidthNow = messages.rect.getSize().x;
+						for (auto i = 0; i < text.getSize(); ++i)
+						{
+							if (messages.text.findCharacterPos(i).x*1.05 > containerWidthNow);
+							{
+								auto str = messages.text.getString();
+								if (str[i + firstText] != '\n')
+								str.insert(i+ firstText, "\n");
+								messages.text.setString(str);
+							}
+						}
+						messages.text.setString(messages.text.getString() + text); // Refresh
 						messages.text.setString(tempStr);
 
 						std::cout << (int)evento.text.unicode << std::endl;
@@ -194,7 +226,25 @@ sf::String graphicInput2( sf::String text )
 					if ((evento.text.unicode > 31 && evento.text.unicode < 128) ) {
 						text += (char)evento.text.unicode;
 						std::cout << (char)evento.text.unicode << std::endl;
+						auto biggest = 0;
+						const int containerWidthNow = messages.rect.getSize().x;
+						for (auto i = 0, accapoRecently=0; i < text.getSize(); ++i)
+						{
+							auto numero = messages.text.findCharacterPos(i+firstText).x*1.04;
+							biggest = numero;
+							if (numero > containerWidthNow)
+							{
+								auto str = messages.text.getString();
+								if(str[i+firstText]!='\n')
+								str.insert(i+firstText, "\n");
+								std::string shm(str);
+								messages.text.setString(str);
+							}
+						}
+						biggest = 0;
+						std::string shm(messages.text.getString());
 						messages.text.setString(messages.text.getString() + (char)evento.text.unicode);
+						
 						windowRefresh2(window, messages);
 					}
 				}
@@ -214,7 +264,6 @@ sf::String graphicInput2( sf::String text )
 void popUp(sf::String text) {
 	int larghezza = 20;
 	int lunghezza = 10;
-
 	sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza, 32), "Input here", sf::Style::None);
 	window.setFramerateLimit(60);
 
@@ -226,6 +275,19 @@ void popUp(sf::String text) {
 		//err...
 	}
 	TextBox messages(text, font, larghezza * 32 - 5, lunghezza * 32 - 5);
+	const int containerWidthNow = messages.rect.getSize().x;
+	for (auto i = 0; i < text.getSize(); ++i)
+	{
+		auto numero = messages.text.findCharacterPos(i).x*1.04;
+		if (numero > containerWidthNow) {
+			auto str = messages.text.getString();
+			
+			if (str[i] != '\n')
+				str.insert(i, "\n");
+			messages.text.setString(str);
+		}
+	}
+	std::string shm(messages.text.getString());
 	windowRefresh2(window, messages);
 
 	bool input = false;

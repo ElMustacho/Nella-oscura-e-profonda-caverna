@@ -35,7 +35,7 @@ int DungeonGraficaIsola::playDungeon()
 	while (pianiPercorsi < getNumPiani()) {
 		piani.push_back(pianoCavernaIsolaGrafica(30,18,"",oggettiInseribili,player,entitaGenerabili));
 		player = piani.back().getVectorEntita().at(0);
-		result = piani.back().playPiano('n');
+		result = piani.back().playPiano('y');
 		if (result == 1) {
 			pianiPercorsi++;
 		}
