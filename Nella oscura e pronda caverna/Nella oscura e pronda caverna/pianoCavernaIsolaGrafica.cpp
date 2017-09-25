@@ -60,18 +60,26 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 	}
 
 	TextBox messages("", font, larghezza * 32, lunghezza * 32, true);
-
+	
 	windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
-
-	while (!turni.empty()) {
+	
+	while (!turni.empty()) 
+	{
 		//Here begins trouble
-		while (window.pollEvent(evento)) {
-			switch (evento.type) {
-			case sf::Event::Closed:
-				window.close();
-				turni.clear();
-				return 0;
-				break;
+		while (window.pollEvent(evento)) 
+		{
+			switch (evento.type) 
+			{
+				case sf::Event::Closed:
+					window.close();
+					turni.clear();
+					return 0;
+					break;
+				case sf::Event::MouseWheelScrolled:
+					auto mouseMove = evento.mouseWheelScroll.delta;
+					messages.view.move(0, mouseMove*10);
+					windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+					break;
 			}
 		}
 
@@ -96,13 +104,13 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 		}
 
 		if (a)
-    {
+		{
 		  std::cout << "Adesso sta a " << attivo->getNome() << std::endl;
 		  messages.text.setString( messages.text.getString() + "Adesso sta a " + attivo->getNome() + " \n"); // TextBox
 		  /* Oi, funziona -ttebayo!*/
 		  windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 		  /**/
-    }
+		}
 		
 
 		auto posizioneAttivo = getPositionOfEntity(attivo);
