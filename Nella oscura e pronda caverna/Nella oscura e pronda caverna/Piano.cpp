@@ -42,7 +42,7 @@ int Piano::scontro(cood posizioneVittima, cood posizioneAttaccante, TextBox& mes
 	if (danno.getAmmontare() < 0)
 		return -2; //nessun danno
 	else
-		return scontro(posizioneVittima, danno, messages );//
+		return scontro(posizioneVittima, danno, messages );
 }
 int Piano::scontro(cood posizioneVittima, Danno dannoInflitto, TextBox& messages)
 {
@@ -51,6 +51,8 @@ int Piano::scontro(cood posizioneVittima, Danno dannoInflitto, TextBox& messages
 	else {
 		auto morteAvvenuta = pavimento.at(posizione(posizioneVittima)).getEntita()->subisciDanno(dannoInflitto, messages);
 		if (morteAvvenuta) {
+			if (posizioneVittima == getPositionOfPlayer()) //giocatore morto
+				return 2;
 			//TODOFAR lascia equipaggiamento per terra.
 			auto vPosizioni = getVectorPosizioni();
 			auto it = std::find(vPosizioni.begin(), vPosizioni.end(), posizioneVittima);
@@ -704,7 +706,8 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 		if (pavimento.at(posizione(next)).getEntita() != nullptr) // Qui c'è qualcun altro
 		{
 			std::cout << "Qualcuno osa sbarrarmi la strada!" << std::endl;
-			//TODOFAR Combatto per liberar la via?
+			if (distanza==1) //adiacente a bersaglio
+				return 10;
 			return 2;
 		}
 		std::shared_ptr<Entita> temp = pavimento.at(posizione(pos)).getEntita();

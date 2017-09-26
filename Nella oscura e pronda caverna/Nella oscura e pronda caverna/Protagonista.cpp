@@ -16,9 +16,9 @@ Protagonista::~Protagonista()
 
 void Protagonista::onDeath(TextBox& messages)
 {
-	std::cout << "Sei orribilmente morto." << std::endl;
+	/*std::cout << "Sei orribilmente morto." << std::endl;
 	messages.text.setString("Sei orribilmente morto.\n");
 	char a;
 	std::cin >> a;
-	exit(EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);*/
 }
