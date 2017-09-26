@@ -9,9 +9,11 @@
 #include "Attore.h"
 
 
-void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int larghezza, int lunghezza, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox messages, sf::Sprite scale)
+void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int larghezza, int lunghezza, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox messages, sf::Sprite scale )
 {
 	window.clear();
+	window.setView(window.getDefaultView());
+	
 	//OPTIMIZE
 	for (unsigned int i = 0; i < pavimento.size(); i++) {
 		auto casella = pavimento.at(i);
@@ -51,10 +53,28 @@ void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int
 			}
 		}
 	}
-	auto look = messages.getText().getString().toAnsiString();
-	window.draw(messages.rect); // TextBox
-	window.draw(messages.text); // TextBox
 
+	//HACK non so' perché ma deve essere 1.05, mettici le mani te poi.
+	const int containerWidth = messages.rect.getSize().x*1.05;
+	for (auto i = 0; i < messages.text.getString().getSize(); ++i)
+	{
+		if (messages.text.findCharacterPos(i).x > containerWidth-5)
+		{
+			auto str = messages.text.getString();
+			str.insert(i, "\n");
+			messages.text.setString(str);
+		}
+	}
+
+	auto look = messages.getText().getString().toAnsiString();
+	
+	window.draw(messages.rect);
+	//window.draw(messages.text);
+
+	//messages.view.setSize(messages.view.getSize().x, messages.text.getLocalBounds().height);
+	window.setView(messages.view);
+	window.draw(messages.text);
+	window.setView(window.getDefaultView());
 	window.display();
 }
 
@@ -111,6 +131,8 @@ sf::String graphicInput(sf::RenderWindow& window, TextBox& messages)
 
 void windowMessageRefresh(sf::RenderWindow& window, TextBox messages)
 {
+	window.setView(window.getDefaultView());
+
 	window.draw(messages.rect);
 	auto strTemp = messages.text.getString();
 
@@ -119,16 +141,21 @@ void windowMessageRefresh(sf::RenderWindow& window, TextBox messages)
 
 	messages.text.setString(strTemp);
 	window.draw(messages.text);
+
+	window.setView(messages.view);
 	window.display();
 }
 
 void windowRefresh2(sf::RenderWindow& window, TextBox messages)
 {
 	window.clear();
+	window.setView(window.getDefaultView());
 
+	//window.setView(messages.view);
 	window.draw(messages.rect);
 	window.draw(messages.text);
 
+	window.setView(messages.view);
 	window.display();
 }
 

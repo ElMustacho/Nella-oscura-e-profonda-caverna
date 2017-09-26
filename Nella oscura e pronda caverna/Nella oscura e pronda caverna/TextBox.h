@@ -13,6 +13,7 @@ public:
 
 	sf::RectangleShape rect;
 	sf::Text text;
+	sf::View view;
 
 	~TextBox();
 };
