@@ -71,8 +71,10 @@ void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int
 	window.draw(messages.rect);
 	//window.draw(messages.text);
 
+	//messages.view.setSize(messages.view.getSize().x, messages.text.getLocalBounds().height);
 	window.setView(messages.view);
 	window.draw(messages.text);
+	window.setView(window.getDefaultView());
 	window.display();
 }
 

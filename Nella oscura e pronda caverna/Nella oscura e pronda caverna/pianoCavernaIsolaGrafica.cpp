@@ -59,7 +59,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 		//sf::err() << "font error -> An error has occured during font loading from file"; //CHECK
 	}
 
-	TextBox messages("", font, larghezza * 32, lunghezza * 32, true);
+	TextBox messages("Benvenuto", font, larghezza * 32, lunghezza * 32, true);
 	
 	windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 	
@@ -77,7 +77,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 					break;
 				case sf::Event::MouseWheelScrolled:
 					auto mouseMove = evento.mouseWheelScroll.delta;
-					messages.view.move(0, mouseMove*10);
+					messages.text.move(0, mouseMove*10);
 					windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 					break;
 			}
@@ -192,6 +192,13 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, sf::Sp
 		case sf::Event::TextEntered: {
 			azione = (char)evento.text.unicode;
 			go = false;
+			break;
+		}
+		case sf::Event::MouseWheelScrolled:
+		{
+			auto mouseMove = evento.mouseWheelScroll.delta;
+			messages.text.move(0, mouseMove * 10);
+			windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 			break;
 		}
 		case sf::Event::Closed:
