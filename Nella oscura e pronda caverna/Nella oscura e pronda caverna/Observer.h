@@ -1,18 +1,21 @@
 #pragma once
 
+#include "Attributi.h"
+#include "Oggetto.h"
+#include "Equipaggiamento.h"
+
+
 class Observer
 {
 
 public:
-	virtual ~Observer();
-	virtual void update() = 0;
+	virtual void update(unsigned int lv, double exp, long int money, std::string name, Attributi attr, std::vector<std::shared_ptr<Oggetto>> inventory, Equipaggiamento equip) = 0;
 
 protected:
-	Observer() {};
-
+	//Observer() {};
+	virtual ~Observer();
 private:
-	
-	Observer(const Observer& ref);
-	Observer& operator=(const Observer& ref);
+	//Observer(const Observer& ref);
+	//Observer& operator=(const Observer& ref);
 };
 

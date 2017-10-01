@@ -1,36 +1,23 @@
 #include "StatoProtagonista.h"
 
 
-
-StatoProtagonista::StatoProtagonista()
+bool StatoProtagonista::registerObserver(Observer* obs)
 {
-}
-
-bool StatoProtagonista::registerObserver(Observer& obs)
-{
-	std::vector<Observer&>::iterator temp = find(observers.begin(), observers.end(), obs);
-	if (temp != observers.end())
-		return false;
-
 	observers.push_back(obs);
 	return true;
 }
 
-bool StatoProtagonista::removeObserver(Observer& obs)
+bool StatoProtagonista::removeObserver(Observer* obs)
 {
-	std::vector<Observer&>::iterator temp = find(observers.begin(), observers.end(), obs);
-	if (temp == observers.end())
-		return false;
-	else
-		observers.erase(temp);
+	observers.remove(obs);
 	return true;
 }
 
 bool StatoProtagonista::notifyObservers() const
 {
-	for (std::vector<Observer&>::const_iterator i = observers.begin(); i != observers.end(); i++)
+	for (std::list<Observer*>::const_iterator i = observers.begin(); i != observers.end(); i++)
 	{
-		i->update(/*something*/);
+		(*i)->update(livello, esperienza, fondiEconomici, nome, attributi, inventario, equipaggiamento);
 	}
 	return (observers.size() > 0);
 }

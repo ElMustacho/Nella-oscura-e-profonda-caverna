@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Protagonista.h"
 #include "Observee.h"
 
@@ -6,11 +7,15 @@ class StatoProtagonista : public Observee
 {
 
 public:
-	StatoProtagonista();
+	StatoProtagonista() : livello(0), esperienza(0), fondiEconomici(0), nome(""), attributi(), inventario(), equipaggiamento()
+	{
+
+	}
+
 	~StatoProtagonista();
 
-	bool registerObserver(Observer& obs);
-	bool removeObserver(Observer& obs);
+	bool registerObserver(Observer* obs);
+	bool removeObserver(Observer* obs);
 	bool notifyObservers() const;
 
 	void statoCambiato();
@@ -42,8 +47,18 @@ public:
 		return attributi;
 	}
 
+	std::vector<std::shared_ptr<Oggetto>> getInventario() const
+	{
+		return inventario;
+	}
+
+	Equipaggiamento getEquipagiamento() const
+	{
+		return equipaggiamento;
+	}
+
 private:
-	std::vector<Observer&> observers;
+	std::list<Observer*> observers;
 	unsigned int livello; //FIXME livello è gia contenuto dentro attributi, ereditati da Entita
 	double esperienza;
 	long int fondiEconomici;

@@ -173,9 +173,6 @@
     <ClCompile Include="StatoProtagonista.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="Observee.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
     <ClCompile Include="DisplayStatoProtagonista.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
