@@ -7,20 +7,15 @@ class StatoProtagonista : public Observee
 {
 
 public:
-	StatoProtagonista() : livello(0), esperienza(0), fondiEconomici(0), nome(""), attributi(), inventario(), equipaggiamento()
-	{
-
-	}
-
+	StatoProtagonista() : livello(0), esperienza(0), fondiEconomici(0) {}
 	~StatoProtagonista();
 
-	bool registerObserver(Observer* obs);
-	bool removeObserver(Observer* obs);
+	bool registerObserver(std::shared_ptr<Observer> obs);
+	bool removeObserver(std::shared_ptr<Observer> obs);
 	bool notifyObservers() const;
 
 	void statoCambiato();
-
-	void setStato(unsigned int lv, double exp, long int money, std::string name, Attributi attr, std::vector<std::shared_ptr<Oggetto>> inventory, Equipaggiamento equip);
+	void setStato(unsigned int lv, double exp, long int money);
 	
 	unsigned int getLivello() const
 	{
@@ -37,34 +32,10 @@ public:
 		return fondiEconomici;
 	}
 
-	std::string getNome() const
-	{
-		return nome;
-	}
-
-	Attributi getAttributi() const
-	{
-		return attributi;
-	}
-
-	std::vector<std::shared_ptr<Oggetto>> getInventario() const
-	{
-		return inventario;
-	}
-
-	Equipaggiamento getEquipagiamento() const
-	{
-		return equipaggiamento;
-	}
-
 private:
-	std::list<Observer*> observers;
+	std::list<std::shared_ptr<Observer>> observers;
 	unsigned int livello; //FIXME livello è gia contenuto dentro attributi, ereditati da Entita
 	double esperienza;
 	long int fondiEconomici;
-	std::string nome;
-	Attributi attributi;
-	std::vector<std::shared_ptr<Oggetto>> inventario;
-	Equipaggiamento equipaggiamento;
 };
 

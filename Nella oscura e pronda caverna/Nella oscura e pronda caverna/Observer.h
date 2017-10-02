@@ -9,13 +9,11 @@ class Observer
 {
 
 public:
-	virtual void update(unsigned int lv, double exp, long int money, std::string name, Attributi attr, std::vector<std::shared_ptr<Oggetto>> inventory, Equipaggiamento equip) = 0;
+	virtual void update(unsigned int lv, double exp, long int money) = 0;
 
 protected:
 	//Observer() {};
-	virtual ~Observer();
-private:
-	//Observer(const Observer& ref);
-	//Observer& operator=(const Observer& ref);
+	virtual ~Observer() {};
+
 };
 

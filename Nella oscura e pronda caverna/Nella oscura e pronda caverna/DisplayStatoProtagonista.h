@@ -6,25 +6,23 @@
 #include "Observee.h"
 #include "Protagonista.h"
 
-class DisplayStatoProtagonista : public Observer
+class DisplayStatoProtagonista : public Observer , std::enable_shared_from_this <DisplayStatoProtagonista>
 {
 
 public:
 
-	DisplayStatoProtagonista(Observee* statoProtagonista);
+	DisplayStatoProtagonista(std::shared_ptr<Observee> statoProtagonista);
 	~DisplayStatoProtagonista();
 
-	void update(unsigned int lv, double exp, long int money, std::string name, Attributi attr, std::vector<std::shared_ptr<Oggetto>> inventory, Equipaggiamento equip);
+	void update(unsigned int lv, double exp, long int money);
 	void display() const;
 
+	void regist();
+
 private:
-	Observee* statoProtagonista;
+	std::shared_ptr<Observee> statoProtagonista;
 	unsigned int livello;
 	double esperienza;
 	long int fondiEconomici;
-	std::string nome;
-	Attributi attributi;
-	std::vector<std::shared_ptr<Oggetto>> inventario;
-	Equipaggiamento equipaggiamento;
 };
 
