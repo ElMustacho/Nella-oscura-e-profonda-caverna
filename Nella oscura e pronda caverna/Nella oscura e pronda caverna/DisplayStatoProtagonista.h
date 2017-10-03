@@ -17,8 +17,6 @@ public:
 	void update(unsigned int lv, double exp, long int money);
 	void display() const;
 
-	void regist();
-
 private:
 	std::shared_ptr<Observee> statoProtagonista;
 	unsigned int livello;

@@ -20,18 +20,21 @@
 
 int main()
 {
-	std::vector<std::shared_ptr<Oggetto>> tabellaLoot; //VUOTA
+	std::vector<std::shared_ptr<Oggetto>> tabellaLoot; // VUOTA
 	Equipaggiamento equipaggiamento;
 	Attributi normale(4, 4, 4, 4, 4, 4, 4, 4);
-	Protagonista Saitama("Saitama", tabellaLoot, normale, equipaggiamento, 1, 1094.6099, 400); //Sto usando tabella loot giusto perchè è vuota
+	Protagonista Saitama("Saitama", tabellaLoot, normale, equipaggiamento, 1, 1094.6099, 400); // Sto usando tabella loot giusto perchè è vuota
 
-	std::shared_ptr<StatoProtagonista> stato = std::make_shared<StatoProtagonista>();
-	DisplayStatoProtagonista statoDisplay(stato);
-	statoDisplay.regist();
-	(*stato).setStato(5, 100, 500);
-	std::cin ;
+	StatoProtagonista stato;
+	DisplayStatoProtagonista statoDisplay( std::make_shared<StatoProtagonista>(stato) );
 
+	//HACK temp solution it should register/remove the observer inside statoDisplay
+	stato.registerObserver( std::make_shared<DisplayStatoProtagonista>(statoDisplay) );
+	stato.setStato(5, 100, 500);
+	stato.removeObserver( std::make_shared<DisplayStatoProtagonista>(statoDisplay) );
 
+	getchar();
+	
 	/*
 	DungeonGraficaIsola primoDungeon(3, "Il primo dungeon", "Il primo dell'avventura");
 	auto result=primoDungeon.playDungeon();

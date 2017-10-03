@@ -11,14 +11,9 @@ DisplayStatoProtagonista::DisplayStatoProtagonista(std::shared_ptr<Observee> sta
 	//statoProtagonista->registerObserver(shared_from_this()); // Before there was a simple this
 } //CHECK This call generate an error (you can't call | before the contructor has called)
 
-void DisplayStatoProtagonista::regist()
-{
-	statoProtagonista->registerObserver(shared_from_this());
-}
-
 DisplayStatoProtagonista::~DisplayStatoProtagonista()
 {
-	statoProtagonista->removeObserver(shared_from_this()); // Before there was a simple this
+	//statoProtagonista->removeObserver(shared_from_this()); // Before there was a simple this
 }
 
 void DisplayStatoProtagonista::update(unsigned int lv, double exp, long int money)
