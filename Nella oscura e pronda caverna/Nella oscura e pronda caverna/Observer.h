@@ -9,7 +9,7 @@ class Observer
 {
 
 public:
-	virtual void update(unsigned int lv, double exp, long int money) = 0;
+	virtual void update() = 0;
 
 protected:
 	//Observer() {};

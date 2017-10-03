@@ -2,7 +2,7 @@
 
 
 
-DisplayStatoProtagonista::DisplayStatoProtagonista(std::shared_ptr<Observee> stato)
+DisplayStatoProtagonista::DisplayStatoProtagonista(std::shared_ptr<StatoProtagonista> stato)
 {
 	livello = 0;
 	esperienza = 0;
@@ -16,11 +16,11 @@ DisplayStatoProtagonista::~DisplayStatoProtagonista()
 	//statoProtagonista->removeObserver(shared_from_this()); // Before there was a simple this
 }
 
-void DisplayStatoProtagonista::update(unsigned int lv, double exp, long int money)
+void DisplayStatoProtagonista::update() //unsigned int lv, double exp, long int money
 {
-	livello = lv;
-	esperienza = exp;
-	fondiEconomici = money;
+	livello = statoProtagonista->getLivello();
+	esperienza = statoProtagonista->getEsperienza();
+	fondiEconomici = statoProtagonista->getFondi();
 	display();
 }
 
