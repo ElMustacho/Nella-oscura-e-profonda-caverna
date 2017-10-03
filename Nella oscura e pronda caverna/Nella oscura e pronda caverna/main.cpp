@@ -26,12 +26,16 @@ int main()
 	Protagonista Saitama("Saitama", tabellaLoot, normale, equipaggiamento, 1, 1094.6099, 400); // Sto usando tabella loot giusto perchè è vuota
 
 	StatoProtagonista stato;
+	stato.setStato(10, 200, 600);
 	DisplayStatoProtagonista statoDisplay( std::make_shared<StatoProtagonista>(stato) );
 
 	//HACK temp solution it should register/remove the observer inside statoDisplay
-	stato.registerObserver( std::make_shared<DisplayStatoProtagonista>(statoDisplay) );
+	auto shrdStatus = std::make_shared<DisplayStatoProtagonista>(statoDisplay);
+	stato.registerObserver(shrdStatus); // std::make_shared<DisplayStatoProtagonista>(statoDisplay) 
 	stato.setStato(5, 100, 500);
-	stato.removeObserver( std::make_shared<DisplayStatoProtagonista>(statoDisplay) );
+	stato.removeObserver(shrdStatus); // std::make_shared<DisplayStatoProtagonista>(statoDisplay)
+	std::cout << stato.numObservers() << std::endl; // Resta 1 (perché statoDisplay non crea il solito shared_ptr?)
+	// usando shrStatus viene 0, quindi è probabile che sia setStato a creare problemi
 
 	getchar();
 	

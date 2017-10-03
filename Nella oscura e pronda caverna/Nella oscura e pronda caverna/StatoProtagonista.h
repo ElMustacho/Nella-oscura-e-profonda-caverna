@@ -16,6 +16,7 @@ public:
 
 	void statoCambiato();
 	void setStato(unsigned int lv, double exp, long int money);
+	int numObservers() const;
 	
 	unsigned int getLivello() const
 	{

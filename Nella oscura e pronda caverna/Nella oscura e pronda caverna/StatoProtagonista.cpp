@@ -22,6 +22,11 @@ bool StatoProtagonista::notifyObservers() const
 	return (observers.size() > 0);
 }
 
+int StatoProtagonista::numObservers() const
+{
+	return observers.size();
+}
+
 void StatoProtagonista::statoCambiato()
 { 
 	notifyObservers(); 
