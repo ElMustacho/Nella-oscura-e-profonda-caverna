@@ -133,6 +133,7 @@
     <ClInclude Include="DungeonGraficaIsola.h" />
     <ClInclude Include="Entita.h" />
     <ClInclude Include="Equipaggiamento.h" />
+    <ClInclude Include="MonsterFactory.h" />
     <ClInclude Include="noiseutils.h" />
     <ClInclude Include="Oggetto.h" />
     <ClInclude Include="Piano.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="DungeonGraficaIsola.cpp" />
     <ClCompile Include="Entita.cpp" />
     <ClCompile Include="Equipaggiamento.cpp" />
+    <ClCompile Include="MonsterFactory.cpp" />
     <ClCompile Include="noiseutils.cpp" />
     <ClCompile Include="Oggetto.cpp" />
     <ClCompile Include="main.cpp" />

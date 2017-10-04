@@ -4,6 +4,7 @@
 #include <ctime>
 #include <iostream>
 #include <algorithm>
+#include "MonsterFactory.h"
 pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> oggettiPossibili, std::shared_ptr<Entita> player, std::vector<std::shared_ptr<Entita>> entitaGenerabili)
 {
 	this->larghezza = larghezza;
@@ -54,14 +55,9 @@ do {
 	caselleOk.erase(std::remove(caselleOk.begin(), caselleOk.end(), getPositionOfPlayer()), caselleOk.end());
 	std::shared_ptr<Entita> entitaToPlace;
 	entitaToPlace = entityFactory(1);
-	if(entitaToPlace!=nullptr)
-		placeEntita(entitaToPlace, caselleOk[rand() % caselleOk.size()]);
-	entitaToPlace = entityFactory(1);
-	if (entitaToPlace != nullptr)
-		placeEntita(entitaToPlace, caselleOk[rand() % caselleOk.size()]);
-	entitaToPlace = entityFactory(3);
-	if (entitaToPlace != nullptr)
-		placeEntita(entitaToPlace, caselleOk[rand() % caselleOk.size()]);
+	for (int i = 0; i < 3; i++) {
+		placeEntita(MonsterFactory::makeMon(), caselleOk[rand() % caselleOk.size()]);
+	}
 	pavimento.at(posizione(caselleOk[rand() % caselleOk.size()])).setEvento(1);
 }
 

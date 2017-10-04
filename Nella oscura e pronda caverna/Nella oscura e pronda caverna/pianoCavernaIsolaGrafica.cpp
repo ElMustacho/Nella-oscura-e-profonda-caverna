@@ -1,7 +1,7 @@
 #include "pianoCavernaIsolaGrafica.h"
 #include <iostream>
 
-
+#include "MonsterFactory.h"
 #include "SFML\Graphics.hpp"
 #include "TextBox.h"
 #include "UtilityGrafica.h"
@@ -80,7 +80,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 			cood casellaSpawn;
 			do //FIXME se non c'è nessuna casella libera sballo
 				casellaSpawn = caselleOk[rand() % caselleOk.size()];
-			while (!placeEntita(entityFactory(1), casellaSpawn));
+			while (!placeEntita(MonsterFactory::makeMon(), casellaSpawn));
 			auto smt = pavimento.at(posizione(casellaSpawn)).getEntita();
 			turni.push_back(smt);
 			auto nomeDaDare = smt->getNome();
@@ -126,8 +126,8 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 					{
 						auto value=scontro(adj, posizioneAttivo, messages);
 						if (value == 2) {//ucciso il giocatore
-							graphicInput2("Sei morto, cosa vuoi che sia scritto sulla tua lapide? Adesso mettero' una stringa luuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuunga\n");
-							popUp("Sei morto, come puoi dire a qualcuno cosa vuoi sulla lapide adesso? stringa luuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuunga");
+							graphicInput2("Sei morto, cosa vuoi che sia scritto sulla tua lapide?\n");
+							popUp("Sei morto, come puoi dire a qualcuno cosa vuoi sulla lapide adesso?");
 							exit(EXIT_SUCCESS);
 							break;
 						}
