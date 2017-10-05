@@ -31,9 +31,11 @@ int main()
 
 	//HACK temp solution it should register/remove the observer inside statoDisplay
 	auto shrdStatus = std::make_shared<DisplayStatoProtagonista>(statoDisplay);
+
 	stato.registerObserver(shrdStatus); // std::make_shared<DisplayStatoProtagonista>(statoDisplay) 
 	stato.setStato(5, 100, 500);
 	stato.removeObserver(shrdStatus); // std::make_shared<DisplayStatoProtagonista>(statoDisplay)
+
 	std::cout << stato.numObservers() << std::endl; // Resta 1 (perché statoDisplay non crea il solito shared_ptr?)
 	// usando shrStatus viene 0, quindi è probabile che sia setStato a creare problemi
 
