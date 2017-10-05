@@ -2,7 +2,7 @@
 
 
 
-DisplayStatoProtagonista::DisplayStatoProtagonista(std::shared_ptr<StatoProtagonista> stato)
+DisplayStatoProtagonista::DisplayStatoProtagonista(StatoProtagonista& stato)
 {
 	livello = 0;
 	esperienza = 0;
@@ -18,9 +18,9 @@ DisplayStatoProtagonista::~DisplayStatoProtagonista()
 
 void DisplayStatoProtagonista::update() //unsigned int lv, double exp, long int money
 {
-	livello = statoProtagonista->getLivello();
-	esperienza = statoProtagonista->getEsperienza();
-	fondiEconomici = statoProtagonista->getFondi();
+	livello = statoProtagonista.getLivello();
+	esperienza = statoProtagonista.getEsperienza();
+	fondiEconomici = statoProtagonista.getFondi();
 	display();
 }
 

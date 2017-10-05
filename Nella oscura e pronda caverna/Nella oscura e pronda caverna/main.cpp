@@ -29,7 +29,7 @@ int main()
 
 	StatoProtagonista stato;
 	stato.setStato(10, 200, 600);
-	DisplayStatoProtagonista statoDisplay( std::make_shared<StatoProtagonista>(stato) );
+	DisplayStatoProtagonista statoDisplay( stato ); // std::make_shared<StatoProtagonista>(stato)
 
 	//HACK temp solution it should register/remove the observer inside statoDisplay
 	auto shrdStatus = std::make_shared<DisplayStatoProtagonista>(statoDisplay);
