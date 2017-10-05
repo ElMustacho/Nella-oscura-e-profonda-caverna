@@ -15,7 +15,7 @@ public:
 	DisplayStatoProtagonista(std::shared_ptr<StatoProtagonista> statoProtagonista);
 	~DisplayStatoProtagonista();
 
-	void update(); // unsigned int lv, double exp, long int money
+	void update();
 	void display() const;
 
 private:

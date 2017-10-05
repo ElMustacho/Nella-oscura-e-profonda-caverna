@@ -35,7 +35,7 @@ public:
 
 private:
 	std::list<std::shared_ptr<Observer>> observers;
-	unsigned int livello; //FIXME livello è gia contenuto dentro attributi, ereditati da Entita
+	unsigned int livello;
 	double esperienza;
 	long int fondiEconomici;
 };

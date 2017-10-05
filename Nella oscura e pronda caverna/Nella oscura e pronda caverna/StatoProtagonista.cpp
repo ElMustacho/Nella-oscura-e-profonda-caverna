@@ -17,7 +17,7 @@ bool StatoProtagonista::notifyObservers() const
 {
 	for (std::list<std::shared_ptr<Observer>>::const_iterator i = observers.begin(); i != observers.end(); i++)
 	{
-		(*i)->update(); // livello, esperienza, fondiEconomici
+		(*i)->update();
 	}
 	return (observers.size() > 0);
 }

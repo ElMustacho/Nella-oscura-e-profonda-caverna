@@ -20,10 +20,10 @@
 
 int main()
 {
-	std::vector<std::shared_ptr<Oggetto>> tabellaLoot; // VUOTA
-	Equipaggiamento equipaggiamento;
-	Attributi normale(4, 4, 4, 4, 4, 4, 4, 4);
-	Protagonista Saitama("Saitama", tabellaLoot, normale, equipaggiamento, 1, 1094.6099, 400); // Sto usando tabella loot giusto perchè è vuota
+	//std::vector<std::shared_ptr<Oggetto>> tabellaLoot; // VUOTA
+	//Equipaggiamento equipaggiamento;
+	//Attributi normale(4, 4, 4, 4, 4, 4, 4, 4);
+	//Protagonista Saitama("Saitama", tabellaLoot, normale, equipaggiamento, 1, 1094.6099, 400); // Sto usando tabella loot giusto perchè è vuota
 
 
 
