@@ -25,6 +25,8 @@ int main()
 	Attributi normale(4, 4, 4, 4, 4, 4, 4, 4);
 	Protagonista Saitama("Saitama", tabellaLoot, normale, equipaggiamento, 1, 1094.6099, 400); // Sto usando tabella loot giusto perchè è vuota
 
+
+
 	StatoProtagonista stato;
 	stato.setStato(10, 200, 600);
 	DisplayStatoProtagonista statoDisplay( std::make_shared<StatoProtagonista>(stato) );
@@ -36,11 +38,11 @@ int main()
 	stato.setStato(5, 100, 500);
 	stato.removeObserver(shrdStatus); // std::make_shared<DisplayStatoProtagonista>(statoDisplay)
 
-	std::cout << stato.numObservers() << std::endl; // Resta 1 (perché statoDisplay non crea il solito shared_ptr?)
-	// usando shrStatus viene 0, quindi è probabile che sia setStato a creare problemi
-
+	std::cout << stato.numObservers() << std::endl; 
 	getchar();
 	
+
+
 	/*
 	DungeonGraficaIsola primoDungeon(3, "Il primo dungeon", "Il primo dell'avventura");
 	auto result=primoDungeon.playDungeon();
