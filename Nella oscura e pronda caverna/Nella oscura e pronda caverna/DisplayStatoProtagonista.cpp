@@ -13,7 +13,7 @@ DisplayStatoProtagonista::DisplayStatoProtagonista(StatoProtagonista* stato)
 
 DisplayStatoProtagonista::~DisplayStatoProtagonista()
 {
-	statoProtagonista->removeObserver(this); 
+	statoProtagonista->removeObserver(this);
 }
 
 void DisplayStatoProtagonista::update() 

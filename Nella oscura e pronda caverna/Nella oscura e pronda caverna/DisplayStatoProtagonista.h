@@ -6,8 +6,9 @@
 #include "Observee.h"
 #include "Protagonista.h"
 #include "StatoProtagonista.h"
+#include "DisplayElement.h"
 
-class DisplayStatoProtagonista : public Observer
+class DisplayStatoProtagonista : public Observer, public DisplayElement
 {
 
 public:

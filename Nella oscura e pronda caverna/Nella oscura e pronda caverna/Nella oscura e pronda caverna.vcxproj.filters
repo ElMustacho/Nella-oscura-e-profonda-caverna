@@ -96,6 +96,9 @@
     <ClInclude Include="DisplayStatoProtagonista.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="DisplayElement.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Oggetto.cpp">

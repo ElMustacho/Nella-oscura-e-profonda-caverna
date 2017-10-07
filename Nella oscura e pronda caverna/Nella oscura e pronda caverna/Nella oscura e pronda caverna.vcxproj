@@ -129,6 +129,7 @@
     <ClInclude Include="Attributi.h" />
     <ClInclude Include="Casella.h" />
     <ClInclude Include="Danno.h" />
+    <ClInclude Include="DisplayElement.h" />
     <ClInclude Include="DisplayStatoProtagonista.h" />
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="DungeonGraficaIsola.h" />
