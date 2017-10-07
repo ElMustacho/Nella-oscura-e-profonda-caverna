@@ -7,7 +7,7 @@
 #include "Protagonista.h"
 #include "StatoProtagonista.h"
 
-class DisplayStatoProtagonista : public Observer , std::enable_shared_from_this <DisplayStatoProtagonista>
+class DisplayStatoProtagonista : public Observer
 {
 
 public:

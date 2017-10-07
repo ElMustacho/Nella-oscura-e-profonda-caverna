@@ -42,4 +42,9 @@ void StatoProtagonista::setStato(unsigned int lv, double exp, long int money)
 
 StatoProtagonista::~StatoProtagonista()
 {
+	for (auto&& i : observers)
+	{
+		 //delete i; //TODO delete every observer (PROBLEM with Observer's destructor: inaccessibile)
+	}
+	observers.clear();
 }

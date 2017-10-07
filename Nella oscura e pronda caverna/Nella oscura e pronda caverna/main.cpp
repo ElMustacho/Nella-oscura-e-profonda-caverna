@@ -26,22 +26,20 @@ int main()
 	//Protagonista Saitama("Saitama", tabellaLoot, normale, equipaggiamento, 1, 1094.6099, 400); // Sto usando tabella loot giusto perchè è vuota
 
 
-
 	StatoProtagonista stato;
 	stato.setStato(10, 200, 600);
-	DisplayStatoProtagonista statoDisplay(&stato); // std::make_shared<StatoProtagonista>(stato)
+	DisplayStatoProtagonista statoDisplay(&stato);
 
-	//HACK temp solution it should register/remove the observer inside statoDisplay
-	//auto shrdStatus = std::make_shared<DisplayStatoProtagonista>(statoDisplay);
-
-	//stato.registerObserver(shrdStatus); // std::make_shared<DisplayStatoProtagonista>(statoDisplay) 
 	stato.setStato(5, 100, 500);
-	//stato.removeObserver(shrdStatus); // std::make_shared<DisplayStatoProtagonista>(statoDisplay)
-
 	std::cout << stato.numObservers() << std::endl; 
+
+	//TODO Manage the destroyers in a properly way
+	//stato.~StatoProtagonista();
+	//statoDisplay.display();
+	//statoDisplay.~DisplayStatoProtagonista();
+
 	getchar();
 	
-
 
 	/*
 	DungeonGraficaIsola primoDungeon(3, "Il primo dungeon", "Il primo dell'avventura");
