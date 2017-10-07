@@ -10,8 +10,8 @@ public:
 	StatoProtagonista() : livello(0), esperienza(0), fondiEconomici(0) {}
 	~StatoProtagonista();
 
-	bool registerObserver(std::shared_ptr<Observer> obs);
-	bool removeObserver(std::shared_ptr<Observer> obs);
+	bool registerObserver(Observer* obs);
+	bool removeObserver(Observer* obs);
 	bool notifyObservers() const;
 
 	void statoCambiato();
@@ -34,7 +34,7 @@ public:
 	}
 
 private:
-	std::list<std::shared_ptr<Observer>> observers;
+	std::list<Observer*> observers;
 	unsigned int livello;
 	double esperienza;
 	long int fondiEconomici;

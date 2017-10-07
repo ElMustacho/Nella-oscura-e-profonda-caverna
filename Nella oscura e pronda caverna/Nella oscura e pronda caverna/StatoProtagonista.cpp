@@ -1,13 +1,13 @@
 #include "StatoProtagonista.h"
 
 
-bool StatoProtagonista::registerObserver(std::shared_ptr<Observer> obs)
+bool StatoProtagonista::registerObserver(Observer* obs)
 {
 	observers.push_back(obs);
 	return true;
 }
 
-bool StatoProtagonista::removeObserver(std::shared_ptr<Observer> obs)
+bool StatoProtagonista::removeObserver(Observer* obs)
 {
 	observers.remove(obs);
 	return true;
@@ -15,7 +15,7 @@ bool StatoProtagonista::removeObserver(std::shared_ptr<Observer> obs)
 
 bool StatoProtagonista::notifyObservers() const
 {
-	for (std::list<std::shared_ptr<Observer>>::const_iterator i = observers.begin(); i != observers.end(); i++)
+	for (auto i = observers.begin(); i != observers.end(); i++)
 	{
 		(*i)->update();
 	}

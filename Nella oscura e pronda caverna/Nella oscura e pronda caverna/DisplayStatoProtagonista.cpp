@@ -2,25 +2,25 @@
 
 
 
-DisplayStatoProtagonista::DisplayStatoProtagonista(StatoProtagonista& stato)
+DisplayStatoProtagonista::DisplayStatoProtagonista(StatoProtagonista* stato)
 {
-	livello = 0;
-	esperienza = 0;
-	fondiEconomici = 0;
+	livello = stato->getLivello();
+	esperienza = stato->getEsperienza();
+	fondiEconomici = stato->getFondi();
 	statoProtagonista = stato;
-	//statoProtagonista->registerObserver(shared_from_this()); // Before there was a simple this
+	statoProtagonista->registerObserver(this); // Before there was a simple this
 } //CHECK This call generate an error (you can't call | before the contructor has called)
 
 DisplayStatoProtagonista::~DisplayStatoProtagonista()
 {
-	//statoProtagonista->removeObserver(shared_from_this()); // Before there was a simple this
+	statoProtagonista->removeObserver(this); // Before there was a simple this
 }
 
 void DisplayStatoProtagonista::update() //unsigned int lv, double exp, long int money
 {
-	livello = statoProtagonista.getLivello();
-	esperienza = statoProtagonista.getEsperienza();
-	fondiEconomici = statoProtagonista.getFondi();
+	livello = statoProtagonista->getLivello();
+	esperienza = statoProtagonista->getEsperienza();
+	fondiEconomici = statoProtagonista->getFondi();
 	display();
 }
 

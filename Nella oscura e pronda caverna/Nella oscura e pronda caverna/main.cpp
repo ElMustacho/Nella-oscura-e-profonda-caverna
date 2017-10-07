@@ -29,14 +29,14 @@ int main()
 
 	StatoProtagonista stato;
 	stato.setStato(10, 200, 600);
-	DisplayStatoProtagonista statoDisplay( stato ); // std::make_shared<StatoProtagonista>(stato)
+	DisplayStatoProtagonista statoDisplay(&stato); // std::make_shared<StatoProtagonista>(stato)
 
 	//HACK temp solution it should register/remove the observer inside statoDisplay
-	auto shrdStatus = std::make_shared<DisplayStatoProtagonista>(statoDisplay);
+	//auto shrdStatus = std::make_shared<DisplayStatoProtagonista>(statoDisplay);
 
-	stato.registerObserver(shrdStatus); // std::make_shared<DisplayStatoProtagonista>(statoDisplay) 
+	//stato.registerObserver(shrdStatus); // std::make_shared<DisplayStatoProtagonista>(statoDisplay) 
 	stato.setStato(5, 100, 500);
-	stato.removeObserver(shrdStatus); // std::make_shared<DisplayStatoProtagonista>(statoDisplay)
+	//stato.removeObserver(shrdStatus); // std::make_shared<DisplayStatoProtagonista>(statoDisplay)
 
 	std::cout << stato.numObservers() << std::endl; 
 	getchar();
