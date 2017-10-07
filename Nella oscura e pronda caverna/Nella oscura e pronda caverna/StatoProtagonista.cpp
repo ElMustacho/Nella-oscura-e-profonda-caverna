@@ -9,8 +9,12 @@ bool StatoProtagonista::registerObserver(Observer* obs)
 
 bool StatoProtagonista::removeObserver(Observer* obs)
 {
-	observers.remove(obs);
-	return true;
+	if (observers.size() > 0 && obs != nullptr)
+	{
+		observers.remove(obs);
+		return true;
+	}
+	return false;
 }
 
 bool StatoProtagonista::notifyObservers() const
@@ -42,9 +46,10 @@ void StatoProtagonista::setStato(unsigned int lv, double exp, long int money)
 
 StatoProtagonista::~StatoProtagonista()
 {
-	for (auto&& i : observers)
+	for (auto i = observers.begin(); i != observers.end(); i++)
 	{
-		 //delete i; //TODO delete every observer (PROBLEM with Observer's destructor: inaccessibile)
+		//delete i; //TODO delete every observer (PROBLEM with Observer's destructor: inaccessibile)
+		observers.remove(*i);
 	}
 	observers.clear();
 }
