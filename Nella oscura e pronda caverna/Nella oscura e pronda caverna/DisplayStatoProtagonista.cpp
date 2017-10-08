@@ -2,7 +2,7 @@
 
 
 
-DisplayStatoProtagonista::DisplayStatoProtagonista(StatoProtagonista* stato)
+DisplayStatoProtagonista::DisplayStatoProtagonista(Protagonista* stato)
 {
 	livello = stato->getLivello();
 	esperienza = stato->getEsperienza();

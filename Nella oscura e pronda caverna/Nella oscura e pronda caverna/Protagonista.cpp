@@ -14,6 +14,52 @@ Protagonista::Protagonista(std::string nome, std::vector<std::shared_ptr<Oggetto
 
 Protagonista::~Protagonista()
 {
+	if (observers.size() > 0)
+	{
+		for (auto i = observers.begin(); i != observers.end(); i++)
+		{
+			(*i)->disconnect();
+			//observers.remove(*i); // IF the part above work this is not necessary
+		}
+		observers.clear(); // Same
+	}
+}
+
+
+bool Protagonista::registerObserver(Observer* obs)
+{
+	observers.push_back(obs);
+	return true;
+}
+
+bool Protagonista::removeObserver(Observer* obs)
+{
+	if (observers.size() > 0 && obs != nullptr)
+	{
+		observers.remove(obs);
+		obs->disconnect();
+		return true;
+	}
+	return false;
+}
+
+bool Protagonista::notifyObservers() const
+{
+	for (auto i = observers.begin(); i != observers.end(); i++)
+	{
+		(*i)->update();
+	}
+	return (observers.size() > 0);
+}
+
+int Protagonista::numObservers() const
+{
+	return observers.size();
+}
+
+void Protagonista::statoCambiato()
+{
+	notifyObservers();
 }
 
 void Protagonista::onDeath(TextBox& messages)

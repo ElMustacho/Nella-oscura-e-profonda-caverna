@@ -13,7 +13,7 @@ class DisplayStatoProtagonista : public Observer, public DisplayElement
 
 public:
 
-	DisplayStatoProtagonista(StatoProtagonista* statoProtagonista);
+	DisplayStatoProtagonista(Protagonista* statoProtagonista);
 	virtual ~DisplayStatoProtagonista();
 
 	void update();
@@ -21,7 +21,7 @@ public:
 	void disconnect();
 
 private:
-	StatoProtagonista* statoProtagonista;
+	Protagonista* statoProtagonista;
 	unsigned int livello;
 	double esperienza;
 	long int fondiEconomici;

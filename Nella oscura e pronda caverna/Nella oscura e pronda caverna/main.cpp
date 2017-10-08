@@ -15,26 +15,22 @@
 #include "DungeonGraficaIsola.h"
 #include "TextBox.h"
 
-#include "StatoProtagonista.h"
 #include "DisplayStatoProtagonista.h"
 
 int main()
 {
-	//std::vector<std::shared_ptr<Oggetto>> tabellaLoot; // VUOTA
-	//Equipaggiamento equipaggiamento;
-	//Attributi normale(4, 4, 4, 4, 4, 4, 4, 4);
-	//Protagonista Saitama("Saitama", tabellaLoot, normale, equipaggiamento, 1, 1094.6099, 400); // Sto usando tabella loot giusto perchè è vuota
+	std::vector<std::shared_ptr<Oggetto>> tabellaLoot; // VUOTA
+	Equipaggiamento equipaggiamento;
+	Attributi normale(4, 4, 4, 4, 4, 4, 4, 4);
+	Protagonista Saitama("Saitama", tabellaLoot, normale, equipaggiamento, 1, 1094.6099, 400); // Sto usando tabella loot giusto perchè è vuota
+	
+	DisplayStatoProtagonista statoDisplay(&Saitama);
+	Saitama.setEsperienza( Saitama.getEsperienza()+100 );
 
-
-	StatoProtagonista stato;
-	stato.setStato(10, 200, 600);
-	DisplayStatoProtagonista statoDisplay(&stato);
-
-	stato.setStato(5, 100, 500);
-	std::cout << stato.numObservers() << std::endl; 
+	std::cout << Saitama.numObservers() << std::endl; 
 
 	//CHECK Manage the destroyers in a properly way
-	//stato.~StatoProtagonista();
+	//Saitama.~Protagonista();
 	//statoDisplay.display();
 	//statoDisplay.~DisplayStatoProtagonista();
 
