@@ -14,10 +14,11 @@ class DisplayStatoProtagonista : public Observer, public DisplayElement
 public:
 
 	DisplayStatoProtagonista(StatoProtagonista* statoProtagonista);
-	~DisplayStatoProtagonista();
+	virtual ~DisplayStatoProtagonista();
 
 	void update();
 	void display() const;
+	void disconnect();
 
 private:
 	StatoProtagonista* statoProtagonista;

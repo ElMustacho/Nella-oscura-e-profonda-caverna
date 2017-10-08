@@ -33,7 +33,7 @@ int main()
 	stato.setStato(5, 100, 500);
 	std::cout << stato.numObservers() << std::endl; 
 
-	//TODO Manage the destroyers in a properly way
+	//CHECK Manage the destroyers in a properly way
 	//stato.~StatoProtagonista();
 	//statoDisplay.display();
 	//statoDisplay.~DisplayStatoProtagonista();

@@ -12,6 +12,7 @@ bool StatoProtagonista::removeObserver(Observer* obs)
 	if (observers.size() > 0 && obs != nullptr)
 	{
 		observers.remove(obs);
+		obs->disconnect();
 		return true;
 	}
 	return false;
@@ -46,10 +47,13 @@ void StatoProtagonista::setStato(unsigned int lv, double exp, long int money)
 
 StatoProtagonista::~StatoProtagonista()
 {
-	for (auto i = observers.begin(); i != observers.end(); i++)
+	if (observers.size() > 0)
 	{
-		//delete i; //TODO delete every observer (PROBLEM with Observer's destructor: inaccessibile)
-		observers.remove(*i);
+		for (auto i = observers.begin(); i != observers.end(); i++)
+		{
+			(*i)->disconnect();
+			//observers.remove(*i); // IF the part above work this is not necessary
+		}
+		observers.clear(); // Same
 	}
-	observers.clear();
 }

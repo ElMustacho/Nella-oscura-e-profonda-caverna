@@ -13,22 +13,54 @@ DisplayStatoProtagonista::DisplayStatoProtagonista(StatoProtagonista* stato)
 
 DisplayStatoProtagonista::~DisplayStatoProtagonista()
 {
-	statoProtagonista->removeObserver(this);
+	if (statoProtagonista != nullptr)
+	{
+		statoProtagonista->removeObserver(this);
+	}
+	else
+	{
+		// Guess I'll die in peace...
+	}
+}
+
+void DisplayStatoProtagonista::disconnect()
+{
+	if (statoProtagonista != nullptr)
+	{
+		statoProtagonista = nullptr;
+	}
+	//CHECK Maybe we can call the destrutor here
+	(*this).~DisplayStatoProtagonista();
 }
 
 void DisplayStatoProtagonista::update() 
 {
-	livello = statoProtagonista->getLivello();
-	esperienza = statoProtagonista->getEsperienza();
-	fondiEconomici = statoProtagonista->getFondi();
-	display();
+	if(statoProtagonista != nullptr)
+	{
+		livello = statoProtagonista->getLivello();
+		esperienza = statoProtagonista->getEsperienza();
+		fondiEconomici = statoProtagonista->getFondi();
+		display();
+	}
+	else
+	{
+		// err...
+	}
 }
 
 void DisplayStatoProtagonista::display() const
 {
-	//TODO crea finestra che visualizzi lo stato del protagonista
-	std::cout << "Stato::" << std::endl;
-	std::cout << "Livello: " << livello << std::endl;
-	std::cout << "Esperienza: " << esperienza << std::endl;
-	std::cout << "Soldi: " << fondiEconomici << std::endl;
+	if (statoProtagonista != nullptr)
+	{
+		//TODO crea finestra che visualizzi lo stato del protagonista
+		std::cout << "Stato::" << std::endl;
+		std::cout << "Livello: " << livello << std::endl;
+		std::cout << "Esperienza: " << esperienza << std::endl;
+		std::cout << "Soldi: " << fondiEconomici << std::endl;
+	}
+	else
+	{
+		// err...
+	}
+	
 }

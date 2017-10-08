@@ -8,7 +8,7 @@ class StatoProtagonista : public Observee
 
 public:
 	StatoProtagonista() : livello(0), esperienza(0), fondiEconomici(0) {}
-	~StatoProtagonista();
+	virtual ~StatoProtagonista();
 
 	bool registerObserver(Observer* obs);
 	bool removeObserver(Observer* obs);
