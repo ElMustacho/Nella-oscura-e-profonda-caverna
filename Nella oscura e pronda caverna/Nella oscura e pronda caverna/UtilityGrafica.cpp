@@ -9,7 +9,7 @@
 #include "Attore.h"
 
 
-void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int larghezza, int lunghezza, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox messages, sf::Sprite scale)
+void UtilityGrafica:: windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int larghezza, int lunghezza, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox messages, sf::Sprite scale)
 {
 	window.clear();
 	//OPTIMIZE
@@ -51,7 +51,39 @@ void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int
 			}
 		}
 	}
-	auto look = messages.getText().getString().toAnsiString();
+	sf::RectangleShape underHP(sf::Vector2f(larghezza*32/3, 20));
+	underHP.setFillColor(sf::Color(0xF4,0x43,0x36));
+	underHP.setPosition(0, lunghezza * 32);
+	window.draw(underHP);
+	auto look = (double)(percHP*larghezza * 32) / (double)3;
+	sf::RectangleShape overHP(sf::Vector2f(look, 20));
+	overHP.setFillColor(sf::Color(0xd5,0x00,0x00));
+	overHP.setPosition(0, lunghezza * 32);
+	window.draw(overHP);
+
+	sf::RectangleShape underSt(sf::Vector2f(larghezza * 32 / 3, 20));
+	underSt.setFillColor(sf::Color(0x66, 0xBB, 0x6A));
+	underSt.setPosition((larghezza * 32 / 3), lunghezza * 32);
+	window.draw(underSt);
+	sf::RectangleShape overSt(sf::Vector2f(percSt*larghezza * 32 / 3, 20));
+	overSt.setFillColor(sf::Color(0x2E, 0x7D, 0x32));
+	auto shm = (double)larghezza * (double)32 / (double)3;
+	overSt.setPosition(shm, lunghezza * 32);
+	window.draw(overSt);
+
+	sf::RectangleShape underMa(sf::Vector2f(larghezza * 32 / 3, 20));
+	underMa.setFillColor(sf::Color(0x64, 0xb5, 0xf6));
+	underMa.setPosition((2 * larghezza * 32 / 3), lunghezza * 32);
+	window.draw(underMa);
+	sf::RectangleShape overMa(sf::Vector2f(percMa*larghezza * 32 / 3, 20));
+	overMa.setFillColor(sf::Color(0x0d, 0x47, 0xa1));
+	overMa.setPosition((2 * larghezza * 32 / 3), lunghezza * 32);
+	window.draw(overMa);
+
+	
+	if (livelloPG > 1)
+		messages.rect.setFillColor(sf::Color(0xb2, 0x22, 0x22, 0x99));
+
 	//HACK non so' perché ma deve essere 1.05, mettici le mani te poi.
 	const int containerWidth = messages.rect.getSize().x*1.05;
 	for (auto i = 0; i < messages.text.getString().getSize(); ++i)
@@ -69,7 +101,7 @@ void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int
 }
 
 //CHECK Introduce refresh here (catena di eventi disastrosa)
-sf::String graphicInput(sf::RenderWindow& window, TextBox& messages)
+sf::String UtilityGrafica::graphicInput(sf::RenderWindow& window, TextBox& messages)
 {
 	bool input = false;
 	sf::String text;
@@ -119,7 +151,7 @@ sf::String graphicInput(sf::RenderWindow& window, TextBox& messages)
 	return text;
 }
 
-void windowMessageRefresh(sf::RenderWindow& window, TextBox messages)
+void UtilityGrafica::windowMessageRefresh(sf::RenderWindow& window, TextBox messages)
 {
 	window.draw(messages.rect);
 	auto strTemp = messages.text.getString();
@@ -132,7 +164,7 @@ void windowMessageRefresh(sf::RenderWindow& window, TextBox messages)
 	window.display();
 }
 
-void windowRefresh2(sf::RenderWindow& window, TextBox messages)
+void UtilityGrafica::windowRefresh2(sf::RenderWindow& window, TextBox messages)
 {
 	window.clear();
 
@@ -142,7 +174,7 @@ void windowRefresh2(sf::RenderWindow& window, TextBox messages)
 	window.display();
 }
 //TODO in tutte le funzioni modificate c'è da ottimizzare: guardare tutta la stringa ogni volta è costoso, inutile e lento
-sf::String graphicInput2( sf::String text )
+sf::String UtilityGrafica::graphicInput2( sf::String text )
 {
 	int larghezza = 20;
 	int lunghezza = 10;
@@ -261,7 +293,7 @@ sf::String graphicInput2( sf::String text )
 	return text;
 }
 
-void popUp(sf::String text) {
+void UtilityGrafica::popUp(sf::String text) {
 	int larghezza = 20;
 	int lunghezza = 10;
 	sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza, 32), "Input here", sf::Style::None);
@@ -299,4 +331,24 @@ void popUp(sf::String text) {
 				return;
 		}
 	}
+}
+//Vita, Stamina, Magia
+void UtilityGrafica::update(double a, double b, double c)
+{
+	this->percHP = a;
+	this->percSt = b;
+	this->percMa = c;
+}
+
+void UtilityGrafica::updateLevel(int livello)
+{
+	livelloPG = livello;
+}
+
+UtilityGrafica::UtilityGrafica()
+{
+}
+
+UtilityGrafica::~UtilityGrafica()
+{
 }

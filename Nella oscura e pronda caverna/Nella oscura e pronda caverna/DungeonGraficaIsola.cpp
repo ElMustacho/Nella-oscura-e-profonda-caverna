@@ -1,6 +1,6 @@
 #include "DungeonGraficaIsola.h"
 #include <iostream>
-
+#include "UtilityGrafica.h"
 
 int DungeonGraficaIsola::playDungeon()
 {
@@ -23,18 +23,18 @@ int DungeonGraficaIsola::playDungeon()
 
 	/////////////////////////
 	std::vector<std::shared_ptr<Oggetto>> oggettiInseribili;
-	auto oggetto = std::make_shared<Oggetto>(1, "Quaderno degli appunti", "Appartenente in precedenza ad un sociopatico ragazzo giapponese con deliri di onnipotenza", 15);
+	auto oggetto = std::make_shared<Oggetto>(1, "Quaderno degli appunti", "Appartenente in precedenza ad un sociopatico ragazzo giapponese con deliri di onnipotenza", 25);
 	auto oggetto2 = std::make_shared<Arma>(3, "Ascia bipenne", "Forgiata con due penne bic", 14, Danno(std::vector<double>{1}, 15));
 	auto oggetto3 = std::make_shared<Oggetto>(1, "Sacchetto di polvere", "Made in Colombia", 150);
-	auto oggetto4 = std::make_shared<Arma>(0.5, "Pugnale piramidale", "Se ci fossero le convenzioni di Ginevra questo pugnale le infrangerebbe", 9, Danno(std::vector<double>{1}, 25));
+	auto oggetto4 = std::make_shared<Arma>(0.5, "Pugnale piramidale", "Se ci fossero le convenzioni di Ginevra questo pugnale le infrangerebbe", 9, Danno(std::vector<double>{1}, 40));
 	oggettiInseribili.push_back(oggetto);
 	oggettiInseribili.push_back(oggetto2);
 	oggettiInseribili.push_back(oggetto3);
 	oggettiInseribili.push_back(oggetto4);
-	std::shared_ptr<Entita> player=nullptr;
+	std::shared_ptr<Protagonista> player=nullptr;
 	while (pianiPercorsi < getNumPiani()) {
 		piani.push_back(pianoCavernaIsolaGrafica(30,18,"",oggettiInseribili,player,entitaGenerabili));
-		player = piani.back().getVectorEntita().at(0);
+		player = std::dynamic_pointer_cast<Protagonista>(piani.back().getVectorEntita().at(0));
 		result = piani.back().playPiano('n');
 		if (result == 1) {
 			pianiPercorsi++;

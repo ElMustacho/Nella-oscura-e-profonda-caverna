@@ -58,9 +58,9 @@ Danno Entita::attacca()
 	if (danno.getAmmontare() > 0) //is this even impossible
 	{
 		if (equipaggiamento.getArmaPrimaria()->getPeso() < 0.5) //arma piccola usa la destrezza
-			danno.magnifica(attributi.getDestrezza() / 4);
+			danno.magnifica((double)attributi.getDestrezza() / 4);
 		else										//arma grande no
-			danno.magnifica(attributi.getForza() / 4);
+			danno.magnifica((double)attributi.getForza() / 4);
 		srand((unsigned int)time(nullptr));
 		double random;
 		random = rand() % 6;
@@ -109,6 +109,7 @@ bool Entita::equip(int posizioneOggetto)
 //TODO spostami in protagonista, visto che dovrebbe essere l'unico con l'UI
 bool Entita::equip(sf::RenderWindow& window, TextBox& messages) 
 {
+	UtilityGrafica finestra;
 	int numero = 0;
 	std::cout << std::endl;
 	for each (auto oggetto in inventario)
@@ -124,7 +125,7 @@ bool Entita::equip(sf::RenderWindow& window, TextBox& messages)
 	//FIXME funziono solo con numeri, non forzarmi please
 	//std::cin >> numero; 
 	
-	auto convert = graphicInput2( messages.text.getString() );
+	auto convert = finestra.graphicInput2( messages.text.getString() );
 	try {
 		numero = std::stoi(convert.toAnsiString(), nullptr);
 	}
@@ -165,13 +166,18 @@ bool Entita::subisciDanno(Danno dannoSubito, TextBox& messages)
 	{
 		totalehp += attributi.getResistenze()[i] * dannoSubito.getParteDanno(i);
 	}
+	if (totalehp <= 0) {
+		std::cout << nome << " e' rimasto incolume!" << std::endl;
+		messages.text.setString(messages.text.getString() + nome + " "+ sf::String(sf::Uint32(232)) +" rimasto incolume! \n");
+		return false;
+	}
 	attributi.setHp((int)(attributi.getHp()-totalehp));
 	if (attributi.getHp() < 0) { //dead
 		onDeath(messages);
 		return true;
 	}
-	std::cout << nome << " ha sofferto " << totalehp << " danni!" << std::endl;
-	messages.text.setString(messages.text.getString() + nome + " ha sofferto " + std::to_string(totalehp) + " danni!\n");
+	std::cout << nome << " ha sofferto " << (int)totalehp << " danni!" << std::endl;
+	messages.text.setString(messages.text.getString() + nome + " ha sofferto " + std::to_string((int)totalehp) + " danni!\n");
 	return false;
 }
 

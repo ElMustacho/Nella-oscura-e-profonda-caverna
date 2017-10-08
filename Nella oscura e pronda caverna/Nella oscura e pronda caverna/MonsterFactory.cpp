@@ -16,27 +16,29 @@ std::shared_ptr<Entita> MonsterFactory::makeMon(int code)
 			std::vector<std::shared_ptr<Oggetto>> inventario{ std::shared_ptr<Oggetto>(new Oggetto(0.5, "Targhetta identificativa", "Hai la prova di aver ucciso qualcuno.", 0)) };
 			Attributi nellaMedia(4, 4, 2, 4, 4, 4, 4, 4);
 			Equipaggiamento equipaggiamento;
-			appoggio = std::make_shared<Attore>("Soldato semplice", inventario, nellaMedia, equipaggiamento, 1);
+			auto arma = std::make_shared<Arma>(2, "Ascia piccola", "Per piccoli eroi", 6, Danno({ 0,1 }, 8));
+			equipaggiamento.equipaggia(arma);
+			appoggio = std::make_shared<Attore>("Soldato semplice", inventario, nellaMedia, equipaggiamento, 500);
 			return appoggio;
 			break;
 		}
 		case 1: {
 			std::vector<std::shared_ptr<Oggetto>> inventario{};
-			Attributi nellaMedia(4, 4, 2, 4, 4, 4, 4, 4);
+			Attributi nellaMedia(4, 2, 2, 4, 4, 4, 4, 4);
 			Equipaggiamento equipaggiamento; //Picche, non hai nulla scemo
 			auto torcia = std::make_shared<Arma>(0.25, "Torcia accesa", "Per scacciare il mostro di Frankenstain", 2, Danno({ 0,0,0.5,0,0.5 }, 6));
 			equipaggiamento.equipaggia(torcia);
-			appoggio = std::make_shared<Attore>("Popolano arrabbiato", inventario, nellaMedia, equipaggiamento, 1);
+			appoggio = std::make_shared<Attore>("Popolano arrabbiato", inventario, nellaMedia, equipaggiamento, 500);
 			return appoggio;
 			break;
 		}
 		case 2: {
 			std::vector<std::shared_ptr<Oggetto>> inventario{};
-			Attributi nellaMedia(4, 4, 2, 4, 4, 8, 4, 4);
+			Attributi nellaMedia(4, 2, 2, 4, 4, 8, 4, 4);
 			Equipaggiamento equipaggiamento;
 			auto segaArrugginita = std::make_shared<Arma>(0.25, "Sega arrugginita", "A rischio tetano", 2, Danno({ 0.5,0,0,0,0,0,0,0.5 }, 8));
 			equipaggiamento.equipaggia(segaArrugginita);
-			appoggio = std::make_shared<Attore>("Medico del medioevo", inventario, nellaMedia, equipaggiamento, 1);
+			appoggio = std::make_shared<Attore>("Medico del medioevo", inventario, nellaMedia, equipaggiamento, 500);
 			return appoggio;
 			break;
 		}

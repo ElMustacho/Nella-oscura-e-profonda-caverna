@@ -37,11 +37,11 @@ public:
 	bool equip(sf::RenderWindow& window,TextBox& messages);
 	bool addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere);
 	//return true se uccide, false altrimenti
-	bool subisciDanno(Danno dannoSubito, TextBox& messages);
+	virtual bool subisciDanno(Danno dannoSubito, TextBox& messages);
 	double carryWeight(); //calcolo peso trasportato
 	std::string describeInventario();
 	
-private:
+protected:
 	//TODO finish this
 	std::string pathToTile;
 	std::string nome;

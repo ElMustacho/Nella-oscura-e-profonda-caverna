@@ -969,7 +969,7 @@ std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
 	if (codiceID == 0) {
 		std::vector<std::shared_ptr<Oggetto>> inventario{ std::shared_ptr<Oggetto>(new Oggetto(0.5, "Una pietra", "Terra condensata.", 0)) };
 		Attributi nellaMedia(4, 4, 4, 4, 4, 4, 4, 4);
-		Equipaggiamento equipaggiamento; //Picche, non hai nulla scemo
+		Equipaggiamento equipaggiamento;
 		appoggio = std::make_shared<Protagonista>(Protagonista("Medioman", inventario, nellaMedia, equipaggiamento, 1, 0, 0));
 		return appoggio;
 	}
