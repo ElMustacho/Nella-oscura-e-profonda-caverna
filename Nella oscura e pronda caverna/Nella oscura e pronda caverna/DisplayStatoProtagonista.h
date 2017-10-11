@@ -22,6 +22,7 @@ public:
 
 private:
 	Protagonista* statoProtagonista;
+	std::string nome;
 	unsigned int livello;
 	double esperienza;
 	int hp;

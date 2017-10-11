@@ -44,7 +44,7 @@ pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza, std::vector<s
 		prot = entityFactory();
 
 	/* <TEST FOR OBSERVERS> */
-	//DisplayStatoProtagonista statoDisplay( &(*prot) ); // Observer //CHECK Not working
+		//DisplayStatoProtagonista statoDisplay( &(*prot) ); // Observer //CHECK Not working
 	/* </TEST FOR OBSERVERS> */
 
 	std::vector<cood> caselleOk;
