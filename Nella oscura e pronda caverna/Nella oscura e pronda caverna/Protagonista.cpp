@@ -1,4 +1,6 @@
 #include "Protagonista.h"
+#include "DisplayStatoProtagonista.h"
+
 #include <memory>
 #include <iostream>
 
@@ -59,6 +61,7 @@ int Protagonista::numObservers() const
 
 void Protagonista::statoCambiato()
 {
+	DisplayStatoProtagonista dispStat(this);
 	notifyObservers();
 }
 

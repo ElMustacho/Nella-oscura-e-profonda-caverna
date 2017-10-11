@@ -8,6 +8,7 @@ DisplayStatoProtagonista::DisplayStatoProtagonista(Entita* stato)
 	if (statoC != nullptr)
 	{
 		livello = statoC->getLivello();
+		hp = statoC->getHp();
 		esperienza = statoC->getEsperienza();
 		fondiEconomici = statoC->getFondi();
 		statoProtagonista = statoC;
@@ -16,11 +17,6 @@ DisplayStatoProtagonista::DisplayStatoProtagonista(Entita* stato)
 	else
 	{
 		// err...
-		livello = statoC->getLivello();
-		esperienza = statoC->getEsperienza();
-		fondiEconomici = statoC->getFondi();
-		statoProtagonista = statoC;
-		statoProtagonista->registerObserver(this);
 	}
 }
 
@@ -53,6 +49,7 @@ void DisplayStatoProtagonista::update()
 		livello = statoProtagonista->getLivello();
 		esperienza = statoProtagonista->getEsperienza();
 		fondiEconomici = statoProtagonista->getFondi();
+		hp = statoProtagonista->getHp();
 		display();
 	}
 	else
@@ -67,6 +64,7 @@ void DisplayStatoProtagonista::display() const
 	{
 		//TODO crea finestra che visualizzi lo stato del protagonista
 		std::cout << "Stato::" << std::endl;
+		std::cout << "HP: " << hp << std::endl;
 		std::cout << "Livello: " << livello << std::endl;
 		std::cout << "Esperienza: " << esperienza << std::endl;
 		std::cout << "Soldi: " << fondiEconomici << std::endl;

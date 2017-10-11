@@ -1,7 +1,7 @@
 #include "pianoCavernaIsolaGrafica.h"
 #include <iostream>
 
-
+#include "Protagonista.h"
 #include "SFML\Graphics.hpp"
 #include "TextBox.h"
 #include "UtilityGrafica.h"
@@ -320,6 +320,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, sf::Sp
 			return 3; //uscita con disonore
 		case 's':
 			scontro(playerPos, Danno(std::vector<double>{1}, 4000), messages);
+			//dynamic_cast<Protagonista*>(&(*(pavimento.at(posizione(playerPos)).getEntita())))->statoCambiato();
 			windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 			graphicInput2("Sei morto, cosa vuoi che sia scritto sulla tua lapide? \n");
 			popUp("Sei morto, come puoi dire a qualcuno cosa vuoi sulla lapide adesso?");

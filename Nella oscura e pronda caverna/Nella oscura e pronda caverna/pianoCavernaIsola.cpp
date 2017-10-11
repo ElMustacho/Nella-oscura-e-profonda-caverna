@@ -1,9 +1,13 @@
 #include "pianoCavernaIsola.h"
 #include "noise\noise.h"
+#include "DisplayStatoProtagonista.h"
+
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <algorithm>
+
+
 pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> oggettiPossibili, std::shared_ptr<Entita> player, std::vector<std::shared_ptr<Entita>> entitaGenerabili)
 {
 	this->larghezza = larghezza;
@@ -38,8 +42,13 @@ pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza, std::vector<s
 		prot = player;
 	else
 		prot = entityFactory();
+
+	/* <TEST FOR OBSERVERS> */
+	//DisplayStatoProtagonista statoDisplay( &(*prot) ); // Observer //CHECK Not working
+	/* </TEST FOR OBSERVERS> */
+
 	std::vector<cood> caselleOk;
-do {
+	do {
 		
 		placeProtagonista.first = rand() % larghezza;
 		placeProtagonista.second = rand() % lunghezza;

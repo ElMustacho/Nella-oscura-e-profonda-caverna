@@ -53,8 +53,9 @@ int main()
 	Attributi dexAlta(4, 4, 4, 4, 4, 4, 4, 1);
 	Attributi normale(4, 4, 4, 4, 4, 4, 4, 4);
 	Protagonista Saitama("Saitama", tabellaLoot, normale, Equipaggiamento, 1, 1094.6099, 400); //Sto usando tabella loot giusto perchè è vuota
-	DisplayStatoProtagonista statoDisplay(&Saitama); // Observer
-	Saitama.setEsperienza(Saitama.getEsperienza() + 100); // For the Observer!
+	//DisplayStatoProtagonista statoDisplay(&Saitama); // Observer
+	//Saitama.setEsperienza(Saitama.getEsperienza() + 100); // For the Observer!
+	std::cout << "Waiting an input..." << std::endl;
 	getchar(); // To see the result
 	pianoCavernaIsolaGrafica please(20, 20);
 	please.stampaPianoSuFinestra();

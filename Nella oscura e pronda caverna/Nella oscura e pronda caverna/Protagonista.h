@@ -30,6 +30,11 @@ public:
 		statoCambiato();
 	};
 
+	int getHp() const
+	{
+		return this->getAttributi().getHp();
+	}
+
 	double getEsperienza() const
 	{
 		return esperienza;

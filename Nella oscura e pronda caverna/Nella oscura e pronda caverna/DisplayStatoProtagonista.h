@@ -24,6 +24,7 @@ private:
 	Protagonista* statoProtagonista;
 	unsigned int livello;
 	double esperienza;
+	int hp;
 	long int fondiEconomici;
 };
 

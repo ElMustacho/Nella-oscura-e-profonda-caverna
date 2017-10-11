@@ -11,11 +11,10 @@ class Observer
 public:
 	virtual void update() = 0;
 	virtual void disconnect() = 0;
-	virtual ~Observer() {};
 
 protected:
 	//Observer() {};
-	
+	virtual ~Observer() {};
 
 };
 

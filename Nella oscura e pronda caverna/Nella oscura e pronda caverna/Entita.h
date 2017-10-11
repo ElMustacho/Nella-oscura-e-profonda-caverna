@@ -40,6 +40,8 @@ public:
 	bool subisciDanno(Danno dannoSubito, TextBox& messages);
 	double carryWeight(); //calcolo peso trasportato
 	std::string describeInventario();
+
+	virtual void statoCambiato() {};
 	
 private:
 	//TODO finish this

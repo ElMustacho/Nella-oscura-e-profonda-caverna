@@ -87,6 +87,7 @@ Attributi Entita::getAttributi() const
 void Entita::setAttributi(Attributi attr)
 {
 	attributi = attr;
+	// statoCambiato();
 }
 //FIXME per ora non gestisco tutti i casi.
 bool Entita::addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti)
@@ -172,6 +173,7 @@ bool Entita::subisciDanno(Danno dannoSubito, TextBox& messages)
 	}
 	std::cout << nome << " ha sofferto " << totalehp << " danni!" << std::endl;
 	messages.text.setString(messages.text.getString() + nome + " ha sofferto " + std::to_string(totalehp) + " danni!\n");
+	statoCambiato();
 	return false;
 }
 
@@ -195,6 +197,7 @@ void Entita::onDeath(TextBox& messages)
 	addInventario(object);
 	std::cout << nome << " e' morto!" << std::endl; //TODOFAR implementa sesso
 	messages.text.setString(messages.text.getString() + nome + " e' morto!\n" );
+	statoCambiato();
 }
 
 std::string Entita::describeInventario() {
