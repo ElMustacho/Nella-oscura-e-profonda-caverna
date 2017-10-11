@@ -18,6 +18,7 @@ public:
 
 	void update();
 	void display() const;
+	void displayHp() const;
 	void disconnect();
 
 private:

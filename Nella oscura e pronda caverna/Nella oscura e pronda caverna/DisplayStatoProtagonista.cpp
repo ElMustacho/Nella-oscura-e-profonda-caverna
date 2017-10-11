@@ -48,6 +48,7 @@ void DisplayStatoProtagonista::update()
 {
 	if(statoProtagonista != nullptr)
 	{
+		//TODO A causa dell'HACK non è possibile fare i controlli correttamente
 		auto lv = statoProtagonista->getLivello();
 		if (livello != lv)
 		{
@@ -88,22 +89,35 @@ void DisplayStatoProtagonista::display() const
 	if (statoProtagonista != nullptr)
 	{
 		//TODO crea finestra che visualizzi lo stato del protagonista
-		std::cout << "Stato " << nome << "::"<<std::endl;
-		std::cout << "HP: " << hp << std::endl;
-		std::cout << "Livello: " << livello << std::endl;
-		std::cout << "Esperienza: " << esperienza << std::endl;
-		std::cout << "Soldi: " << fondiEconomici << std::endl;
-
-		sf::String msg("Stato " + nome + "::\n");
+		
+		sf::String msg("Stato di " + nome + "::\n");
 		msg += "HP: " + std::to_string(hp) + "\n";
 		msg += "Livello: " + std::to_string(livello) + "\n";
 		msg += "Esperienza: " + std::to_string(esperienza) + "\n";
 		msg += "Soldi: " + std::to_string(fondiEconomici) + "\n";
-		popUp(msg);
+
+		std::cout << msg.toAnsiString() << std::endl;
+		popUp(msg); // Spunta fuori prima del refresh mostrando il futuro
 	}
 	else
 	{
 		// err...
 	}
 	
+}
+
+void DisplayStatoProtagonista::displayHp() const
+{
+	if (statoProtagonista != nullptr)
+	{
+		//TODO crea finestra che visualizzi lgli hp del protagonista
+		sf::String msg("HP di " + nome + ": " + std::to_string(hp) + "\n");
+
+		std::cout << msg.toAnsiString() << std::endl;
+		popUp(msg); // Spunta fuori prima del refresh mostrando il futuro
+	}
+	else
+	{
+		// err...
+	}
 }
