@@ -13,7 +13,7 @@ class DisplayStatoProtagonista : public Observer, public DisplayElement
 
 public:
 
-	DisplayStatoProtagonista(Protagonista* statoProtagonista);
+	DisplayStatoProtagonista(Entita* statoProtagonista);
 	virtual ~DisplayStatoProtagonista();
 
 	void update();

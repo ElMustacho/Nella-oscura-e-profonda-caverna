@@ -19,25 +19,25 @@
 
 int main()
 {
-	std::vector<std::shared_ptr<Oggetto>> tabellaLoot; // VUOTA
+	/*std::vector<std::shared_ptr<Oggetto>> tabellaLoot; // VUOTA
 	Equipaggiamento equipaggiamento;
 	Attributi normale(4, 4, 4, 4, 4, 4, 4, 4);
-	Protagonista Saitama("Saitama", tabellaLoot, normale, equipaggiamento, 1, 1094.6099, 400); // Sto usando tabella loot giusto perchè è vuota
+	Protagonista Saitama1("Saitama", tabellaLoot, normale, equipaggiamento, 1, 1094.6099, 400); // Sto usando tabella loot giusto perchè è vuota
 	
-	DisplayStatoProtagonista statoDisplay(&Saitama);
-	Saitama.setEsperienza( Saitama.getEsperienza()+100 );
+	DisplayStatoProtagonista statoDisplay(&Saitama1);
+	Saitama1.setEsperienza( Saitama1.getEsperienza()+100 );
 
-	std::cout << Saitama.numObservers() << std::endl; 
+	std::cout << Saitama1.numObservers() << std::endl; */
 
 	//CHECK Manage the destroyers in a properly way
 	//Saitama.~Protagonista();
 	//statoDisplay.display();
 	//statoDisplay.~DisplayStatoProtagonista();
 
-	getchar();
+	
 	
 
-	/*
+	
 	DungeonGraficaIsola primoDungeon(3, "Il primo dungeon", "Il primo dell'avventura");
 	auto result=primoDungeon.playDungeon();
 	if (result == 1)
@@ -53,6 +53,9 @@ int main()
 	Attributi dexAlta(4, 4, 4, 4, 4, 4, 4, 1);
 	Attributi normale(4, 4, 4, 4, 4, 4, 4, 4);
 	Protagonista Saitama("Saitama", tabellaLoot, normale, Equipaggiamento, 1, 1094.6099, 400); //Sto usando tabella loot giusto perchè è vuota
+	DisplayStatoProtagonista statoDisplay(&Saitama); // Observer
+	Saitama.setEsperienza(Saitama.getEsperienza() + 100); // For the Observer!
+	getchar(); // To see the result
 	pianoCavernaIsolaGrafica please(20, 20);
 	please.stampaPianoSuFinestra();
 	please.playPiano();

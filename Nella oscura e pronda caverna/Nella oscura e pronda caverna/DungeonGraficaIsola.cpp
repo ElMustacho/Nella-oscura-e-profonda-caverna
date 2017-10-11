@@ -1,5 +1,6 @@
 #include "DungeonGraficaIsola.h"
 #include <iostream>
+#include "DisplayStatoProtagonista.h"
 
 
 int DungeonGraficaIsola::playDungeon()
@@ -32,6 +33,7 @@ int DungeonGraficaIsola::playDungeon()
 	oggettiInseribili.push_back(oggetto3);
 	oggettiInseribili.push_back(oggetto4);
 	std::shared_ptr<Entita> player=nullptr;
+	//DisplayStatoProtagonista statoDisplay( &(*player) ); // Observer //CHECK Not here, no good
 	while (pianiPercorsi < getNumPiani()) {
 		piani.push_back(pianoCavernaIsolaGrafica(30,18,"",oggettiInseribili,player,entitaGenerabili));
 		player = piani.back().getVectorEntita().at(0);

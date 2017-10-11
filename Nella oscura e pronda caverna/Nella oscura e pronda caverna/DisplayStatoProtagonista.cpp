@@ -2,13 +2,26 @@
 
 
 
-DisplayStatoProtagonista::DisplayStatoProtagonista(Protagonista* stato)
+DisplayStatoProtagonista::DisplayStatoProtagonista(Entita* stato)
 {
-	livello = stato->getLivello();
-	esperienza = stato->getEsperienza();
-	fondiEconomici = stato->getFondi();
-	statoProtagonista = stato;
-	statoProtagonista->registerObserver(this);
+	auto statoC = dynamic_cast<Protagonista*> (stato);
+	if (statoC != nullptr)
+	{
+		livello = statoC->getLivello();
+		esperienza = statoC->getEsperienza();
+		fondiEconomici = statoC->getFondi();
+		statoProtagonista = statoC;
+		statoProtagonista->registerObserver(this);
+	}
+	else
+	{
+		// err...
+		livello = statoC->getLivello();
+		esperienza = statoC->getEsperienza();
+		fondiEconomici = statoC->getFondi();
+		statoProtagonista = statoC;
+		statoProtagonista->registerObserver(this);
+	}
 }
 
 DisplayStatoProtagonista::~DisplayStatoProtagonista()
