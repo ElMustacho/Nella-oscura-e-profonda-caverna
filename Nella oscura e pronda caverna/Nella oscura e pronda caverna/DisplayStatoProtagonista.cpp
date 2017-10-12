@@ -88,7 +88,7 @@ void DisplayStatoProtagonista::display() const
 {
 	if (statoProtagonista != nullptr)
 	{
-		//TODO crea finestra che visualizzi lo stato del protagonista
+		//CHECK crea finestra che visualizzi lo stato del protagonista
 		
 		sf::String msg("Stato di " + nome + "::\n");
 		msg += "HP: " + std::to_string(hp) + "\n";
@@ -110,7 +110,7 @@ void DisplayStatoProtagonista::displayHp() const
 {
 	if (statoProtagonista != nullptr)
 	{
-		//TODO crea finestra che visualizzi lgli hp del protagonista
+		//CHECK crea finestra che visualizzi gli hp del protagonista
 		sf::String msg("HP di " + nome + ": " + std::to_string(hp) + "\n");
 
 		std::cout << msg.toAnsiString() << std::endl;

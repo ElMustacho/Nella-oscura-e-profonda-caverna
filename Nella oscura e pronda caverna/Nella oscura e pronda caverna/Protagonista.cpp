@@ -61,7 +61,7 @@ int Protagonista::numObservers() const
 
 void Protagonista::statoCambiato()
 {
-	DisplayStatoProtagonista dispStat(this); //HACK trovare il modo giusto
+	DisplayStatoProtagonista dispStat(this); //HACK trovare il modo giusto di registrarci un observe
 	notifyObservers();
 }
 
