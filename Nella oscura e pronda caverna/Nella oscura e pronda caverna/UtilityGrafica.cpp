@@ -265,3 +265,29 @@ void popUp(sf::String text) {
 		}
 	}
 }
+
+void timePopUp(sf::String text, float sec) 
+{
+	int larghezza = 20;
+	int lunghezza = 10;
+
+	sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza, 32), "Input here", sf::Style::None);
+	window.setFramerateLimit(60);
+
+	sf::Event evento;
+
+	sf::Font font;
+	if (!font.loadFromFile("arial.ttf"))
+	{
+		//err...
+	}
+	TextBox messages(text, font, larghezza * 32 - 5, lunghezza * 32 - 5);
+	windowRefresh2(window, messages);
+
+	while (window.isOpen())
+	{
+		sf::sleep( sf::seconds(sec) );
+		window.close();
+		return;
+	}
+}

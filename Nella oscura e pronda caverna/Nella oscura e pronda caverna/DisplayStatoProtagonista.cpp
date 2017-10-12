@@ -40,7 +40,7 @@ void DisplayStatoProtagonista::disconnect()
 	{
 		statoProtagonista = nullptr;
 	}
-	//CHECK Maybe we can call the destrutor here
+	//CHECK It's working
 	(*this).~DisplayStatoProtagonista();
 }
 
@@ -97,7 +97,7 @@ void DisplayStatoProtagonista::display() const
 		msg += "Soldi: " + std::to_string(fondiEconomici) + "\n";
 
 		std::cout << msg.toAnsiString() << std::endl;
-		popUp(msg); // Spunta fuori prima del refresh mostrando il futuro
+		timePopUp(msg, 0.8); // Spunta fuori prima del refresh mostrando il futuro
 	}
 	else
 	{
@@ -114,7 +114,7 @@ void DisplayStatoProtagonista::displayHp() const
 		sf::String msg("HP di " + nome + ": " + std::to_string(hp) + "\n");
 
 		std::cout << msg.toAnsiString() << std::endl;
-		popUp(msg); // Spunta fuori prima del refresh mostrando il futuro
+		timePopUp(msg, 0.8); //CHECK Spunta fuori prima del refresh mostrando il futuro
 	}
 	else
 	{
