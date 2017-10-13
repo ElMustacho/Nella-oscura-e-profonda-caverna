@@ -12,7 +12,7 @@
 class UtilityGrafica : public Observer
 {
 public:
-	void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int larghezza, int lunghezza, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox messages, sf::Sprite scale);
+	void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int larghezza, int lunghezza, TextBox messages);
 	void windowRefresh2(sf::RenderWindow& window, TextBox mesagges);
 	void windowMessageRefresh(sf::RenderWindow& window, TextBox messages);
 	void popUp(sf::String);
@@ -20,10 +20,12 @@ public:
 	sf::String graphicInput(sf::RenderWindow& window, TextBox& messages);
 	void update(double a, double b, double c);
 	void updateLevel(int livello);
-	UtilityGrafica();
+	UtilityGrafica(sf::Sprite tiles = sf::Sprite(), sf::Sprite ogg = sf::Sprite(), sf::Sprite prot = sf::Sprite(), sf::Sprite enem = sf::Sprite(), sf::Sprite scale = sf::Sprite());
 	~UtilityGrafica();
 	
 private:
+	sf::Sprite tiles, ogg, prot, enem, scale;
 	double percHP, percSt, percMa;
 	int livelloPG;
+
 };

@@ -109,7 +109,7 @@ bool Entita::equip(int posizioneOggetto)
 //TODO spostami in protagonista, visto che dovrebbe essere l'unico con l'UI
 bool Entita::equip(sf::RenderWindow& window, TextBox& messages) 
 {
-	UtilityGrafica finestra;
+	UtilityGrafica finestra; //CHECK in caso di Refresh passare sprite
 	int numero = 0;
 	std::cout << std::endl;
 	for each (auto oggetto in inventario)

@@ -1,5 +1,6 @@
 #pragma once
 #include "Entita.h"
+
 class Attore : public Entita
 {
 

@@ -2,6 +2,7 @@
 #include "pianoCavernaIsola.h"
 #include "SFML\Graphics.hpp"
 #include "TextBox.h"
+#include "UtilityGrafica.h"
 
 class pianoCavernaIsolaGrafica :
 	public pianoCavernaIsola
@@ -14,7 +15,7 @@ public:
 
 	
 	//int playPiano();
-	int playerAct(bool loquace, sf::RenderWindow &window, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, TextBox& messages, sf::Sprite scale);
+	int playerAct(bool loquace, sf::RenderWindow &window, TextBox& messages, UtilityGrafica& finestra);
 	//pianoCavernaIsolaGrafica(int larghezza, int lunghezza);
 
 	void stampaPianoSuFinestra();
