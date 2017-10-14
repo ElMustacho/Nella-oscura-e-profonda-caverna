@@ -5,8 +5,12 @@
 #include <iostream>
 #include <algorithm>
 #include "MonsterFactory.h"
+#include "ObjectFactory.h"
 pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> oggettiPossibili, std::shared_ptr<Entita> player, std::vector<std::shared_ptr<Entita>> entitaGenerabili)
 {
+	//TODOFAR migliore implementazione grazie!
+	monFact.setMonsterList(entitaGenerabili);
+	objFact.setObjList(oggettiPossibili);
 	this->larghezza = larghezza;
 	this->lunghezza = lunghezza;
 	oggettiGenerabili = oggettiPossibili;
@@ -32,14 +36,14 @@ pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza, std::vector<s
 		}
 		
 	}
-	cood placeProtagonista(0,0);
+	coord placeProtagonista(0,0);
 	int counter=0;
 	std::shared_ptr<Entita> prot;
 	if (player != nullptr)
 		prot = player;
 	else
 		prot = entityFactory();
-	std::vector<cood> caselleOk;
+	std::vector<coord> caselleOk;
 do {
 		
 		placeProtagonista.first = rand() % larghezza;
@@ -56,7 +60,7 @@ do {
 	std::shared_ptr<Entita> entitaToPlace;
 	entitaToPlace = entityFactory(1);
 	for (int i = 0; i < 3; i++) {
-		placeEntita(MonsterFactory::makeMon(), caselleOk[rand() % caselleOk.size()]);
+		placeEntita(monFact.makeMon(), caselleOk[rand() % caselleOk.size()]);
 	}
 	pavimento.at(posizione(caselleOk[rand() % caselleOk.size()])).setEvento(1);
 }
@@ -67,8 +71,16 @@ pianoCavernaIsola::~pianoCavernaIsola()
 	
 }
 
-bool pianoCavernaIsola::rSpargiLoot(std::vector<cood> posizioniValide) {
-	if(oggettiGenerabili.size()==0)
+bool pianoCavernaIsola::rSpargiLoot(std::vector<coord> posizioniValide) {
+	for(int i = (lunghezza + larghezza) / 8; i >= 0; i--)
+		pavimento.at(posizione(posizioniValide[rand() % posizioniValide.size()])).addOggetto(ObjectFactory::makeObjRand());
+	for (int i = (lunghezza + larghezza) / 12; i >= 0; i--) {
+		pavimento.at(posizione(posizioniValide[rand() % posizioniValide.size()])).addOggetto(objFact.makeObj());
+	}for (int i = (lunghezza + larghezza) / 12; i >= 0; i--) {
+		pavimento.at(posizione(posizioniValide[rand() % posizioniValide.size()])).addOggetto(objFact.makeWeap());
+	}
+
+	/*if(oggettiGenerabili.size()==0)
 	for (int i = (lunghezza + larghezza) / 4; i >= 0; i--) {
 		auto oggettoInserito = objectFactory(rand()%5);
 		pavimento.at(posizione(posizioniValide[rand() % posizioniValide.size()])).addOggetto(oggettoInserito);
@@ -77,6 +89,6 @@ bool pianoCavernaIsola::rSpargiLoot(std::vector<cood> posizioniValide) {
 		for (int i = (lunghezza + larghezza) / 4; i >= 0; i--) {
 			auto oggettoInserito = oggettiGenerabili.at(rand()%oggettiGenerabili.size());
 			pavimento.at(posizione(posizioniValide[rand() % posizioniValide.size()])).addOggetto(oggettoInserito);
-		}
+		}*/
 	return true;
 }

@@ -29,12 +29,11 @@ int main()
 	std::vector<std::shared_ptr<Oggetto>> tabellaLoot; //VUOTA
 	Equipaggiamento Equipaggiamento;
 	std::vector<Entita> tabellaEntita; //VUOTA
-	cood coord(5, 5);
+	coord coord(5, 5);
 	Attributi dexAlta(4, 4, 4, 4, 4, 4, 4, 1);
 	Attributi normale(4, 4, 4, 4, 4, 4, 4, 4);
 	Protagonista Saitama("Saitama", tabellaLoot, normale, Equipaggiamento, 1, 1094.6099, 400); //Sto usando tabella loot giusto perchè è vuota
 	pianoCavernaIsolaGrafica please(20, 20);
-	please.stampaPianoSuFinestra();
 	please.playPiano();
 	return 0;
 	/*bool ok = true;*/

@@ -30,11 +30,11 @@ int Piano::posizione(int x, int y) {
 }
 
 //TODO
-bool Piano::removeEntita(cood coodElimina) {
+bool Piano::removeEntita(coord coodElimina) {
 	return false;
 }
 
-int Piano::scontro(cood posizioneVittima, cood posizioneAttaccante, TextBox& messages)
+int Piano::scontro(coord posizioneVittima, coord posizioneAttaccante, TextBox& messages)
 {
 	if (pavimento.at(posizione(posizioneAttaccante)).getEntita() == nullptr)
 		return -1; //nessun attaccante
@@ -44,7 +44,7 @@ int Piano::scontro(cood posizioneVittima, cood posizioneAttaccante, TextBox& mes
 	else
 		return scontro(posizioneVittima, danno, messages );
 }
-int Piano::scontro(cood posizioneVittima, Danno dannoInflitto, TextBox& messages)
+int Piano::scontro(coord posizioneVittima, Danno dannoInflitto, TextBox& messages)
 {
 	if (pavimento.at(posizione(posizioneVittima)).getEntita().get() == nullptr)
 		return -3; //nessun bersaglio
@@ -82,22 +82,22 @@ Casella & Piano::at(int x, int y)
 
 }
 
-Casella & Piano::at(cood coord) {
+Casella & Piano::at(coord coord) {
 	return at(coord.first, coord.second);
 }
 
-bool Piano::isCoodLegal(cood coord) {
+bool Piano::isCoodLegal(coord coord) {
 	if (coord.first < 0 || coord.first >= larghezza || coord.second < 0 || coord.second >= lunghezza)
 		return false;
 	return true;
 }
 
-int Piano::posizione(cood coord) {
+int Piano::posizione(coord coord) {
 	return posizione(coord.first, coord.second);
 }
 
-cood Piano::fromPosizioneToInt(int x) {
-	return cood(x % larghezza, x / larghezza);
+coord Piano::fromPosizioneToInt(int x) {
+	return coord(x % larghezza, x / larghezza);
 }
 
 bool Piano::popolaPiano()
@@ -110,14 +110,14 @@ bool Piano::rSpargiLoot()
 	return false;
 }
 
-bool Piano::placeEntita(std::shared_ptr<Entita> placeMe, cood coord) 
+bool Piano::placeEntita(std::shared_ptr<Entita> placeMe, coord coordinata) 
 {
-	if (pavimento.at(posizione(coord)).isMuro())
+	if (pavimento.at(posizione(coordinata)).isMuro())
 		return false;
-	if (pavimento.at(posizione(coord)).getEntita() == nullptr) {
-		pavimento.at(posizione(coord)).setEntita(placeMe);
+	if (pavimento.at(posizione(coordinata)).getEntita() == nullptr) {
+		pavimento.at(posizione(coordinata)).setEntita(placeMe);
 		std::shared_ptr<Entita> copyTemp = placeMe;
-		std::pair<std::shared_ptr<Entita>, cood> entitaTabella(copyTemp, coord);
+		std::pair<std::shared_ptr<Entita>, coord> entitaTabella(copyTemp, coordinata);
 		entitaPresenti.push_back(entitaTabella);
 		turni.push_back(*placeMe);
 		return true;
@@ -135,6 +135,8 @@ Piano::Piano() {
 
 Piano::Piano(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> lootPossibile, std::vector<std::shared_ptr<Entita>> entitaPossibili)
 {
+	monFact=MonsterFactory(entitaGenerabili);
+	objFact = ObjectFactory(oggettiGenerabili);
 	this->larghezza = larghezza;
 	this->lunghezza = lunghezza;
 	pavimento.reserve(larghezza*lunghezza);
@@ -173,27 +175,27 @@ bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //TODO Presa una s
 
 std::vector<std::shared_ptr<Entita>> Piano::getVectorEntita() {
 	std::vector<std::shared_ptr<Entita>> returned;
-	for each (std::pair<std::shared_ptr<Entita>, cood> entity in entitaPresenti)
+	for each (std::pair<std::shared_ptr<Entita>, coord> entity in entitaPresenti)
 	{
 		returned.push_back(entity.first);
 	}
 	return returned;
 }
 
-std::vector<cood> Piano::getVectorPosizioni() {
-	std::vector<cood> returned;
-	for each (std::pair<std::shared_ptr<Entita>, cood> entity in entitaPresenti)
+std::vector<coord> Piano::getVectorPosizioni() {
+	std::vector<coord> returned;
+	for each (std::pair<std::shared_ptr<Entita>, coord> entity in entitaPresenti)
 	{
 		returned.push_back(entity.second);
 	}
 	return returned;
 }
 
-std::vector<cood> Piano::floodFill(cood posizionePartenza)
+std::vector<coord> Piano::floodFill(coord posizionePartenza)
 {
-	std::vector<cood> caselleOk{};
+	std::vector<coord> caselleOk{};
 	caselleOk.reserve(lunghezza*larghezza);
-	std::deque<cood> codaCaselle;
+	std::deque<coord> codaCaselle;
 	auto casella = pavimento.at(posizione(posizionePartenza));
 	if (casella.isMuro()) {
 		return caselleOk;
@@ -205,7 +207,7 @@ std::vector<cood> Piano::floodFill(cood posizionePartenza)
 		if (!pavimento.at(posizione(casellaControllata)).isMuro()) {
 			if (std::find(caselleOk.begin(), caselleOk.end(), casellaControllata) == caselleOk.end()) {
 				caselleOk.push_back(casellaControllata);
-				cood coordFF(casellaControllata.first + 1, casellaControllata.second);
+				coord coordFF(casellaControllata.first + 1, casellaControllata.second);
 				if (isCoodLegal(coordFF))
 					codaCaselle.push_back(coordFF);
 				coordFF.second++;
@@ -264,17 +266,17 @@ void Piano::StampaChar()
 	std::cout << mappa;
 }
 
-cood Piano::getPositionOfPlayer()
+coord Piano::getPositionOfPlayer()
 {
 	return entitaPresenti.begin()->second;
 }
 
-cood Piano::getPositionOfEntity(std::shared_ptr<Entita> entita)
+coord Piano::getPositionOfEntity(std::shared_ptr<Entita> entita)
 {
 	auto vect = getVectorEntita();
 	auto it = std::find(vect.begin(), vect.end(), entita);
 	if (it == vect.end())
-		return cood(-1, -1);
+		return coord(-1, -1);
 	else {
 		auto posizione = *(getVectorPosizioni().begin() + (std::distance(vect.begin(), it)));
 		return posizione;
@@ -417,10 +419,10 @@ int Piano::muoviEntita(int posX, int posY, int targetX, int targetY) //I primi d
 				std::shared_ptr<Entita> temp = pavimento.at(posizione(pos)).getEntita();
 				pavimento.at(posizione(pos)).setEntita(nullptr);
 				pavimento.at(posizione(pos.first + moveX, pos.second + moveY)).setEntita(temp);
-				cood coordinatePrima(pos.first, pos.second);
+				coord coordinatePrima(pos.first, pos.second);
 				pos.first += moveX;
 				pos.second += moveY;
-				cood coordinateDopo(pos.first, pos.second);
+				coord coordinateDopo(pos.first, pos.second);
 				auto vPosizioni = getVectorPosizioni();
 				auto it = std::find(vPosizioni.begin(), vPosizioni.end(), coordinatePrima);
 				if ( it != vPosizioni.end() ) 
@@ -697,7 +699,7 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 	for (std::vector<node>::iterator i = path.begin(); i+1 != path.end() && distanza > 0; i++)
 	{
 		//std::cout << "( " << i->posX << ", " << i->posY << " ) -> " << i->f << std::endl;
-		cood coordinatePrima(pos.first, pos.second);
+		coord coordinatePrima(pos.first, pos.second);
 		//CHECK muovi enita
 		pos.first = i->posX;
 		pos.second = i->posY;
@@ -764,7 +766,7 @@ int Piano::playPiano(sf::RenderWindow& window, TextBox& messages)
 	while (!turni.empty()) {
 		if (spwTurni > 50 + rand() % 100) { //dopo ogni 50 turni arriva un ulteriore goblin puzzone, di sicuro dopo 150
 			auto caselleOk=floodFill(getPositionOfPlayer());
-			cood casellaSpawn;
+			coord casellaSpawn;
 			do //FIXME se non c'è nessuna casella libera sballo
 				casellaSpawn = caselleOk[rand() % caselleOk.size()];
 			while(!placeEntita(entityFactory(1), casellaSpawn));

@@ -74,7 +74,7 @@ TEST(TestPiano, TestPianoPerlinNoise) {
 	for (int i = 0; i < 100; i++) {
 		pianoCavernaIsola pianoTest(20, 20);
 		for (auto i = 0; i < 400; i++) {
-			cood posizione(i % 20, i / 20);
+			coord posizione(i % 20, i / 20);
 			if (pianoTest.at(posizione).getEntita() != 0)
 				tuttoBene = true;
 		}
@@ -90,11 +90,11 @@ TEST(TestPiano, TestPianoFromFile) {
 	EXPECT_TRUE(ok)<< "File non caricato"<< std::endl;
 	Piano controllo(9, 6, std::vector<std::shared_ptr<Oggetto>>(), std::vector<std::shared_ptr<Entita>>());
 	controllo.creaStanzaRettangolare(3, 2, 4, 3);
-	controllo.at(cood(5, 4)).setEvento(1);
+	controllo.at(coord(5, 4)).setEvento(1);
 	EXPECT_EQ(file.at(5, 4).getEvento(), 1) << "Ci dovrebbero essere delle scale qui." << std::endl;
 	for (int i = 0; i < 54; i++) {
-		auto a = controllo.at(cood(i % 9, i / 9)).isMuro();
-		auto b = file.at(cood(i % 9, i / 9)).isMuro();
+		auto a = controllo.at(coord(i % 9, i / 9)).isMuro();
+		auto b = file.at(coord(i % 9, i / 9)).isMuro();
 		EXPECT_TRUE(a == b) << i << "\t" << a << "\t" << b;
 	}
 	

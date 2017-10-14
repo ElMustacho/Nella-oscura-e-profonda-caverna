@@ -8,8 +8,10 @@ public:
 	double getExperienceDrop()const { return experienceDrop; };
 	void setExperienceDrop(double experienceDrop) { this->experienceDrop = experienceDrop; };
 	~Attore();
-	
+	void setStringToFile(std::string newPos) { posToFile = newPos; };
+	std::string getStringToFile() const { return posToFile; };
 private:
 	double experienceDrop;
+	std::string posToFile;
 };
 
