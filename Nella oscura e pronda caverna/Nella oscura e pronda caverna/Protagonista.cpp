@@ -70,6 +70,8 @@ void Protagonista::attachGraphic(Observer* obs)
 {
 	graphic = obs;
 	update();
+	//CHECK Test to make red rect when after the stairs
+	updateLevel();
 }
 
 void Protagonista::regeneration()

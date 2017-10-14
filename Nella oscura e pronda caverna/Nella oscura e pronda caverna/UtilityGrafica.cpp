@@ -33,7 +33,7 @@ void UtilityGrafica:: windowRefresh(sf::RenderWindow& window, std::vector<Casell
 			window.draw(ogg);
 		}
 		if (casella.getEntita() != nullptr) {
-			if (typeid(*(casella.getEntita())) == typeid(Protagonista)) {
+			if (typeid( *(casella.getEntita()) ) == typeid(Protagonista)) {
 				int a = i % larghezza, b = i / larghezza;
 				prot.setPosition((float)a * 32, (float)b * 32);
 				prot.setTextureRect(sf::IntRect(0, 0, 32, 32));
