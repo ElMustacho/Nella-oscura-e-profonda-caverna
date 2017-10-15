@@ -12,9 +12,9 @@
 class UtilityGrafica : public Observer
 {
 public:
-	void windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, TextBox messages);
+	void windowRefresh(std::vector<Casella> pavimento);
 	void windowRefresh2(sf::RenderWindow& window, TextBox mesagges);
-	void windowMessageRefresh(sf::RenderWindow& window, TextBox messages);
+	void windowMessageRefresh(TextBox messages);
 	void popUp(sf::String);
 	sf::String graphicInput2(sf::String text);
 	sf::String graphicInput(sf::RenderWindow& window, TextBox& messages);
@@ -23,7 +23,23 @@ public:
 	UtilityGrafica(int lung=0, int larg=0, sf::Sprite tiles = sf::Sprite(), sf::Sprite ogg = sf::Sprite(), sf::Sprite prot = sf::Sprite(), sf::Sprite enem = sf::Sprite(), sf::Sprite scale = sf::Sprite());
 	~UtilityGrafica();
 	
+
+	//TODO Adjust
+	sf::RenderWindow* getWindow()
+	{
+		return &window;
+	}
+
+	//TODO Adjust
+	TextBox* getTextBox()
+	{
+		return &messages;
+	}
+
 private:
+	sf::RenderWindow window;
+	sf::Font font;
+	TextBox messages;
 	int lunghezza, larghezza;
 	sf::Sprite tiles, ogg, prot, enem, scale;
 	double percHP, percSt, percMa;

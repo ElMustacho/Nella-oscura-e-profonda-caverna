@@ -51,26 +51,19 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 	{
 		turni.push_back(it.first);
 	}
-	sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza+20, 32), "Cartografia della mappa", !sf::Style::Resize|sf::Style::Close);
+	//sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza+20, 32), "Cartografia della mappa", !sf::Style::Resize|sf::Style::Close);
+	auto window = finestra.getWindow();
 	sf::Event evento;
-	window.setFramerateLimit(60);
 
-	
-	sf::Font font;
-	if ( !font.loadFromFile("arial.ttf") )
-	{
-		//sf::err() << "font error -> An error has occured during font loading from file"; //CHECK
-	}
-
-	TextBox messages("", font, larghezza * 32, lunghezza * 32, true);
-	finestra.windowRefresh(window, pavimento, messages);
+	auto messages = finestra.getTextBox();
+	finestra.windowRefresh(pavimento);
 
 	while (!turni.empty()) {
 		//Here begins trouble
-		while (window.pollEvent(evento)) {
+		while (window->pollEvent(evento)) {
 			switch (evento.type) {
 			case sf::Event::Closed:
-				window.close();
+				window->close();
 				turni.clear();
 				return 0;
 				break;
@@ -100,8 +93,8 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 		if (a)
     {
 		  std::cout << "Adesso sta a " << attivo->getNome() << std::endl;
-		  messages.text.setString( messages.text.getString() + "Adesso sta a " + attivo->getNome() + " \n"); // TextBox
-		  finestra.windowRefresh(window, pavimento, messages);
+		  messages->text.setString( messages->text.getString() + "Adesso sta a " + attivo->getNome() + " \n"); // TextBox
+		  finestra.windowRefresh(pavimento);
     }
 		
 
@@ -124,7 +117,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 				{
 					if (std::dynamic_pointer_cast<Protagonista>(pavimento.at(posizione(adj)).getEntita()) !=nullptr) //questa casella contiene un pg
 					{
-						auto value=scontro(adj, posizioneAttivo, messages);
+						auto value=scontro(adj, posizioneAttivo, *messages);
 						if (value == 2) {//ucciso il giocatore
 							finestra.graphicInput2("Sei morto, cosa vuoi che sia scritto sulla tua lapide?\n");
 							finestra.popUp("Sei morto, come puoi dire a qualcuno cosa vuoi sulla lapide adesso?");
@@ -140,8 +133,8 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 			std::dynamic_pointer_cast<Protagonista>(entitaPresenti[0].first)->regeneration();
 			do {
 				
-				finestra.windowRefresh(window, pavimento, messages);
-				resultPlayer = playerAct(a, window, messages, finestra);
+				finestra.windowRefresh(pavimento);
+				resultPlayer = playerAct(a, *window, *messages, finestra);
 				
 			} while (resultPlayer < 0);
 			
@@ -160,7 +153,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 		}
 		turni.push_back(attivo);
 	}
-	window.close();
+	window->close();
 	return 0;
 }
 
@@ -192,7 +185,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 	{
 		std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ";
 		messages.text.setString(messages.text.getString() + "\nUsa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra, p per raccogliere cio' che e' a terra, e per equipaggiare, k per suicidarsi, i per descrivere il proprio inventario: ");
-		finestra.windowRefresh(window, pavimento, messages);
+		finestra.windowRefresh(pavimento);
 	} // TextBox
 	char azione;
 
@@ -255,7 +248,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 			{
 				std::cout << "Ho provato a muovermi con successo." << std::endl;
 				messages.text.setString(messages.text.getString() + "Ho provato a muovermi con successo.\n"); // TextBox
-				finestra.windowRefresh(window, pavimento, messages);
+				finestra.windowRefresh(pavimento);
 			}
 			return 0;
 		}
@@ -324,7 +317,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 			{
 				std::cout << "Input non valido" << std::endl;
 				messages.text.setString(messages.text.getString() + "Input non valido\n");
-				finestra.windowRefresh(window, pavimento, messages);
+				finestra.windowRefresh(pavimento);
 			}
 			return -1; // TextBox
 		}

@@ -9,7 +9,7 @@
 #include "Attore.h"
 
 
-void UtilityGrafica:: windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, TextBox messages)
+void UtilityGrafica:: windowRefresh(std::vector<Casella> pavimento)
 {
 	window.clear();
 	//OPTIMIZE
@@ -151,7 +151,7 @@ sf::String UtilityGrafica::graphicInput(sf::RenderWindow& window, TextBox& messa
 	return text;
 }
 
-void UtilityGrafica::windowMessageRefresh(sf::RenderWindow& window, TextBox messages)
+void UtilityGrafica::windowMessageRefresh(TextBox messages)
 {
 	window.draw(messages.rect);
 	auto strTemp = messages.text.getString();
@@ -345,8 +345,15 @@ void UtilityGrafica::updateLevel(int livello)
 	livelloPG = livello;
 }
 
-UtilityGrafica::UtilityGrafica(int lung, int larg, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, sf::Sprite scale)
+UtilityGrafica::UtilityGrafica(int lung, int larg, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, sf::Sprite scale) 
+	: window(sf::VideoMode(32 * larg, 32 * lung + 20, 32), "Cartografia della mappa", !sf::Style::Resize | sf::Style::Close)
 {
+	if (!font.loadFromFile("arial.ttf"))
+	{
+		//err...
+	}
+	messages = TextBox("", font, larg * 32, lung * 32, true);
+	
 	this->lunghezza = lung;
 	this->larghezza = larg;
 	this->tiles = tiles;
@@ -354,6 +361,8 @@ UtilityGrafica::UtilityGrafica(int lung, int larg, sf::Sprite tiles, sf::Sprite 
 	this->prot = prot;
 	this->enem = enem;
 	this->scale = scale;
+
+	window.setFramerateLimit(60);
 }
 
 UtilityGrafica::~UtilityGrafica()
