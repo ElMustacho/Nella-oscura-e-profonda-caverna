@@ -9,7 +9,7 @@
 #include "Attore.h"
 
 
-void UtilityGrafica:: windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, int larghezza, int lunghezza, TextBox messages)
+void UtilityGrafica:: windowRefresh(sf::RenderWindow& window, std::vector<Casella> pavimento, TextBox messages)
 {
 	window.clear();
 	//OPTIMIZE
@@ -345,8 +345,10 @@ void UtilityGrafica::updateLevel(int livello)
 	livelloPG = livello;
 }
 
-UtilityGrafica::UtilityGrafica(sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, sf::Sprite scale)
+UtilityGrafica::UtilityGrafica(int lung, int larg, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, sf::Sprite scale)
 {
+	this->lunghezza = lung;
+	this->larghezza = larg;
 	this->tiles = tiles;
 	this->ogg = ogg;
 	this->prot = prot;

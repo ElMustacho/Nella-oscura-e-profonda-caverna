@@ -44,7 +44,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 	scaleTexture.loadFromFile("Tileset/Scale.png");
 	scale.setTexture(scaleTexture);
 
-	UtilityGrafica finestra( tiles, ogg, prot, enem, scale);
+	UtilityGrafica finestra(lunghezza, larghezza, tiles, ogg, prot, enem, scale);
 	std::dynamic_pointer_cast<Protagonista>(entitaPresenti[0].first)->attachGraphic(&finestra);
 	std::deque<std::shared_ptr<Entita>> turni;
 	for each (auto it in entitaPresenti)
@@ -63,7 +63,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 	}
 
 	TextBox messages("", font, larghezza * 32, lunghezza * 32, true);
-	finestra.windowRefresh(window, pavimento, larghezza, lunghezza, messages);
+	finestra.windowRefresh(window, pavimento, messages);
 
 	while (!turni.empty()) {
 		//Here begins trouble
@@ -101,7 +101,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
     {
 		  std::cout << "Adesso sta a " << attivo->getNome() << std::endl;
 		  messages.text.setString( messages.text.getString() + "Adesso sta a " + attivo->getNome() + " \n"); // TextBox
-		  finestra.windowRefresh(window, pavimento, larghezza, lunghezza, messages);
+		  finestra.windowRefresh(window, pavimento, messages);
     }
 		
 
@@ -140,7 +140,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 			std::dynamic_pointer_cast<Protagonista>(entitaPresenti[0].first)->regeneration();
 			do {
 				
-				finestra.windowRefresh(window, pavimento, larghezza, lunghezza, messages);
+				finestra.windowRefresh(window, pavimento, messages);
 				resultPlayer = playerAct(a, window, messages, finestra);
 				
 			} while (resultPlayer < 0);
@@ -192,7 +192,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 	{
 		std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ";
 		messages.text.setString(messages.text.getString() + "\nUsa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra, p per raccogliere cio' che e' a terra, e per equipaggiare, k per suicidarsi, i per descrivere il proprio inventario: ");
-		finestra.windowRefresh(window, pavimento, larghezza, lunghezza, messages);
+		finestra.windowRefresh(window, pavimento, messages);
 	} // TextBox
 	char azione;
 
@@ -255,7 +255,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 			{
 				std::cout << "Ho provato a muovermi con successo." << std::endl;
 				messages.text.setString(messages.text.getString() + "Ho provato a muovermi con successo.\n"); // TextBox
-				finestra.windowRefresh(window, pavimento, larghezza, lunghezza, messages);
+				finestra.windowRefresh(window, pavimento, messages);
 			}
 			return 0;
 		}
@@ -324,7 +324,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 			{
 				std::cout << "Input non valido" << std::endl;
 				messages.text.setString(messages.text.getString() + "Input non valido\n");
-				finestra.windowRefresh(window, pavimento, larghezza, lunghezza, messages);
+				finestra.windowRefresh(window, pavimento, messages);
 			}
 			return -1; // TextBox
 		}
