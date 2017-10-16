@@ -55,18 +55,27 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 	sf::RenderWindow& window = finestra.getWindow();
 	sf::Event evento;
 
+
 	TextBox& messages = finestra.getTextBox();
 	finestra.windowRefresh(pavimento);
 
 	while (!turni.empty()) {
+
 		//Here begins trouble
-		while (window.pollEvent(evento)) {
-			switch (evento.type) {
-			case sf::Event::Closed:
-				window.close();
-				turni.clear();
-				return 0;
-				break;
+		while (window.pollEvent(evento)) 
+		{
+			switch (evento.type) 
+			{
+				case sf::Event::Closed:
+					window.close();
+					turni.clear();
+					return 0;
+					break;
+				case sf::Event::MouseWheelScrolled:
+					auto mouseMove = evento.mouseWheelScroll.delta;
+					messages.text.move(0, mouseMove*10);
+					windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+					break;
 			}
 		}
 
@@ -91,11 +100,12 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 		}
 
 		if (a)
-    {
+		{
 		  std::cout << "Adesso sta a " << attivo->getNome() << std::endl;
 		  messages.text.setString( messages.text.getString() + "Adesso sta a " + attivo->getNome() + " \n"); // TextBox
 		  finestra.windowRefresh(pavimento);
     }
+
 		
 
 		auto posizioneAttivo = getPositionOfEntity(attivo);
@@ -201,6 +211,13 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 		case sf::Event::TextEntered: {
 			azione = (char)evento.text.unicode;
 			go = false;
+			break;
+		}
+		case sf::Event::MouseWheelScrolled:
+		{
+			auto mouseMove = evento.mouseWheelScroll.delta;
+			messages.text.move(0, mouseMove * 10);
+			windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
 			break;
 		}
 		case sf::Event::Closed:

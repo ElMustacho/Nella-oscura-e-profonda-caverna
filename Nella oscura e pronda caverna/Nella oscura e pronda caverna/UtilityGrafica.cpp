@@ -12,6 +12,8 @@
 void UtilityGrafica:: windowRefresh(std::vector<Casella> pavimento)
 {
 	window.clear();
+	window.setView(window.getDefaultView());
+	
 	//OPTIMIZE
 	for (unsigned int i = 0; i < pavimento.size(); i++) {
 		auto casella = pavimento.at(i);
@@ -51,6 +53,7 @@ void UtilityGrafica:: windowRefresh(std::vector<Casella> pavimento)
 			}
 		}
 	}
+  
 	sf::RectangleShape underHP(sf::Vector2f(larghezza*32/3, 20));
 	underHP.setFillColor(sf::Color(0xF4,0x43,0x36));
 	underHP.setPosition(0, lunghezza * 32);
@@ -84,19 +87,31 @@ void UtilityGrafica:: windowRefresh(std::vector<Casella> pavimento)
 	if (livelloPG > 1)
 		messages.rect.setFillColor(sf::Color(0xb2, 0x22, 0x22, 0x99));
 
-	//HACK non so' perché ma deve essere 1.05, mettici le mani te poi.
+	//HACK non so' perchÃ© ma deve essere 1.05, mettici le mani te poi.
 	const int containerWidth = messages.rect.getSize().x*1.05;
 	for (auto i = 0; i < messages.text.getString().getSize(); ++i)
 	{
-		if (messages.text.findCharacterPos(i).x > containerWidth)
+		if (messages.text.findCharacterPos(i).x > containerWidth-5)
 		{
 			auto str = messages.text.getString();
 			str.insert(i, "\n");
 			messages.text.setString(str);
 		}
 	}
-	window.draw(messages.rect); // TextBox
-	window.draw(messages.text); // TextBox
+
+	//window.draw(messages.rect); // TextBox
+	//window.draw(messages.text); // TextBox
+
+	auto look = messages.getText().getString().toAnsiString();
+	
+	window.draw(messages.rect);
+	//window.draw(messages.text);
+
+	//messages.view.setSize(messages.view.getSize().x, messages.text.getLocalBounds().height);
+	window.setView(messages.view);
+	window.draw(messages.text);
+	window.setView(window.getDefaultView());
+
 	window.display();
 }
 
@@ -153,6 +168,8 @@ sf::String UtilityGrafica::graphicInput(sf::RenderWindow& window, TextBox& messa
 
 void UtilityGrafica::windowMessageRefresh(TextBox messages)
 {
+	window.setView(window.getDefaultView());
+
 	window.draw(messages.rect);
 	auto strTemp = messages.text.getString();
 
@@ -161,19 +178,24 @@ void UtilityGrafica::windowMessageRefresh(TextBox messages)
 
 	messages.text.setString(strTemp);
 	window.draw(messages.text);
+
+	window.setView(messages.view);
 	window.display();
 }
 
 void UtilityGrafica::windowRefresh2(sf::RenderWindow& window, TextBox messages)
 {
 	window.clear();
+	window.setView(window.getDefaultView());
 
+	//window.setView(messages.view);
 	window.draw(messages.rect);
 	window.draw(messages.text);
 
+	window.setView(messages.view);
 	window.display();
 }
-//TODO in tutte le funzioni modificate c'è da ottimizzare: guardare tutta la stringa ogni volta è costoso, inutile e lento
+//TODO in tutte le funzioni modificate c'Ã¨ da ottimizzare: guardare tutta la stringa ogni volta Ã¨ costoso, inutile e lento
 sf::String UtilityGrafica::graphicInput2( sf::String text )
 {
 	int larghezza = 20;
