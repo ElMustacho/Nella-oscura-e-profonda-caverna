@@ -133,7 +133,9 @@
     <ClInclude Include="DungeonGraficaIsola.h" />
     <ClInclude Include="Entita.h" />
     <ClInclude Include="Equipaggiamento.h" />
+    <ClInclude Include="MonsterFactory.h" />
     <ClInclude Include="noiseutils.h" />
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="Oggetto.h" />
     <ClInclude Include="Piano.h" />
     <ClInclude Include="pianoCavernaIsola.h" />
@@ -144,6 +146,7 @@
     <ClInclude Include="Protagonista.h" />
     <ClInclude Include="Scrigno.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Subject.h" />
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="UtilityGrafica.h" />
   </ItemGroup>
@@ -158,7 +161,9 @@
     <ClCompile Include="DungeonGraficaIsola.cpp" />
     <ClCompile Include="Entita.cpp" />
     <ClCompile Include="Equipaggiamento.cpp" />
+    <ClCompile Include="MonsterFactory.cpp" />
     <ClCompile Include="noiseutils.cpp" />
+    <ClCompile Include="Observer.cpp" />
     <ClCompile Include="Oggetto.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Piano.cpp" />
@@ -170,6 +175,7 @@
     <ClCompile Include="Protagonista.cpp" />
     <ClCompile Include="Scrigno.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="UtilityGrafica.cpp" />
   </ItemGroup>

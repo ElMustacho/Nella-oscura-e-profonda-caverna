@@ -10,7 +10,7 @@
 #include "SFML\Graphics.hpp"
 #include "Piano.h"
 #include "TexTBox.h"
-
+#include "MonsterFactory.h"
 
 Piano::~Piano()
 {
@@ -473,7 +473,7 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 	auto diagonalCost = sqrt(2);
 	auto objectCost = 0.5;
 
-	if (!destination && !pavimento.at(posizione(check)).isMuro() && !pavimento.at(posizione(check)).hasTrap() ) // && pavimento.at(posizione(check)).getEntita() == nullptr
+	if (!destination && !pavimento.at(posizione(check)).isMuro() && !pavimento.at(posizione(check)).hasTrap() && pavimento.at(posizione(check)).getEntita() == nullptr) // && pavimento.at(posizione(check)).getEntita() == nullptr
 	{
 		double gNew = q.g;
 
@@ -693,7 +693,7 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 
 	std::reverse(path.begin(), path.end());
 	// END Path creation
-
+	path.push_back(node(target.first,target.second,path.at(path.size()-1).posX, path.at(path.size() - 1).posY,1,1,1));
 	for (std::vector<node>::iterator i = path.begin(); i+1 != path.end() && distanza > 0; i++)
 	{
 		//std::cout << "( " << i->posX << ", " << i->posY << " ) -> " << i->f << std::endl;
@@ -969,7 +969,7 @@ std::shared_ptr<Entita> Piano::entityFactory(int codiceID)
 	if (codiceID == 0) {
 		std::vector<std::shared_ptr<Oggetto>> inventario{ std::shared_ptr<Oggetto>(new Oggetto(0.5, "Una pietra", "Terra condensata.", 0)) };
 		Attributi nellaMedia(4, 4, 4, 4, 4, 4, 4, 4);
-		Equipaggiamento equipaggiamento; //Picche, non hai nulla scemo
+		Equipaggiamento equipaggiamento;
 		appoggio = std::make_shared<Protagonista>(Protagonista("Medioman", inventario, nellaMedia, equipaggiamento, 1, 0, 0));
 		return appoggio;
 	}

@@ -13,7 +13,10 @@ public:
 
 	sf::RectangleShape rect;
 	sf::Text text;
-	sf::View view;
+
+
+	//sf::View view; Merge conflict __ in GraphicAdjustments non c'era
+
 
 	~TextBox();
 };
