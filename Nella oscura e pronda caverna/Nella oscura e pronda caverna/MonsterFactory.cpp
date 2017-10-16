@@ -76,7 +76,7 @@ void MonsterFactory::setMonsterList(std::vector<std::shared_ptr<Entita>> entitaP
 std::shared_ptr<Entita> MonsterFactory::makeMon(int code)
 {
 	if (entita.empty()) {
-		return makeMonRand();
+		return makeMonRand(code);
 	}
 	else {
 		if (code == -1) {

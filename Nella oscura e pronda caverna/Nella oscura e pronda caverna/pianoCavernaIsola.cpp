@@ -80,15 +80,5 @@ bool pianoCavernaIsola::rSpargiLoot(std::vector<coord> posizioniValide) {
 		pavimento.at(posizione(posizioniValide[rand() % posizioniValide.size()])).addOggetto(objFact.makeWeap());
 	}
 
-	/*if(oggettiGenerabili.size()==0)
-	for (int i = (lunghezza + larghezza) / 4; i >= 0; i--) {
-		auto oggettoInserito = objectFactory(rand()%5);
-		pavimento.at(posizione(posizioniValide[rand() % posizioniValide.size()])).addOggetto(oggettoInserito);
-	}
-	else
-		for (int i = (lunghezza + larghezza) / 4; i >= 0; i--) {
-			auto oggettoInserito = oggettiGenerabili.at(rand()%oggettiGenerabili.size());
-			pavimento.at(posizione(posizioniValide[rand() % posizioniValide.size()])).addOggetto(oggettoInserito);
-		}*/
 	return true;
 }

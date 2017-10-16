@@ -69,7 +69,7 @@ std::shared_ptr<Oggetto> ObjectFactory::makeWeapRand(int code)
 std::shared_ptr<Oggetto> ObjectFactory::makeObj(int code)
 {
 	if (oggettiGenerabili.empty())
-		return makeObjRand();
+		return makeObjRand(code);
 	else {
 		if(code=-1){
 			std::random_device rd;
@@ -88,7 +88,7 @@ std::shared_ptr<Oggetto> ObjectFactory::makeObj(int code)
 std::shared_ptr<Oggetto> ObjectFactory::makeWeap(int code)
 {
 	if (armiGenerabili.empty())
-		return makeWeapRand();
+		return makeWeapRand(code);
 	else {
 		if (code = -1) {
 			std::random_device rd;
