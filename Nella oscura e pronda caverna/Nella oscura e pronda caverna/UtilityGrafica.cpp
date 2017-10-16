@@ -102,7 +102,7 @@ void UtilityGrafica:: windowRefresh(std::vector<Casella> pavimento)
 	//window.draw(messages.rect); // TextBox
 	//window.draw(messages.text); // TextBox
 
-	auto look = messages.getText().getString().toAnsiString();
+	//auto look = messages.getText().getString().toAnsiString();
 	
 	window.draw(messages.rect);
 	//window.draw(messages.text);

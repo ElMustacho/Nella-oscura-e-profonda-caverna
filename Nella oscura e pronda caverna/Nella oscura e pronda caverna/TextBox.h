@@ -15,7 +15,7 @@ public:
 	sf::Text text;
 
 
-	//sf::View view; Merge conflict __ in GraphicAdjustments non c'era
+	sf::View view; //CHECK Merge conflict __ in GraphicAdjustments non c'era
 
 
 	~TextBox();

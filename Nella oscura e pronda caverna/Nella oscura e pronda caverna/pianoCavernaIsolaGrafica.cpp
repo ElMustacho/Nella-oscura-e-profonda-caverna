@@ -55,7 +55,6 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 	sf::RenderWindow& window = finestra.getWindow();
 	sf::Event evento;
 
-
 	TextBox& messages = finestra.getTextBox();
 	finestra.windowRefresh(pavimento);
 
@@ -74,7 +73,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 				case sf::Event::MouseWheelScrolled:
 					auto mouseMove = evento.mouseWheelScroll.delta;
 					messages.text.move(0, mouseMove*10);
-					windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+					finestra.windowRefresh(pavimento);
 					break;
 			}
 		}
@@ -217,7 +216,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 		{
 			auto mouseMove = evento.mouseWheelScroll.delta;
 			messages.text.move(0, mouseMove * 10);
-			windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages, scale);
+			finestra.windowRefresh(pavimento);
 			break;
 		}
 		case sf::Event::Closed:
