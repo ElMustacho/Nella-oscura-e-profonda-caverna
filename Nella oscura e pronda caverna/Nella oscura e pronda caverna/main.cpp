@@ -25,7 +25,10 @@ int main()
 	else if (result == 0) {
 		std::cout << "Codardo!" << std::endl;
 	}
-
+	getchar();
+	return 0;
+	// È fortemente consigliato non rimuovere il commento finché non saranno corretti i problemi sulla view
+	/*
 	std::vector<std::shared_ptr<Oggetto>> tabellaLoot; //VUOTA
 	Equipaggiamento Equipaggiamento;
 	std::vector<Entita> tabellaEntita; //VUOTA
@@ -36,7 +39,8 @@ int main()
 	pianoCavernaIsolaGrafica please(20, 20);
 	please.stampaPianoSuFinestra();
 	please.playPiano();
-	return 0;
+	*/
+	
 	/*bool ok = true;*/
 	//PianoFile pregen("testPreload.txt", ok);
 	//if (!ok)

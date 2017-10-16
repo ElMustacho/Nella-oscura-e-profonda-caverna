@@ -31,6 +31,7 @@ TextBox::TextBox()
 	text.setPosition(posX + 5, posY + 5);
 }
 
+//TODOFAR La view dovrà adattarsi alla finestra
 TextBox::TextBox(sf::String str, sf::Font& f, int larghezza, int lunghezza, bool scaled) //TODO resize with window
 {
 	auto posX = larghezza;
