@@ -25,15 +25,15 @@ public:
 	
 
 	//TODO Adjust
-	sf::RenderWindow* getWindow()
+	sf::RenderWindow& getWindow()
 	{
-		return &window;
+		return window;
 	}
 
 	//TODO Adjust
-	TextBox* getTextBox()
+	TextBox& getTextBox()
 	{
-		return &messages;
+		return messages;
 	}
 
 private:

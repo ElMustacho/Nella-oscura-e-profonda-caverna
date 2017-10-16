@@ -52,18 +52,18 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 		turni.push_back(it.first);
 	}
 	//sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza+20, 32), "Cartografia della mappa", !sf::Style::Resize|sf::Style::Close);
-	auto window = finestra.getWindow();
+	sf::RenderWindow& window = finestra.getWindow();
 	sf::Event evento;
 
-	auto messages = finestra.getTextBox();
+	TextBox& messages = finestra.getTextBox();
 	finestra.windowRefresh(pavimento);
 
 	while (!turni.empty()) {
 		//Here begins trouble
-		while (window->pollEvent(evento)) {
+		while (window.pollEvent(evento)) {
 			switch (evento.type) {
 			case sf::Event::Closed:
-				window->close();
+				window.close();
 				turni.clear();
 				return 0;
 				break;
@@ -93,7 +93,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 		if (a)
     {
 		  std::cout << "Adesso sta a " << attivo->getNome() << std::endl;
-		  messages->text.setString( messages->text.getString() + "Adesso sta a " + attivo->getNome() + " \n"); // TextBox
+		  messages.text.setString( messages.text.getString() + "Adesso sta a " + attivo->getNome() + " \n"); // TextBox
 		  finestra.windowRefresh(pavimento);
     }
 		
@@ -117,7 +117,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 				{
 					if (std::dynamic_pointer_cast<Protagonista>(pavimento.at(posizione(adj)).getEntita()) !=nullptr) //questa casella contiene un pg
 					{
-						auto value=scontro(adj, posizioneAttivo, *messages);
+						auto value=scontro(adj, posizioneAttivo, messages);
 						if (value == 2) {//ucciso il giocatore
 							finestra.graphicInput2("Sei morto, cosa vuoi che sia scritto sulla tua lapide?\n");
 							finestra.popUp("Sei morto, come puoi dire a qualcuno cosa vuoi sulla lapide adesso?");
@@ -134,7 +134,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 			do {
 				
 				finestra.windowRefresh(pavimento);
-				resultPlayer = playerAct(a, *window, *messages, finestra);
+				resultPlayer = playerAct(a, window, messages, finestra);
 				
 			} while (resultPlayer < 0);
 			
@@ -153,7 +153,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 		}
 		turni.push_back(attivo);
 	}
-	window->close();
+	window.close();
 	return 0;
 }
 
