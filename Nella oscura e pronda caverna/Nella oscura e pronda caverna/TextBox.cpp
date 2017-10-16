@@ -71,7 +71,7 @@ TextBox::TextBox(sf::String str, sf::Font& f, int larghezza, int lunghezza, bool
 		//center.y -= rect.getLocalBounds().top;
 		view = sf::View(rectCenter, rectSize);
 		//TODO sta schiacciando il testo
-		view.setViewport(sf::FloatRect(0, 0.80f, 1.0f, 0.15f));
+		view.setViewport(sf::FloatRect(0, 0.7699f, 1.0f, 0.15f));
 	}
 	else
 	{

@@ -91,7 +91,7 @@ void UtilityGrafica:: windowRefresh(std::vector<Casella> pavimento)
 	const int containerWidth = messages.rect.getSize().x*1.05;
 	for (auto i = 0; i < messages.text.getString().getSize(); ++i)
 	{
-		if (messages.text.findCharacterPos(i).x > containerWidth-5)
+		if (messages.text.findCharacterPos(i).x > containerWidth-5) //CHECK senza -5
 		{
 			auto str = messages.text.getString();
 			str.insert(i, "\n");
