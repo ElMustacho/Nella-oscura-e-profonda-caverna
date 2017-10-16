@@ -365,6 +365,10 @@ UtilityGrafica::UtilityGrafica(int lung, int larg, sf::Sprite tiles, sf::Sprite 
 	window.setFramerateLimit(60);
 }
 
+UtilityGrafica::UtilityGrafica() 
+{
+}
+
 UtilityGrafica::~UtilityGrafica()
 {
 }

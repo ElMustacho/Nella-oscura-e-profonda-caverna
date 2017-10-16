@@ -20,7 +20,8 @@ public:
 	sf::String graphicInput(sf::RenderWindow& window, TextBox& messages);
 	void update(double a, double b, double c);
 	void updateLevel(int livello);
-	UtilityGrafica(int lung=0, int larg=0, sf::Sprite tiles = sf::Sprite(), sf::Sprite ogg = sf::Sprite(), sf::Sprite prot = sf::Sprite(), sf::Sprite enem = sf::Sprite(), sf::Sprite scale = sf::Sprite());
+	UtilityGrafica(int lung, int larg, sf::Sprite tiles, sf::Sprite ogg, sf::Sprite prot, sf::Sprite enem, sf::Sprite scale);
+	UtilityGrafica();
 	~UtilityGrafica();
 	
 
