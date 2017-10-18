@@ -4,7 +4,7 @@ class PianoFile :
 	public Piano
 {
 public:
-	bool rSpargiLoot(std::vector<cood> posizioniValide);
+	bool rSpargiLoot(std::vector<coord> posizioniValide);
 	PianoFile(std::string posizione, bool &successo);
 	~PianoFile();
 };

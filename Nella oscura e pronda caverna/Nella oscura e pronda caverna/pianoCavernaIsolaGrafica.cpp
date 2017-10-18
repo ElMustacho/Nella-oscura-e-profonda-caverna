@@ -1,7 +1,7 @@
 #include "pianoCavernaIsolaGrafica.h"
 #include <iostream>
 
-#include "MonsterFactory.h"
+
 #include "SFML\Graphics.hpp"
 #include "TextBox.h"
 #include "UtilityGrafica.h"
@@ -80,10 +80,10 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 
 		if (spwTurni > 50 + rand() % 100) { //dopo ogni 50 turni arriva un ulteriore goblin puzzone, di sicuro dopo 150
 			auto caselleOk = floodFill(getPositionOfPlayer());
-			cood casellaSpawn;
+			coord casellaSpawn;
 			do //FIXME se non c'è nessuna casella libera sballo
 				casellaSpawn = caselleOk[rand() % caselleOk.size()];
-			while (!placeEntita(MonsterFactory::makeMon(), casellaSpawn));
+			while (!placeEntita(MonsterFactory::makeMonRand(), casellaSpawn));
 			auto smt = pavimento.at(posizione(casellaSpawn)).getEntita();
 			turni.push_back(smt);
 			auto nomeDaDare = smt->getNome();
@@ -112,16 +112,16 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 			//HACK qui si muove e basta, ma poi dovrà decidere l'intelligenza artificiale dell'entità
 			auto resultMovement = muoviEntita(posizioneAttivo, getPositionOfPlayer());
 			if (resultMovement == 10) { //adiacente a personaggio
-				cood lookAround(posizioneAttivo.first, posizioneAttivo.second);
-				std::vector<cood> aroundMe;
-				aroundMe.push_back(cood(++lookAround.first, ++lookAround.second));
-				aroundMe.push_back(cood(--lookAround.first, lookAround.second));
-				aroundMe.push_back(cood(--lookAround.first, lookAround.second));
-				aroundMe.push_back(cood(lookAround.first, --lookAround.second));
-				aroundMe.push_back(cood(lookAround.first, --lookAround.second));
-				aroundMe.push_back(cood(++lookAround.first, lookAround.second));
-				aroundMe.push_back(cood(++lookAround.first, lookAround.second));
-				aroundMe.push_back(cood(lookAround.first, ++lookAround.second));
+				coord lookAround(posizioneAttivo.first, posizioneAttivo.second);
+				std::vector<coord> aroundMe;
+				aroundMe.push_back(coord(++lookAround.first, ++lookAround.second));
+				aroundMe.push_back(coord(--lookAround.first, lookAround.second));
+				aroundMe.push_back(coord(--lookAround.first, lookAround.second));
+				aroundMe.push_back(coord(lookAround.first, --lookAround.second));
+				aroundMe.push_back(coord(lookAround.first, --lookAround.second));
+				aroundMe.push_back(coord(++lookAround.first, lookAround.second));
+				aroundMe.push_back(coord(++lookAround.first, lookAround.second));
+				aroundMe.push_back(coord(lookAround.first, ++lookAround.second));
 				for each (auto adj in aroundMe)
 				{
 					if (std::dynamic_pointer_cast<Protagonista>(pavimento.at(posizione(adj)).getEntita()) !=nullptr) //questa casella contiene un pg
@@ -169,6 +169,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 
 pianoCavernaIsolaGrafica::pianoCavernaIsolaGrafica(int larghezza, int lunghezza, std::string posizioneFile, std::vector<std::shared_ptr<Oggetto>> oggettiPossibili, std::shared_ptr<Entita> player, std::vector<std::shared_ptr<Entita>> entitaGenerabili):pianoCavernaIsola(larghezza,lunghezza,oggettiPossibili,player, entitaGenerabili)
 {
+	
 	sf::Image immagineDim;
 	if (posizioneFile == "") {
 		this->posizioneFile = "Tileset/FirstSeriousTile.png";
@@ -339,94 +340,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 		}
 	}
 }
-void pianoCavernaIsolaGrafica::stampaPianoSuFinestra()
-{
-	sf::Sprite tiles;
-	tiles.setTexture(texturePavimento);
-	sf::Texture protTexture;
-	sf::Sprite prot;
-	//TODOFAR quando avremo tanti oggetti e nemici le texture andranno caricate dinamicamente, e magari una volta sola
-	protTexture.loadFromFile("Tileset/PdiPersonaggio.png");
-	prot.setTexture(protTexture);
-	sf::Texture enemTexture;
-	sf::Sprite enem;
-	enemTexture.loadFromFile("Tileset/NdiNemico.png");
-	enem.setTexture(enemTexture);
-	sf::Texture oggTexture;
-	sf::Sprite ogg;
-	oggTexture.loadFromFile("Tileset/OdiOggetto.png");
-	ogg.setTexture(oggTexture);
-	sf::Texture scaleTexture;
-	sf::Sprite scale;
-	scaleTexture.loadFromFile("Tileset/Scale.png");
-	scale.setTexture(scaleTexture);
-	sf::RenderWindow window(sf::VideoMode(32 * larghezza, 32 * lunghezza, 32), "Cartografia della mappa");
-	window.setFramerateLimit(60);
-	while (window.isOpen()) {
-		sf::Event evento;
-		
-		//OPTIMIZE
-		for (unsigned int i = 0; i < pavimento.size(); i++) {
-			auto casella = pavimento.at(i);
-			int a = i % larghezza, b = i / larghezza;
-			tiles.setPosition((float)a * 32, (float) b* 32);
-			tiles.setTextureRect(casella.getRectSprite());
-			window.draw(tiles);
-			if (casella.getEvento() == 1)//scale here
-			{
-				int a = i % larghezza, b = i / larghezza;
-				scale.setPosition(a * 32, b * 32);
-				scale.setTextureRect(sf::IntRect(0, 0, 32, 32));
-				window.draw(scale);
-			}
-			if (!casella.getOggetti().empty()) {
-				int a = i % larghezza, b = i / larghezza;
-				ogg.setPosition((float)a * 32, (float)b * 32);
-				ogg.setTextureRect(sf::IntRect(0, 0, 32, 32));
-				window.draw(ogg);
-			}
-			if (casella.getEntita() != nullptr) {
-				if (typeid(*(casella.getEntita())) == typeid(Protagonista)) {
-					int a = i % larghezza, b = i / larghezza;
-					prot.setPosition((float)a * 32, (float)b * 32);
-					prot.setTextureRect(sf::IntRect(0, 0, 32, 32));
-					window.draw(prot);
-				}
-				else if (typeid(*(casella.getEntita())) == typeid(Attore)) {
-					int a = i % larghezza, b = i / larghezza;
-					enem.setPosition((float)a * 32, (float)b * 32);
-					enem.setTextureRect(sf::IntRect(0, 0, 32, 32));
-					window.draw(enem);
-				}
-				else {
-					std::cout << "WTF" << std::endl;
-				}
-			}
-			
-			}
-		window.display();
 
-		while (window.waitEvent(evento)) {
-			switch (evento.type) {
-			case sf::Event::Closed:
-				window.close();
-				break;
-			case sf::Event::TextEntered:
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-				{
-					window.close();
-				}
-				break;
-			}
-		}
-		window.clear();
-
-
-		//CHECK no messages?
-		//windowRefresh(window, pavimento, larghezza, lunghezza, tiles, ogg, prot, enem, messages);
-
-	}
-}
 
 pianoCavernaIsolaGrafica::~pianoCavernaIsolaGrafica()
 {

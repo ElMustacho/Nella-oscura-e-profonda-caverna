@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
 #include <deque>
-
+#include "MonsterFactory.h"
+#include "ObjectFactory.h"
 #include "Casella.h"
 #include "Entita.h"
 #include "Oggetto.h"
@@ -10,7 +11,6 @@
 #include "Arma.h"
 #include "TextBox.h"
 
-typedef std::pair<int, int> cood;
 /*
 LOOKATME
 Che sia chiaro una volta per tutte, anche perché io mi sbaglio più o meno sempre, dannato sia il 2D
@@ -61,25 +61,25 @@ public:
 
 	int posizione(int x, int y);
 
-	bool removeEntita(cood coodElimina);
-	int scontro(cood posizioneVittima, cood posizioneAttaccante, TextBox& messages);
-	int scontro(cood posizioneVittima, Danno dannoInflitto, TextBox& messages); //gestisce danno ad area e fulmini da divinità furiose
+	bool removeEntita(coord coodElimina);
+	int scontro(coord posizioneVittima, coord posizioneAttaccante, TextBox& messages);
+	int scontro(coord posizioneVittima, Danno dannoInflitto, TextBox& messages); //gestisce danno ad area e fulmini da divinità furiose
 
 	Casella& at(int x, int y);
-	Casella& at(cood coord);
-	bool isCoodLegal(cood coord);
-	int posizione(cood coord);
-	cood fromPosizioneToInt(int x);
+	Casella& at(coord coord);
+	bool isCoodLegal(coord coord);
+	int posizione(coord coord);
+	coord fromPosizioneToInt(int x);
 	bool creaStanzaRettangolare(int posX, int posY, int dimX, int dimY);
 	bool creaPorte(int posX, int posY, int dimX, int dimY);
 	std::vector<std::shared_ptr<Entita>> getVectorEntita();
-	std::vector<cood> getVectorPosizioni();
-	std::vector<cood> floodFill(cood posizionePartenza);
+	std::vector<coord> getVectorPosizioni();
+	std::vector<coord> floodFill(coord posizionePartenza);
 	void StampaChar();
 
-	cood getPositionOfPlayer();
+	coord getPositionOfPlayer();
 	//posizione nella tabella
-	cood getPositionOfEntity(std::shared_ptr<Entita> entita);
+	coord getPositionOfEntity(std::shared_ptr<Entita> entita);
 	int muoviEntita(int posX, int posY, int targetX, int targetY);
 
 	int muoviEntita(coord pos, coord target);
@@ -90,7 +90,7 @@ public:
 	void StampaFileChar();
 	bool popolaPiano();
 	bool rSpargiLoot();
-	bool placeEntita(std::shared_ptr<Entita> placeMe, cood coord);
+	bool placeEntita(std::shared_ptr<Entita> placeMe, coord coord);
 	Piano();
 	Piano(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> lootPossibile, std::vector<std::shared_ptr<Entita>> entitaPossibili);
 	//TODOFAR far funzionare con entita generabili
@@ -107,8 +107,10 @@ protected:
 	int lunghezza, larghezza;
 	std::vector<std::shared_ptr<Entita>> entitaGenerabili;
 	std::vector<std::shared_ptr<Oggetto>> oggettiGenerabili;
+	MonsterFactory monFact;
+	ObjectFactory objFact;
 	//Il personaggio deve essere sempre nella prima posizione
-	std::vector<std::pair<std::shared_ptr<Entita>, cood>> entitaPresenti;
+	std::vector<std::pair<std::shared_ptr<Entita>, coord>> entitaPresenti;
 	std::string pathToFile;
 	std::deque<Entita> turni;
 	int maxxTexture, maxyTexture;
