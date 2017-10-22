@@ -6,25 +6,10 @@
 #include "TextBox.h"
 #include "UtilityGrafica.h"
 
-int pianoCavernaIsolaGrafica::playPiano(char bloat)
+int pianoCavernaIsolaGrafica::playPiano()
 {
 	int spwTurni = 0;
 	int totTurni = 0;
-	bool a;
-	if (bloat == 'y')
-		a = true;
-	else if (bloat == 'n')
-		a = false;
-	else {
-		std::cout << "Bloat text? y/n: ";
-		while (bloat != 'y'&&bloat != 'n')
-			std::cin >> bloat;
-		if (bloat == 'y')
-			a = true;
-		else
-			a = false;
-	}
-
 	sf::Sprite tiles;
 	tiles.setTexture(texturePavimento);
 	sf::Texture protTexture;
@@ -98,7 +83,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 			continue;
 		}
 
-		if (a)
+		if (loquace)
 		{
 		  std::cout << "Adesso sta a " << attivo->getNome() << std::endl;
 		  messages.text.setString( messages.text.getString() + "Adesso sta a " + attivo->getNome() + " \n"); // TextBox
@@ -143,7 +128,7 @@ int pianoCavernaIsolaGrafica::playPiano(char bloat)
 			do {
 				
 				finestra.windowRefresh(pavimento);
-				resultPlayer = playerAct(a, window, messages, finestra);
+				resultPlayer = playerAct(window, messages, finestra);
 				
 			} while (resultPlayer < 0);
 			
@@ -189,9 +174,9 @@ pianoCavernaIsolaGrafica::pianoCavernaIsolaGrafica(int larghezza, int lunghezza,
 }
 
 
-int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBox& messages, UtilityGrafica& finestra)
+int pianoCavernaIsolaGrafica::playerAct(sf::RenderWindow &window, TextBox& messages, UtilityGrafica& finestra)
 {
-	if (a)
+	if (loquace)
 	{
 		std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ";
 		messages.text.setString(messages.text.getString() + "\nUsa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra, p per raccogliere cio' che e' a terra, e per equipaggiare, k per suicidarsi, i per descrivere il proprio inventario: ");
@@ -261,7 +246,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 	{
 		result = muoviEntita(playerPos.first, playerPos.second, toPosizione.first, toPosizione.second);
 		if (result == 0) {
-			if (a)
+			if (loquace)
 			{
 				std::cout << "Ho provato a muovermi con successo." << std::endl;
 				messages.text.setString(messages.text.getString() + "Ho provato a muovermi con successo.\n"); // TextBox
@@ -270,7 +255,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 			return 0;
 		}
 		else if (result == 2) {
-			if (a)
+			if (loquace)
 			{
 				std::cout << "Scontro!" << std::endl;
 				messages.text.setString(messages.text.getString() + "Scontro!\n");
@@ -285,7 +270,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 		}
 		
 		else {
-			if (a)
+			if (loquace)
 			{
 				std::cout << "Muoversi ha risposto " << result << std::endl;
 				messages.text.setString(messages.text.getString() + "Muoversi ha risposto" + std::to_string(result) + "\n");
@@ -330,7 +315,7 @@ int pianoCavernaIsolaGrafica::playerAct(bool a, sf::RenderWindow &window, TextBo
 			messages.text.setString(messages.text.getString() + pavimento.at(posizione(playerPos)).getEntita()->describeInventario());
 			return -1; // TextBox
 		default:
-			if (a)
+			if (loquace)
 			{
 				std::cout << "Input non valido" << std::endl;
 				messages.text.setString(messages.text.getString() + "Input non valido\n");

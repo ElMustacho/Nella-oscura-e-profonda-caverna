@@ -9,6 +9,7 @@
 pianoCavernaIsola::pianoCavernaIsola(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>> oggettiPossibili, std::shared_ptr<Entita> player, std::vector<std::shared_ptr<Entita>> entitaGenerabili)
 {
 	//TODOFAR migliore implementazione grazie!
+	loquace = false;
 	monFact.setMonsterList(entitaGenerabili);
 	objFact.setObjList(oggettiPossibili);
 	this->larghezza = larghezza;

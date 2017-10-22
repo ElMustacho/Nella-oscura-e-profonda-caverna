@@ -76,7 +76,8 @@ public:
 	std::vector<coord> getVectorPosizioni();
 	std::vector<coord> floodFill(coord posizionePartenza);
 	void StampaChar();
-
+	bool getLoquace()const { return loquace; };
+	void setLoquace(bool loquace) { this->loquace = loquace; };
 	coord getPositionOfPlayer();
 	//posizione nella tabella
 	coord getPositionOfEntity(std::shared_ptr<Entita> entita);
@@ -86,7 +87,7 @@ public:
 	void checkSuccessor(coord check, coord target, std::string direct, bool &destination, node &q, std::vector<node> &openList, std::vector<node> &closedList);
 	int aStar(coord pos, coord target, int distanza, int metodo);
 	int playPiano(sf::RenderWindow& window, TextBox& messages);
-	int playerAct(bool loquace,sf::RenderWindow& window, TextBox& messages);
+	int playerAct(sf::RenderWindow& window, TextBox& messages);
 	void StampaFileChar();
 	bool popolaPiano();
 	bool rSpargiLoot();
@@ -103,6 +104,7 @@ public:
 
 	//Piano(std::string posizione, bool &successo); //Da file 
 protected:
+	bool loquace;
 	std::vector<Casella> pavimento;
 	int lunghezza, larghezza;
 	std::vector<std::shared_ptr<Entita>> entitaGenerabili;

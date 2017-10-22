@@ -143,6 +143,7 @@ Piano::Piano(int larghezza, int lunghezza, std::vector<std::shared_ptr<Oggetto>>
 	for (int i = 0; i < larghezza*lunghezza; i++) {
 		pavimento.push_back(Casella(false));
 	}
+	loquace = false;
 }
 
 bool Piano::creaStanzaRettangolare(int posX, int posY, int dimX, int dimY)
@@ -749,15 +750,6 @@ int Piano::playPiano(sf::RenderWindow& window, TextBox& messages)
 {
 	int spwTurni = 0;
 	int totTurni = 0;
-	bool a;
-	char input = '1';
-	std::cout << "Bloat text? y/n: ";
-	while (input != 'y'&&input != 'n')
-		std::cin >> input;
-	if (input == 'y')
-		a = true;
-	else
-		a = false;
 	std::deque<std::shared_ptr<Entita>> turni;
 	for each (auto it in entitaPresenti)
 	{
@@ -790,10 +782,10 @@ int Piano::playPiano(sf::RenderWindow& window, TextBox& messages)
 			auto resultMovement=muoviEntita(posizioneAttivo, getPositionOfPlayer());
 		}
 		else {
-			auto resultPlayer = playerAct(a, window, messages);
+			auto resultPlayer = playerAct(window, messages);
 			while(resultPlayer<0)
 			{ 
-				resultPlayer = playerAct(a, window, messages);
+				resultPlayer = playerAct(window, messages);
 			}
 			if (resultPlayer == 2) {
 				turni.clear();
@@ -812,10 +804,10 @@ int Piano::playPiano(sf::RenderWindow& window, TextBox& messages)
 }
 //LOOKATME questa è la versione del terminale, quella grafica dovrà lavorare in altri modi.
 //return -1 significa che non è passato un turno, per esempio guardando il proprio inventario o per terra
-int Piano::playerAct(bool a, sf::RenderWindow& window, TextBox& messages)
+int Piano::playerAct(sf::RenderWindow& window, TextBox& messages)
 {
 		StampaChar();
-		if (a)
+		if (loquace)
 		{
 			std::cout << std::endl << "Usa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ";
 			messages.text.setString(messages.text.getString() + "\nUsa il tastierino numerico per muoverti, 5 per uscire, 0 per guardare a terra,p per raccogliere cio' che e' a terra, e per equipaggiare il primo oggetto nell'inventario nel posto dell'arma, k per suicidarsi, i per descrivere il proprio inventario: ");
@@ -863,7 +855,7 @@ int Piano::playerAct(bool a, sf::RenderWindow& window, TextBox& messages)
 		{
 			result = muoviEntita(playerPos.first, playerPos.second, toPosizione.first, toPosizione.second);
 			if (result == 0) {
-				if (a)
+				if (loquace)
 				{
 					std::cout << "Ho provato a muovermi con successo." << std::endl;
 					messages.text.setString(messages.text.getString() + "Ho provato a muovermi con successo.\n");
@@ -871,7 +863,7 @@ int Piano::playerAct(bool a, sf::RenderWindow& window, TextBox& messages)
 				return 0;
 			}
 			else if (result==2) {
-				if (a)
+				if (loquace)
 				{
 					std::cout << "Scontro!" << std::endl;
 					messages.text.setString( messages.text.getString() + "Scontro!\n");
@@ -880,12 +872,12 @@ int Piano::playerAct(bool a, sf::RenderWindow& window, TextBox& messages)
 				return 0;
 			}
 			else if (result == 100) {
-				if (a)
+				if (loquace)
 					std::cout << "Uscito dal piano." << std::endl;
 				return 100;
 			}
 			else {
-				if (a)
+				if (loquace)
 				{
 					std::cout << "Muoversi ha risposto " << result << std::endl;
 					messages.text.setString( messages.text.getString() + "Muoversi ha risposto " + std::to_string(result) + "\n");
@@ -913,7 +905,7 @@ int Piano::playerAct(bool a, sf::RenderWindow& window, TextBox& messages)
 					std::cout << pavimento.at(posizione(playerPos)).getEntita()->describeInventario() << std::endl;
 					return -1;
 				default:
-					if (a)
+					if (loquace)
 					{
 						std::cout << "Input non valido" << std::endl;
 						messages.text.setString(messages.text.getString() + "Input non valido\n");
