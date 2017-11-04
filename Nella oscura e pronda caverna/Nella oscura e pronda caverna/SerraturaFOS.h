@@ -6,13 +6,16 @@ class SerraturaFOS :
 	public Serratura
 {
 public:
-	SerraturaFOS(double angolo, double tolleranza);
+	SerraturaFOS(double angolo, double tolleranzaAngolo, double distanza, double tolleranzaDistanza);
 	~SerraturaFOS();
 	int scassina();
 	double prendiAngolo();
+	double prendiDistanza();
 private:
 	double angolo;
-	double tolleranza;
+	double tolleranzaAngolo;
+	double distanza;
+	double tolleranzaDistanza;
 	sf::RenderWindow finestraSerratura;
 	sf::Font fontTesto;
 };

@@ -17,7 +17,7 @@
 #include "SerraturaFOS.h"
 int main()
 {
-	SerraturaFOS test(90,15);
+	SerraturaFOS test(90,15,250,50);
 	int resultLadro=test.scassina();
 	if (resultLadro == 0) {
 		std::cout << "Incapace!" << std::endl;
