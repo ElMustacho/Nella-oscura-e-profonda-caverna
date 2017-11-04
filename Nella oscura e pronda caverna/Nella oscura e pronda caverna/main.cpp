@@ -14,10 +14,21 @@
 #include "SFML\Graphics.hpp"
 #include "DungeonGraficaIsola.h"
 #include "TextBox.h"
-
+#include "SerraturaFOS.h"
 int main()
 {
-	
+	SerraturaFOS test(90,15);
+	int resultLadro=test.scassina();
+	if (resultLadro == 0) {
+		std::cout << "Incapace!" << std::endl;
+	}
+	else if (resultLadro == 1)
+	{
+		std::cout << "Bravo!" << std::endl;
+	}
+	else
+		std::cout << "WTF?" << std::endl;
+
 	DungeonGraficaIsola primoDungeon(3, "Il primo dungeon", "Il primo dell'avventura");
 	auto result=primoDungeon.playDungeon();
 	if (result == 1)

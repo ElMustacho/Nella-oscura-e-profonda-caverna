@@ -96,6 +96,12 @@
     <ClInclude Include="ObjectFactory.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="Serratura.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="SerraturaFOS.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Oggetto.cpp">
@@ -180,6 +186,12 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="ObjectFactory.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Serratura.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="SerraturaFOS.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>
