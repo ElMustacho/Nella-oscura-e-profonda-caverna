@@ -2,7 +2,7 @@
 
 
 //angolo indica il punto di sblocco, la tolleranza quanto in su o in giù si può andare
-SerraturaFOS::SerraturaFOS(double angolo, double tolleranzaAngolo, double distanza, double tolleranzaDistanza) : finestraSerratura(sf::VideoMode(800,600, 32), "Serratura FOS", !sf::Style::Resize | sf::Style::Close)
+SerraturaFOS::SerraturaFOS(double angolo, double tolleranzaAngolo, double distanza, double tolleranzaDistanza) : finestraSerratura(sf::VideoMode(800,600, 32), "Serratura FOS", !sf::Style::Titlebar)
 {
 	fontTesto.loadFromFile("arial.ttf");
 	finestraSerratura.setFramerateLimit(60);
@@ -76,16 +76,15 @@ int SerraturaFOS::scassina()
 double SerraturaFOS::prendiAngolo()
 {
 	sf::Vector2i posMouse = sf::Mouse::getPosition();
-	int dX = posMouse.x - (int)sf::VideoMode::getDesktopMode().width / 2;
-	int dY = posMouse.y - (int)sf::VideoMode::getDesktopMode().height / 2;
+	int dX = posMouse.x - ((int)finestraSerratura.getPosition().x + 400);
+	int dY = posMouse.y - ((int)finestraSerratura.getPosition().y + 300);
 	return atan2(dX, dY)*(180 / (4 * atan(1))) + 180;
 }
-//si intende dal centro dello schermo non la finestra.
-//TODOFAR solo la finestra
+
 double SerraturaFOS::prendiDistanza()
 {
 	sf::Vector2i posMouse = sf::Mouse::getPosition();
-	int dX = posMouse.x - (int)sf::VideoMode::getDesktopMode().width / 2;
-	int dY = posMouse.y - (int)sf::VideoMode::getDesktopMode().height / 2;
+	int dX = posMouse.x - ((int)finestraSerratura.getPosition().x+400);
+	int dY = posMouse.y - ((int)finestraSerratura.getPosition().y+300);
 	return sqrt(dX * dX + dY * dY);
 }
