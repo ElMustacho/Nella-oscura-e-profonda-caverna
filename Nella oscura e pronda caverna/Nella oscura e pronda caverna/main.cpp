@@ -17,6 +17,19 @@
 #include "SerraturaFOS.h"
 int main()
 {
+	
+	DungeonGraficaIsola primoDungeon(3, "Il primo dungeon", "Il primo dell'avventura");
+	auto result=primoDungeon.playDungeon();
+	if (result == 1)
+		std::cout << "Congratulazioni!" << std::endl;
+	else if (result == 0) {
+		std::cout << "Codardo!" << std::endl;
+	}
+	getchar();
+	return 0;
+	// È fortemente consigliato non rimuovere il commento finché non saranno corretti i problemi sulla view
+	/*
+
 	SerraturaFOS test(90,15,250,50);
 	int resultLadro=test.scassina();
 	if (resultLadro == 0) {
@@ -29,17 +42,6 @@ int main()
 	else
 		std::cout << "WTF?" << std::endl;
 
-	DungeonGraficaIsola primoDungeon(3, "Il primo dungeon", "Il primo dell'avventura");
-	auto result=primoDungeon.playDungeon();
-	if (result == 1)
-		std::cout << "Congratulazioni!" << std::endl;
-	else if (result == 0) {
-		std::cout << "Codardo!" << std::endl;
-	}
-	getchar();
-	return 0;
-	// È fortemente consigliato non rimuovere il commento finché non saranno corretti i problemi sulla view
-	/*
 	std::vector<std::shared_ptr<Oggetto>> tabellaLoot; //VUOTA
 	Equipaggiamento Equipaggiamento;
 	std::vector<Entita> tabellaEntita; //VUOTA

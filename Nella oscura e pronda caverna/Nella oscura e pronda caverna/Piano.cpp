@@ -558,7 +558,7 @@ void Piano::checkSuccessor(coord check, coord target, std::string direct, bool &
 		if (check == target)
 		{
 
-			std::cout << "Non posso raggiungere la destinazione, solo andarci vicino" << std::endl;
+			//std::cout << "Non posso raggiungere la destinazione, solo andarci vicino" << std::endl;
 			closedList.push_back(q);
 			destination = true;
 		}
@@ -708,7 +708,7 @@ int Piano::aStar(coord pos, coord target, int distanza, int metodo)
 
 		if (pavimento.at(posizione(next)).getEntita() != nullptr) // Qui c'è qualcun altro
 		{
-			std::cout << "Qualcuno osa sbarrarmi la strada!" << std::endl;
+			//std::cout << "Qualcuno osa sbarrarmi la strada!" << std::endl;
 			if (distanza==1) //adiacente a bersaglio
 				return 10;
 			return 2;

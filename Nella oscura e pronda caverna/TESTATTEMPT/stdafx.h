@@ -36,6 +36,21 @@
 #include "..\Nella oscura e pronda caverna\Equipaggiamento.cpp"
 #include "..\Nella oscura e pronda caverna\Armatura.h"
 #include "..\Nella oscura e pronda caverna\Armatura.cpp"
+#include "..\Nella oscura e pronda caverna\MonsterFactory.cpp"
+#include "..\Nella oscura e pronda caverna\MonsterFactory.h"
+#include "..\Nella oscura e pronda caverna\ObjectFactory.cpp"
+#include "..\Nella oscura e pronda caverna\ObjectFactory.h"
+#include "..\Nella oscura e pronda caverna\Subject.h"
+#include "..\Nella oscura e pronda caverna\Subject.cpp"
+#include "..\Nella oscura e pronda caverna\UtilityGrafica.h"
+#include "..\Nella oscura e pronda caverna\UtilityGrafica.cpp"
+#include "..\Nella oscura e pronda caverna\TextBox.h"
+#include "..\Nella oscura e pronda caverna\TextBox.cpp"
+#include "..\Nella oscura e pronda caverna\Observer.h"
+#include "..\Nella oscura e pronda caverna\Observer.cpp"
+
+
+
 
 #include "gtest\gtest.h"
 
