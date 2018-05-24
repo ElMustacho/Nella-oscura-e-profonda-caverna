@@ -34,6 +34,8 @@ bool Piano::removeEntita(coord coodElimina) {
 	return false;
 }
 
+
+
 int Piano::scontro(coord posizioneVittima, coord posizioneAttaccante, TextBox& messages)
 {
 	if (pavimento.at(posizione(posizioneAttaccante)).getEntita() == nullptr)
@@ -42,7 +44,17 @@ int Piano::scontro(coord posizioneVittima, coord posizioneAttaccante, TextBox& m
 	if (danno.getAmmontare() < 0)
 		return -2; //nessun danno
 	else
-		return scontro(posizioneVittima, danno, messages );
+		return scontro(posizioneVittima, danno, messages);
+
+}int Piano::scontro(coord posizioneVittima, coord posizioneAttaccante)
+{
+	if (pavimento.at(posizione(posizioneAttaccante)).getEntita() == nullptr)
+		return -1; //nessun attaccante
+	auto danno = pavimento.at(posizione(posizioneAttaccante)).getEntita()->attacca();
+	if (danno.getAmmontare() < 0)
+		return -2; //nessun danno
+	else
+		return scontro(posizioneVittima, danno);
 }
 int Piano::scontro(coord posizioneVittima, Danno dannoInflitto, TextBox& messages)
 {
@@ -66,7 +78,27 @@ int Piano::scontro(coord posizioneVittima, Danno dannoInflitto, TextBox& message
 	return 0; 
 }
 
-
+int Piano::scontro(coord posizioneVittima, Danno dannoInflitto)
+{
+	if (pavimento.at(posizione(posizioneVittima)).getEntita().get() == nullptr)
+		return -3; //nessun bersaglio
+	else {
+		auto morteAvvenuta = pavimento.at(posizione(posizioneVittima)).getEntita()->subisciDanno(dannoInflitto);
+		if (morteAvvenuta) {
+			if (posizioneVittima == getPositionOfPlayer()) //giocatore morto
+				return 2;
+			//TODOFAR lascia equipaggiamento per terra.
+			auto vPosizioni = getVectorPosizioni();
+			auto it = std::find(vPosizioni.begin(), vPosizioni.end(), posizioneVittima);
+			//HACK devo chiamare removeEntita
+			entitaPresenti.erase(entitaPresenti.begin() + std::distance(vPosizioni.begin(), it));
+			pavimento.at(posizione(posizioneVittima)).drop();
+			pavimento.at(posizione(posizioneVittima)).setEntita(nullptr);
+			return 1;
+		}
+	}
+	return 0;
+}
 //Stesso funzionamento di Piano::posizione()
 Casella & Piano::at(int x, int y)
 {
@@ -176,7 +208,7 @@ bool Piano::creaPorte(int posX, int posY, int dimX, int dimY) //TODO Presa una s
 
 std::vector<std::shared_ptr<Entita>> Piano::getVectorEntita() {
 	std::vector<std::shared_ptr<Entita>> returned;
-	for each (std::pair<std::shared_ptr<Entita>, coord> entity in entitaPresenti)
+	for (std::pair<std::shared_ptr<Entita>, coord> entity : entitaPresenti)
 	{
 		returned.push_back(entity.first);
 	}
@@ -185,7 +217,7 @@ std::vector<std::shared_ptr<Entita>> Piano::getVectorEntita() {
 
 std::vector<coord> Piano::getVectorPosizioni() {
 	std::vector<coord> returned;
-	for each (std::pair<std::shared_ptr<Entita>, coord> entity in entitaPresenti)
+	for (std::pair<std::shared_ptr<Entita>, coord> entity : entitaPresenti)
 	{
 		returned.push_back(entity.second);
 	}
@@ -751,7 +783,7 @@ int Piano::playPiano(sf::RenderWindow& window, TextBox& messages)
 	int spwTurni = 0;
 	int totTurni = 0;
 	std::deque<std::shared_ptr<Entita>> turni;
-	for each (auto it in entitaPresenti)
+	for (auto it : entitaPresenti)
 	{
 		turni.push_back(it.first);
 	}

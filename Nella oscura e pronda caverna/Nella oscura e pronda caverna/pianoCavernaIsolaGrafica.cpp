@@ -32,7 +32,7 @@ int pianoCavernaIsolaGrafica::playPiano()
 	UtilityGrafica finestra(lunghezza, larghezza, tiles, ogg, prot, enem, scale);
 	std::dynamic_pointer_cast<Protagonista>(entitaPresenti[0].first)->attachGraphic(&finestra);
 	std::deque<std::shared_ptr<Entita>> turni;
-	for each (auto it in entitaPresenti)
+	for (auto it : entitaPresenti)
 	{
 		turni.push_back(it.first);
 	}
@@ -107,7 +107,7 @@ int pianoCavernaIsolaGrafica::playPiano()
 				aroundMe.push_back(coord(++lookAround.first, lookAround.second));
 				aroundMe.push_back(coord(++lookAround.first, lookAround.second));
 				aroundMe.push_back(coord(lookAround.first, ++lookAround.second));
-				for each (auto adj in aroundMe)
+				for (auto adj : aroundMe)
 				{
 					if (std::dynamic_pointer_cast<Protagonista>(pavimento.at(posizione(adj)).getEntita()) !=nullptr) //questa casella contiene un pg
 					{

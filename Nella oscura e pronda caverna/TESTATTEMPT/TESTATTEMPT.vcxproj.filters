@@ -35,10 +35,16 @@
     <ClCompile Include="main.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="PianoTest.cpp">
+    <ClCompile Include="TestOggetti.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="TestOggetti.cpp">
+    <ClCompile Include="TestEntita.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="TestFactory.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="PianoTest.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>

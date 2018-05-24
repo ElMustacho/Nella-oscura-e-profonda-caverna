@@ -38,6 +38,7 @@ public:
 	bool addInventario(std::shared_ptr<Oggetto> oggettoDaAgginugere);
 	//return true se uccide, false altrimenti
 	virtual bool subisciDanno(Danno dannoSubito, TextBox& messages);
+	bool subisciDanno(Danno dannoSubito);
 	double carryWeight(); //calcolo peso trasportato
 	std::string describeInventario();
 	

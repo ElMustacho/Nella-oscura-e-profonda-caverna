@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{C4B24C13-B874-43EA-9306-FB7352CE83E5}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>LibreriaPerGoogleTest</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)SFML-2.4.2\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Nella oscura e pronda caverna\Arma.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Armatura.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Attore.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Attributi.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Casella.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Danno.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Dungeon.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\DungeonGraficaIsola.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Entita.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Equipaggiamento.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\MonsterFactory.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\noiseutils.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\ObjectFactory.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Observer.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Oggetto.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Piano.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\pianoCavernaIsola.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\pianoCavernaIsolaGrafica.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\PianoFile.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\PianoFileGrafica.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\PianoGen.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Protagonista.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Scrigno.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Serratura.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\SerraturaFOS.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Sprite.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\Subject.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\TextBox.h" />
+    <ClInclude Include="..\Nella oscura e pronda caverna\UtilityGrafica.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Nella oscura e pronda caverna\Arma.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Armatura.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Attore.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Attributi.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Casella.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Danno.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Dungeon.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\DungeonGraficaIsola.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Entita.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Equipaggiamento.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\MonsterFactory.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\noiseutils.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\ObjectFactory.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Observer.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Oggetto.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Piano.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\pianoCavernaIsola.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\pianoCavernaIsolaGrafica.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\PianoFile.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\PianoFileGrafica.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\PianoGen.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Protagonista.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Scrigno.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Serratura.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\SerraturaFOS.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Sprite.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\Subject.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\TextBox.cpp" />
+    <ClCompile Include="..\Nella oscura e pronda caverna\UtilityGrafica.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nella oscura e pronda caverna\Nella oscura e pronda caverna.vcxproj">
+      <Project>{bf5d7687-1489-475f-b9b0-e650511eb90a}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

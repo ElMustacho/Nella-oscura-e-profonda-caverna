@@ -1,6 +1,6 @@
 #include "Attributi.h"
 #include <vector>
-
+#include <random>
 Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int hp, int potereMagico, int stamina, double forzaDiCarico, int maxHp, int maxPotereMagico, int maxStamina, bool silenzioso, std::vector<double> resistenze)
 
 {
@@ -24,6 +24,52 @@ Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int
 
 Attributi::Attributi()
 {
+}
+Attributi::Attributi(bool randomGeneration) {
+
+	if (randomGeneration == false)
+	{
+
+		this->forza = 0;
+		this->destrezza = 0;
+		this->tempra = 0;
+		this->intelligenza = 0;
+		this->spirito = 0;
+		this->carisma = 0;
+		this->fortuna = 0;
+		this->hp = 1;
+		this->potereMagico = 0;
+		this->stamina = 0;
+		this->forzaDiCarico = 0;
+		this->maxHp = 1;
+		this->maxPotereMagico = 0;
+		this->maxStamina = 0;
+		this->silenzioso = 0;
+		this->resistenze = {};
+	}
+	else {
+
+		std::random_device rd;
+		std::mt19937 mt(rd());
+		std::uniform_real_distribution<double> dist(0, 10);
+
+		this->forza = dist(mt);
+		this->destrezza = dist(mt);
+		this->tempra = dist(mt);
+		this->intelligenza = dist(mt);
+		this->spirito = dist(mt);
+		this->carisma = dist(mt);
+		this->fortuna = dist(mt);
+		this->hp = dist(mt)+15;
+		this->potereMagico = dist(mt);
+		this->stamina = dist(mt);
+		this->forzaDiCarico = dist(mt);
+		this->maxHp = this->hp;
+		this->maxPotereMagico = this->maxPotereMagico;
+		this->maxStamina = this->maxStamina;
+		this->silenzioso = 0;
+		this->resistenze = {};
+	}
 }
 
 Attributi::Attributi(int forza, int destrezza, int tempra, int intelligenza, int spirito, int carisma, int fortuna, int livello, std::vector<double> resistenze) {

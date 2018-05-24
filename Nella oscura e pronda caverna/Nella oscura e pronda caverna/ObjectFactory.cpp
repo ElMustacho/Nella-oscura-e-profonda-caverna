@@ -71,16 +71,28 @@ std::shared_ptr<Oggetto> ObjectFactory::makeObj(int code)
 	if (oggettiGenerabili.empty())
 		return makeObjRand(code);
 	else {
-		if(code=-1){
+		if(code==-1){
 			std::random_device rd;
 			std::mt19937 mt(rd());
 			std::uniform_real_distribution<double> dist(0, oggettiGenerabili.size());
 			auto objToCopy = oggettiGenerabili[(int)dist(rd)];
+			auto ifThisIsAWeapon = std::dynamic_pointer_cast<Arma>(objToCopy);
+			//TODOFAR creare un deep copier indipendente dal tipo di oggetto
+			if (ifThisIsAWeapon != nullptr)
+			{
+				return std::make_shared<Arma>(ifThisIsAWeapon->getPeso(), ifThisIsAWeapon->getNome(), ifThisIsAWeapon->getDescrizione(), ifThisIsAWeapon->getValore(), ifThisIsAWeapon->getDannoBase());
+			}
 			return std::make_shared<Oggetto>(objToCopy->getPeso(),objToCopy->getNome(),objToCopy->getDescrizione(),objToCopy->getValore());
 		}
 		else {
 			auto objToCopy = oggettiGenerabili[code%oggettiGenerabili.size()];
-			std::make_shared<Oggetto>(objToCopy->getPeso(), objToCopy->getNome(), objToCopy->getDescrizione(), objToCopy->getValore());
+			auto ifThisIsAWeapon = std::dynamic_pointer_cast<Arma>(objToCopy);
+			//TODOFAR creare un deep copier indipendente dal tipo di oggetto
+			if (ifThisIsAWeapon != nullptr)
+			{
+				return std::make_shared<Arma>(ifThisIsAWeapon->getPeso(), ifThisIsAWeapon->getNome(), ifThisIsAWeapon->getDescrizione(), ifThisIsAWeapon->getValore(), ifThisIsAWeapon->getDannoBase());
+			}
+			return std::make_shared<Oggetto>(objToCopy->getPeso(), objToCopy->getNome(), objToCopy->getDescrizione(), objToCopy->getValore());
 		}
 	}
 }
@@ -90,7 +102,7 @@ std::shared_ptr<Oggetto> ObjectFactory::makeWeap(int code)
 	if (armiGenerabili.empty())
 		return makeWeapRand(code);
 	else {
-		if (code = -1) {
+		if (code == -1) {
 			std::random_device rd;
 			std::mt19937 mt(rd());
 			std::uniform_real_distribution<double> dist(0, armiGenerabili.size());
@@ -98,7 +110,7 @@ std::shared_ptr<Oggetto> ObjectFactory::makeWeap(int code)
 			return std::make_shared<Arma>(objToCopy->getPeso(), objToCopy->getNome(), objToCopy->getDescrizione(), objToCopy->getValore(), objToCopy->getDannoBase());
 		}
 		else {
-			auto objToCopy= armiGenerabili[code%oggettiGenerabili.size()];
+			auto objToCopy= armiGenerabili[code%armiGenerabili.size()];
 			return std::make_shared<Arma>(objToCopy->getPeso(), objToCopy->getNome(), objToCopy->getDescrizione(), objToCopy->getValore(), objToCopy->getDannoBase());
 		}
 	}

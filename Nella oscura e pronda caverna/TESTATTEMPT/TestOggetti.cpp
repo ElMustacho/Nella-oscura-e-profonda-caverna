@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 TEST(TestOggetti, testConsistenzaCostruttore) {
-
+	std::cout << "Test consistenza costruttori.\n";
 	Oggetto oggettoTest(15., "Hatkanda", "L'oggetto di un film generico", 400);
 	EXPECT_EQ(oggettoTest.getPeso(), 15.);
 	EXPECT_EQ(oggettoTest.getNome(), "Hatkanda");
@@ -11,6 +11,7 @@ TEST(TestOggetti, testConsistenzaCostruttore) {
 }
 
 TEST(testOggetti, testArmi) {
+	std::cout << "Test armi e danni inflitti.\n";
 	Danno dannoInflittoTest(std::vector<double>{1},10);
 	Arma test(4, "Spada test", "Per controllare che le spade funzionino correttamente.", 5, dannoInflittoTest);
 	auto dannoTest = test.attacca();

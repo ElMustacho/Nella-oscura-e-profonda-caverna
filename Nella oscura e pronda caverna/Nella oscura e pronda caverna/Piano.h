@@ -63,7 +63,10 @@ public:
 
 	bool removeEntita(coord coodElimina);
 	int scontro(coord posizioneVittima, coord posizioneAttaccante, TextBox& messages);
+	int scontro(coord posizioneVittima, coord posizioneAttaccante);
 	int scontro(coord posizioneVittima, Danno dannoInflitto, TextBox& messages); //gestisce danno ad area e fulmini da divinità furiose
+
+	int scontro(coord posizioneVittima, Danno dannoInflitto);
 
 	Casella& at(int x, int y);
 	Casella& at(coord coord);

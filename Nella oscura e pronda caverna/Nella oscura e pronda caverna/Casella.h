@@ -11,7 +11,7 @@ public:
 	Casella(std::list<std::shared_ptr<Oggetto>> oggetti, std::shared_ptr<Entita> entita, bool trasparenza, bool attraversabile, int evento, int x = -1, int y = -1); //CHECK quando vuoi dare valori di default, devono essere messi nel .cpp, non nel .h, altrimenti è un casino!
 	~Casella();
 	void Scava();
-	Casella(bool default); //Default
+	Casella(bool isPavimento); //Default
 	bool isMuro();
 	void setTrasparenza(bool trasparenza) { this->trasparenza = trasparenza; }
 	bool isTrasparente() { return this->trasparenza; }

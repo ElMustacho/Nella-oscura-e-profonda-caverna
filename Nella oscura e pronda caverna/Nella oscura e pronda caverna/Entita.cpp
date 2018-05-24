@@ -98,7 +98,7 @@ bool Entita::addInventario(std::list<std::shared_ptr<Oggetto>> oggettiAggiunti)
 //TODO spostami in protagonista, visto che dovrebbe essere l'unico con l'UI
 bool Entita::equip(int posizioneOggetto)
 {
-	if(posizioneOggetto>0&&(unsigned int)posizioneOggetto<inventario.size())
+	if(posizioneOggetto>=0&&(unsigned int)posizioneOggetto<inventario.size())
 		if (equipaggiamento.equipaggia(inventario.at(posizioneOggetto))) {
 			inventario.erase(inventario.begin()+posizioneOggetto);
 			return true;
@@ -112,7 +112,7 @@ bool Entita::equip(sf::RenderWindow& window, TextBox& messages)
 	UtilityGrafica finestra; //CHECK in caso di Refresh passare sprite
 	int numero = 0;
 	std::cout << std::endl;
-	for each (auto oggetto in inventario)
+	for (auto oggetto :inventario)
 	{
 		std::cout << numero << ") " << oggetto->getNome() << " --> " << oggetto->getDescrizione() << std::endl;
 		messages.text.setString(messages.text.getString() + std::to_string(numero) + ") " + oggetto->getNome() + " --> " + oggetto->getDescrizione() + "\n");
@@ -166,18 +166,51 @@ bool Entita::subisciDanno(Danno dannoSubito, TextBox& messages)
 	{
 		totalehp += attributi.getResistenze()[i] * dannoSubito.getParteDanno(i);
 	}
-	if (totalehp <= 0) {
+	attributi.setHp((int)(attributi.getHp() - totalehp));
+	if (totalehp == 0) {
 		std::cout << nome << " e' rimasto incolume!" << std::endl;
 		messages.text.setString(messages.text.getString() + nome + " "+ sf::String(sf::Uint32(232)) +" rimasto incolume! \n");
 		return false;
 	}
-	attributi.setHp((int)(attributi.getHp()-totalehp));
+	if (totalehp < 0)
+	{
+		std::cout << nome << " si sente meglio!" << std::endl;
+		messages.text.setString(messages.text.getString() + nome + " " + sf::String(sf::Uint32(232)) + " si sente meglio! \n");
+		return false;
+
+	}
 	if (attributi.getHp() < 0) { //dead
 		onDeath(messages);
 		return true;
 	}
 	std::cout << nome << " ha sofferto " << (int)totalehp << " danni!" << std::endl;
 	messages.text.setString(messages.text.getString() + nome + " ha sofferto " + std::to_string((int)totalehp) + " danni!\n");
+	return false;
+}
+
+bool Entita::subisciDanno(Danno dannoSubito)
+{
+	double totalehp = 0;
+	//LOOKATME potremmo per esempio lasciare che alcuni tipi di danno abbiano altri effetti, tipo il danno mentale infligge danni alla barra delle magia
+	for (unsigned int i = 0; i < Danno::giveCategoriaDanni().size(); i++)
+	{
+		totalehp += attributi.getResistenze()[i] * dannoSubito.getParteDanno(i);
+	}
+
+	attributi.setHp((int)(attributi.getHp() - totalehp));
+	if (totalehp < 0) {
+		std::cout << nome << " si sente meglio!" << std::endl;
+		return false;
+
+	}
+	if (totalehp == 0) {
+		std::cout << nome << " e' rimasto incolume!" << std::endl;
+		return false;
+	}
+	if (attributi.getHp() < 0) { //dead
+		return true;
+	}
+	std::cout << nome << " ha sofferto " << (int)totalehp << " danni!" << std::endl;
 	return false;
 }
 

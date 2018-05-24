@@ -24,10 +24,10 @@ Casella::Casella(std::list<std::shared_ptr<Oggetto>> oggetti, std::shared_ptr<En
 }
 
 //Costruttore rapido e semplice, passare false per parete, passare true per terreno attraversabile
-Casella::Casella(bool default) {
+Casella::Casella(bool isPavimento) {
 	srand((unsigned int)time(nullptr));
-	trasparenza = default; //Se è una parete non è trasparente
-	attraversabile = default; //Se è una parete non è attraversabile
+	trasparenza = isPavimento; //Se è una parete non è trasparente
+	attraversabile = isPavimento; //Se è una parete non è attraversabile
 	evento = 0; //Di default non accade nulla
 	xTexture = 0;
 	yTexture = 0;
@@ -90,10 +90,12 @@ void Casella::pickup(std::vector<unsigned int> posizioni) {
 //Drop all
 void Casella::drop()
 {
-	for each (std::shared_ptr<Oggetto> oggettoMoving in entita->getInventario())
+	for (auto oggettoMoving:entita->getInventario())
+		oggetti.push_back(oggettoMoving);
+	/*for each (std::shared_ptr<Oggetto> oggettoMoving in entita->getInventario())
 	{
 		oggetti.push_back(oggettoMoving);
-	}
+	}*/
 	entita->getInventario().clear();
 	chooseTile();
 }
@@ -102,7 +104,7 @@ void Casella::drop()
 std::string Casella::descriviOggettiTerra()
 {
 	std::string output="";
-	for each (auto oggetto in oggetti)
+	for(auto oggetto : oggetti)
 	{
 		output.append(oggetto->getNome() + "\n");
 	}
@@ -116,7 +118,7 @@ void Casella::addOggetto(std::shared_ptr<Oggetto> oggetto) {
 //TODO
 void Casella::addOggetti(std::vector<std::shared_ptr<Oggetto>> oggetti)
 {
-	for each (auto obj in oggetti)
+	for (auto obj : oggetti)
 	{
 		this->oggetti.push_back(obj);
 	}

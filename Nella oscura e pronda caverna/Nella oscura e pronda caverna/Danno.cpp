@@ -16,7 +16,7 @@ void Danno::equalize(bool alteraAmmontare)
 {
 	double totale = 0;
 	int qualcunoZero = 0;
-	for each(double numero in tipo) {
+	for (double numero :tipo) {
 		totale += numero;
 		if (numero != 0)
 			qualcunoZero++;

@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 TEST(TestPiano, CostruzioneStanzaGeneratore1) {
+	std::cout << "Test sulla costruzione delle stanze.\n";
 	std::list<std::shared_ptr<Oggetto>> tabellaLoot; //VUOTA
 	std::vector<std::shared_ptr<Oggetto>> Equipaggiamento;
 	std::vector<std::shared_ptr<Entita>> tabellaEntita; //VUOTA
@@ -12,6 +13,7 @@ TEST(TestPiano, CostruzioneStanzaGeneratore1) {
 }
 
 TEST(TestPiano, TestCostruzioneGenericaMultiplaGeneratore1) { //Prova tante volte a costruire un piano, se uno fallisce non arriva in fondo al test
+	std::cout << "Test sulla costruzione dei piani tramite stanze.\n";
 	srand((unsigned int)time(nullptr));
 	std::list<std::shared_ptr<Oggetto>> tabellaLoot; //VUOTA
 	std::vector<std::shared_ptr<Oggetto>> inventario;
@@ -44,12 +46,12 @@ TEST(TestPiano, TestCostruzioneGenericaMultiplaGeneratore1) { //Prova tante volt
 }
 
 TEST(TestPiano, TestMovimentoECollisioni) {
+	std::cout << "Test sui movimenti e sulle collisioni.\n";
 	std::list<std::shared_ptr<Oggetto>> tabellaLoot; //VUOTA
 	std::vector<std::shared_ptr<Oggetto>> inventario;
 	std::vector<std::shared_ptr<Entita>> tabellaEntita; //VUOTA
 	Attributi normale(4, 4, 4, 4, 4, 4, 4, 4);
 	Protagonista player("Personaggio", inventario, normale, Equipaggiamento(), 4, 15, 400);
-	
 	Attore monster("Goblin", inventario, normale, Equipaggiamento(), 1.);
 	Piano livello(15, 15, inventario, tabellaEntita);
 	livello.creaStanzaRettangolare(3, 3, 6, 7);
@@ -61,7 +63,7 @@ TEST(TestPiano, TestMovimentoECollisioni) {
 	ASSERT_EQ(-2, livello.muoviEntita(5, 5, 5, 5)) << "Ho provato a muovermi da un punto allo stesso punto";
 	ASSERT_EQ(-3, livello.muoviEntita(5, 5, 5, 50)) << "L'arrivo era fuori dal piano ma mi sono mosso lo stesso";
 	ASSERT_EQ(4, livello.muoviEntita(4, 4, 1, 1)) << "Ho terminato il movimento anche se era troppo lungo";
-	//ASSERT_EQ("Personaggio", livello.at(3, 3).getEntita()->getNome()) << "Il movimento precedente mi ha condotto qui ma non c'e' nessuno";
+	ASSERT_EQ("Personaggio", livello.at(3, 3).getEntita()->getNome()) << "Il movimento precedente mi ha condotto qui ma non c'e' nessuno";
 	ASSERT_EQ(1, livello.muoviEntita(3, 3, 2, 2)) << "Mi sono spostato dentro un muro";
 	ASSERT_EQ(0, livello.muoviEntita(3, 3, 4, 4)) << "Non mi sono mosso anche se potevo e dovevo";
 	ASSERT_EQ(2, livello.muoviEntita(4, 4, 5, 5)) << "Ho tamponato un'altra entita' anche se non potevo";
@@ -85,6 +87,7 @@ TEST(TestPiano, TestPianoPerlinNoise) {
 }
 
 TEST(TestPiano, TestPianoFromFile) {
+	std::cout << "Test caricamento stanze da file.\n";
 	bool ok;
 	PianoFile file("mappaTest.txt", ok);
 	EXPECT_TRUE(ok)<< "File non caricato"<< std::endl;
