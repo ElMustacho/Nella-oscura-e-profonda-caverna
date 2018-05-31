@@ -26,6 +26,7 @@
 #include "..\Nella oscura e pronda caverna\UtilityGrafica.h"
 #include "..\Nella oscura e pronda caverna\TextBox.h"
 #include "..\Nella oscura e pronda caverna\Observer.h"
+#include "..\Nella oscura e pronda caverna\ObjectFactory.cpp"
 
 
 #include "gtest\gtest.h"
