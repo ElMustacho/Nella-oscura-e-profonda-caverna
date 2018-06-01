@@ -79,5 +79,26 @@ TEST(TestFactory, TestObjectFactoryUniquePointers) {
 	//Fine fase di preparazione
 	auto obj1 = objFactTestOnlyObj.makeObjUnique(1);
 	auto obj2 = objFactTestOnlyObj.makeObjUnique(1);
-	EXPECT_NE(obj1, obj2);
+	EXPECT_NE(obj1,obj2) << "Due instanze dello stesso tipo di oggetto sono lo stesso oggetto, non dovrebbe succedere!";
+}
+
+TEST(TestFactory, TestMonsterFacroryUniquePointer) {
+
+	std::cout << "Test sulla creazione di entità con Monster Factory,\n";
+	// Da qui fino al prossimo commento è solo fase di preparazione
+	Attributi casuale(true), manuale(4, 4, 4, 4, 4, 4, 4, 10);
+	Equipaggiamento inventario1, inventario2;
+	std::vector<std::shared_ptr<Oggetto>> lista1, lista2;
+	Oggetto oggettoTest1(0.1, "\"Esci gratis di prigione\"", "L'utilissimo cartoncino del Monopoli", 2000), oggettoTest2(1, "Pettine", "Per la cura dei capelli ed altri tipi di pelurie", 5);
+	Attore scelta1("Abramo", lista1, casuale, inventario1, 5), scelta2("Lincoln", lista2, manuale, inventario2, 20);
+	auto punt1 = std::make_shared<Attore>(scelta1), punt2 = std::make_shared<Attore>(scelta2);
+	std::vector<std::shared_ptr<Entita>> elencoAttori;
+	elencoAttori.push_back(punt1);
+	elencoAttori.push_back(punt2);
+	MonsterFactory monFactTest(elencoAttori);
+	auto monMade1 = monFactTest.makeMonUnique(0);
+	auto monMade2 = monFactTest.makeMonUnique(0);
+	EXPECT_NE(monMade1, monMade2) << "Siamo due entità uguali, ma qui è come se fossimo la stessa cosa in due posti diversi!";
+	// Fine fase preparazione
+	
 }

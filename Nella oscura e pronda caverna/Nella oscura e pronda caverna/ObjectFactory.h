@@ -15,7 +15,7 @@ public:
 	std::unique_ptr<Oggetto> makeObjUnique(int code = -1);
 	std::shared_ptr<Oggetto> makeWeap(int code = -1);
 	std::unique_ptr<Oggetto> makeWeapUnique(int code = -1);
-	
+
 	void setObjList(std::vector<std::shared_ptr<Oggetto>> newOggettiGenerabili);
 	void setWeapList(std::vector<std::shared_ptr<Arma>> newOggettiGenerabili);
 
