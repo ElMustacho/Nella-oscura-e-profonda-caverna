@@ -98,7 +98,7 @@ TEST(TestFactory, TestMonsterFacroryUniquePointer) {
 	MonsterFactory monFactTest(elencoAttori);
 	auto monMade1 = monFactTest.makeMonUnique(0);
 	auto monMade2 = monFactTest.makeMonUnique(0);
-m  	EXPECT_NE(monMade1, monMade2) << "Siamo due entità uguali, ma qui è come se fossimo la stessa cosa in due posti diversi!";
+	EXPECT_NE(monMade1, monMade2) << "Siamo due entità uguali, ma qui è come se fossimo la stessa cosa in due posti diversi!";
 	// Fine fase preparazione
 	
 }
