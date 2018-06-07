@@ -63,7 +63,8 @@ std::unique_ptr<Entita> MonsterFactory::makeMonRandUnique(int code)
 }
 std::shared_ptr<Entita> MonsterFactory::makeMonRand(int code)
 {
-	return std::move(makeMonRandUnique(code));
+	std::shared_ptr<Entita> ptrReturned(makeMonRandUnique(code));
+	return ptrReturned;
 }
 
 MonsterFactory::MonsterFactory(std::vector<std::shared_ptr<Entita>> entitaPossibili)
@@ -78,7 +79,8 @@ void MonsterFactory::setMonsterList(std::vector<std::shared_ptr<Entita>> entitaP
 
 std::shared_ptr<Entita> MonsterFactory::makeMon(int code) 
 {
-	return std::move(makeMonUnique(code));
+	std::shared_ptr<Entita> ptrReturned(makeMonUnique(code));
+	return ptrReturned;
 }
 
 std::unique_ptr<Entita> MonsterFactory::makeMonUnique(int code)

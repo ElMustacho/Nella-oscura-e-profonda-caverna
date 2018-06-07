@@ -1,7 +1,8 @@
 #include "ObjectFactory.h"
 
 std::shared_ptr<Oggetto> ObjectFactory::makeObjRand(int code) {
-	return std::move(makeObjRandUnique(code));
+	std::shared_ptr<Oggetto> ptrReturned(makeObjRandUnique(code));
+	return ptrReturned;
 }
 
 std::unique_ptr<Oggetto> ObjectFactory::makeObjRandUnique(int code)
@@ -37,7 +38,8 @@ std::unique_ptr<Oggetto> ObjectFactory::makeObjRandUnique(int code)
 }
 
 std::shared_ptr<Oggetto> ObjectFactory::makeWeapRand(int code) {
-	return std::move(makeWeapRandUnique(code));
+	std::shared_ptr<Oggetto> ptrReturned(makeWeapRandUnique(code));
+	return ptrReturned;
 }
 
 std::unique_ptr<Oggetto> ObjectFactory::makeWeapRandUnique(int code)
@@ -73,7 +75,8 @@ std::unique_ptr<Oggetto> ObjectFactory::makeWeapRandUnique(int code)
 }
 //Se la lista degli oggetti generabili è vuota ne restituisce uno della classe statica
 std::shared_ptr<Oggetto> ObjectFactory::makeObj(int code) {
-	return std::move(makeObjUnique(code));
+	std::shared_ptr<Oggetto> ptrReturned(makeObjUnique(code));
+	return ptrReturned;
 }
 
 
@@ -109,7 +112,8 @@ std::unique_ptr<Oggetto> ObjectFactory::makeObjUnique(int code)
 }
 std::shared_ptr<Oggetto> ObjectFactory::makeWeap(int code)
 {
-	return std::move(makeWeapUnique(code));
+	std::shared_ptr<Oggetto> ptrReturned(makeWeapUnique(code));
+	return ptrReturned;
 }
 //Se la lista delle armi generabili è vuota ne restituisce una della classe statica
 std::unique_ptr<Oggetto> ObjectFactory::makeWeapUnique(int code)
